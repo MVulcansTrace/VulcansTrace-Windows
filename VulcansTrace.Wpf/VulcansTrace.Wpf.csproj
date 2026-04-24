@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\VulcansTrace.Engine\VulcansTrace.Engine.csproj" />
+    <ProjectReference Include="..\VulcansTrace.Evidence\VulcansTrace.Evidence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\VulcansTrace.ico</ApplicationIcon>
+    <AssemblyName>VulcansTrace</AssemblyName>
+  </PropertyGroup>
+
+</Project>
