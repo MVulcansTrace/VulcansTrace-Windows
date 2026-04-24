@@ -18,7 +18,7 @@ The analyst selects "High - Deep Hunt / Forensics" intensity and clicks Analyze.
 
 1. `CanAnalyze()` returns `true` — not busy, has log text, has intensity
 2. `IsBusy = true` — progress bar appears, Analyze button disables, Cancel button enables
-3. `logSnapshot` captures the text — stable input even if the analyst edits the text box
+3. `logSnapshot` captures the text — stable analysis and export input even if the analyst edits the text box
 4. `Task.Run` dispatches to `AnalyzeWithOverrides`, which calls `SentryAnalyzer.Analyze`
 5. Six detectors run: PortScan, Flood, LateralMovement, Beaconing, PolicyViolation, Novelty
 6. `RiskEscalator` checks for cross-detector correlation (e.g., Beaconing + LateralMovement → Critical)
@@ -97,7 +97,7 @@ If the analyst realizes they pasted the wrong log during analysis:
 | Architecture Choice | Scenario Impact |
 |---|---|
 | `Task.Run` background analysis | Analyst sees progress and can cancel — not frozen |
-| Log snapshot | Analysis runs against the correct input even if the analyst edits the text box |
+| Log snapshot | Analysis and exported `log.txt` use the correct input even if the analyst edits the text box |
 | `ICollectionView` filtering | Severity + IP filtering narrows to relevant findings without losing data |
 | Source collection untouched | All 7 findings are exported regardless of the current filter state |
 | Per-export CSPRNG key | Each export has an independent integrity guarantee |
@@ -113,4 +113,4 @@ If the analyst realizes they pasted the wrong log during analysis:
 - [FindingsViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): severity + text filtering on 4 fields
 - [EvidenceViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation, export orchestration, key masking
 - [EvidenceBuilder.cs](../../../VulcansTrace.Evidence/EvidenceBuilder.cs): SHA-256 hashes, HMAC-SHA-256 signature, ZIP packaging
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export scenario
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export + snapshot consistency scenarios

@@ -15,7 +15,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 | Metric | Value |
 |--------|-------|
 | Test files | 23 |
-| Test methods | 188 |
+| Test methods | 189 |
 | Detector test files | 6 (PortScan, Beaconing, Flood, LateralMovement, PolicyViolation, Novelty) |
 | Core test files | 3 (log parsing, domain models, SHA-256/HMAC integrity) |
 | Engine pipeline test files | 4 (analyzer orchestration, profile thresholds, IP classification, risk escalation) |
@@ -36,7 +36,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 - Integration tests verify cross-detector correlation — Beaconing + LateralMovement escalates to Critical
 - Robustness tests verify a crashing detector does not take down the pipeline
 - HMAC-SHA256 evidence integrity tests verify tamper-evident evidence packages
-- Full-stack WPF tests verify the complete analyze + export workflow end-to-end
+- Full-stack WPF tests verify the complete analyze + export workflow end-to-end, including analyzed-log snapshot export consistency
 
 ---
 
@@ -47,7 +47,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 - [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite attack, escalation, parameterized timing (206 lines)
 - [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crash tolerance, cancellation, high-volume (109 lines)
 - [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, determinism (776 lines)
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF workflow (502 lines)
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF workflow, including snapshot export consistency (502 lines)
 
 ---
 

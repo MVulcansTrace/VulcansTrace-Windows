@@ -29,7 +29,7 @@ The test suite covers:
 **Key metrics:**
 
 - 23 test files across Core, Engine, Evidence, Wpf, and functional layers
-- 188 test methods covering unit, integration, robustness, and functional categories
+- 189 test methods covering unit, integration, robustness, and functional categories
 - 6 detector test files with threshold, statistical, and scenario coverage
 - 1 integration test file with composite attack scenarios across all detectors
 - 1 robustness test file with fault-tolerance and cancellation coverage
@@ -70,7 +70,7 @@ The test suite covers:
 - [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crashing detector, cancellation, high-volume (109 lines, 3 tests)
 - [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, timestamp clamping, determinism (776 lines, 21 tests)
 - [WindowsFirewallLogParserTests.cs](../../../VulcansTrace.Tests/Core/WindowsFirewallLogParserTests.cs): native `pfirewall.log` rows, ignored `#Fields:` headers, ICMP placeholder ports, trailing fields, IPv6, malformed lines, timestamp variants, and line-ending edge cases (591 lines, 27 tests)
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack analyze + export with STA thread (376 lines, 4 tests)
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack analyze + export with STA thread, including analyzed-log snapshot export consistency (502 lines, 5 tests)
 
 ---
 

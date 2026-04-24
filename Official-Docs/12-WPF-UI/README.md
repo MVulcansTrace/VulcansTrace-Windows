@@ -34,7 +34,7 @@ Documentation is organized for two audiences:
 - [FindingsViewModel.cs](../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): `ICollectionView` filtering, multi-field search, severity filter
 - [EvidenceViewModel.cs](../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation, HMAC export, key masking, cancellation
 - [IDialogService.cs](../../VulcansTrace.Wpf/Services/IDialogService.cs): dialog abstraction for testability
-- [MainViewModelIntegrationTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export, per-export key regeneration, parse-error cap, port-scan cap warning
+- [MainViewModelIntegrationTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export, analyzed-log snapshot export, per-export key regeneration, parse-error cap, port-scan cap warning
 - [MainViewModelTextTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelTextTests.cs): encoding artifact prevention
 - [NonNegativeIntValidationRuleTests.cs](../../VulcansTrace.Tests/Wpf/NonNegativeIntValidationRuleTests.cs): XAML validation rule coverage
 

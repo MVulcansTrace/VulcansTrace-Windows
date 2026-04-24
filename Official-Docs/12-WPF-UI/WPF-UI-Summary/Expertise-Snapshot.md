@@ -36,10 +36,10 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 ## Key Evidence
 
 - [MainWindow.xaml.cs](../../../VulcansTrace.Wpf/MainWindow.xaml.cs): composition root wiring 6 detectors, analyzer, risk escalator, and evidence builder with formatters
-- [MainViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/MainViewModel.cs): async analysis with log snapshot, cancellation, and child ViewModel delegation
+- [MainViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/MainViewModel.cs): async analysis with shared analysis/export log snapshot, cancellation, and child ViewModel delegation
 - [FindingsViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): `ICollectionView` filtering with severity + text search
 - [EvidenceViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation, HMAC export, key masking
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis, export, key regeneration, parse-error cap
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis, export, snapshot consistency, key regeneration, parse-error cap
 
 ---
 
@@ -48,4 +48,4 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 - **Hand-rolled MVVM** because external frameworks add dependencies with larger attack surfaces, for the purpose of keeping the security tool auditable and dependency-free
 - **`ICollectionView` over LINQ filtering** because LINQ creates new collections each time, for the purpose of keeping the source collection intact for evidence export
 - **Per-export CSPRNG key** because key reuse weakens HMAC guarantees across bundles, for the purpose of making each export cryptographically independent
-- **Log snapshot capture** because users can edit the text box during analysis, for the purpose of ensuring the analyzer runs against the exact input that was present when Analyze was clicked
+- **Log snapshot capture** because users can edit the text box during analysis, for the purpose of ensuring both the analyzer and exported `log.txt` use the exact input that was present when Analyze was clicked

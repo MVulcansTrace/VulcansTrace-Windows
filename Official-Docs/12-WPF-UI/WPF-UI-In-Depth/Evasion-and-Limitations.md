@@ -105,5 +105,5 @@ The manual composition root in `MainWindow.xaml.cs` works well for ~25 lines of 
 - [EvidenceViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): per-export key, no persistence, Clipboard coupling
 - [RelayCommand.cs](../../../VulcansTrace.Wpf/ViewModels/RelayCommand.cs): CommandManager coupling
 - [MainWindow.xaml.cs](../../../VulcansTrace.Wpf/MainWindow.xaml.cs): manual composition root
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): per-export key regeneration test
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): snapshot export consistency and per-export key regeneration tests
 

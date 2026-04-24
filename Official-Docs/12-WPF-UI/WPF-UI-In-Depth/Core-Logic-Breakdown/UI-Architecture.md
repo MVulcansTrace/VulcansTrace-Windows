@@ -328,7 +328,7 @@ public string MaskedSigningKey =>
 - [MainViewModel.cs](../../../../VulcansTrace.Wpf/ViewModels/MainViewModel.cs): async analysis orchestration
 - [FindingsViewModel.cs](../../../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): `ICollectionView` filtering
 - [EvidenceViewModel.cs](../../../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation; HMAC signing delegated to `EvidenceBuilder`
-- [MainViewModelIntegrationTests.cs](../../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export + key regeneration
+- [MainViewModelIntegrationTests.cs](../../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export + snapshot consistency + key regeneration
 
 ---
 
@@ -338,7 +338,7 @@ public string MaskedSigningKey =>
 >
 > *"The architecture has three layers: the visible UI is XAML with a thin composition root in code-behind, the ViewModels coordinate analysis and display, and the Models handle detection and evidence. `ViewModelBase` and `RelayCommand` were written from scratch — about 70 lines — because CommunityToolkit.Mvvm would add a NuGet package whose internals would need to be trusted, and the custom implementation does exactly what the app needs.*
 >
-> *`MainViewModel` runs analysis on a background thread via `Task.Run` with cancellation, because CPU-bound detection would freeze the UI. Before dispatching, a log snapshot is captured so the analyzer runs against the exact input that was present when Analyze was clicked — even if the user edits the text box while analysis runs.*
+> *`MainViewModel` runs analysis on a background thread via `Task.Run` with cancellation, because CPU-bound detection would freeze the UI. Before dispatching, a log snapshot is captured so the analyzer and exported `log.txt` use the exact input that was present when Analyze was clicked — even if the user edits the text box while analysis runs.*
 >
 > *`FindingsViewModel` uses `ICollectionView` for filtering instead of LINQ because LINQ creates new collections each time a filter changes, and the source collection needs to stay intact for evidence export. The filter checks severity and searches four fields: category, source host, target, and description.*
 >
@@ -351,5 +351,5 @@ public string MaskedSigningKey =>
 1. **Hand-rolled MVVM = smaller attack surface** — ~70 lines vs. a full framework dependency
 2. **ICollectionView is safe for evidence** — filtering is a view projection, not data modification
 3. **CSPRNG keys prevent HMAC forgery** — predictable keys would let an attacker forge valid signatures
-4. **Log snapshot protects analysis integrity** — analyzer runs against a stable input
+4. **Log snapshot protects analysis/export consistency** — analyzer and `log.txt` use the same stable input
 5. **Cancellation prevents wasted work** — analysts abort wrong-log analysis before results corrupt triage

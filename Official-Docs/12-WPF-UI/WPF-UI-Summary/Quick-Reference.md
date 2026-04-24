@@ -61,7 +61,7 @@ User clicks Analyze
   → IsBusy = true
   → Capture logSnapshot = _logText
   → Task.Run(AnalyzeWithOverrides)
-  → On success: Evidence.SetEvidenceContext → Findings.LoadResults → Build summary
+  → On success: Evidence.SetEvidenceContext(logSnapshot) → Findings.LoadResults → Build summary
   → On cancel: Show "cancelled by user", no partial results
   → On error: Show exception message
   → IsBusy = false
