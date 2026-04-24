@@ -71,15 +71,15 @@ Recent validation in this workspace:
 
 ### Core Analysis Workflow
 
-![Core Analysis Workflow](gifs/01_Core_analysis_gif.mp4)
+![Core Analysis Workflow](gifs/01_Core_analysis_gif.gif)
 
 ### Intensity Profile Deep Dive
 
-![Intensity Profile Deep Dive](gifs/02_Intensity_deep_dive_gif.mp4)
+![Intensity Profile Deep Dive](gifs/02_Intensity_deep_dive_gif.gif)
 
 ### Evidence Export
 
-![Evidence Export](gifs/03_Evidence_export_gif.mp4)
+![Evidence Export](gifs/03_Evidence_export_gif.gif)
 
 ## Documentation Map
 
