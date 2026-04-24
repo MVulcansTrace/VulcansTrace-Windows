@@ -71,15 +71,15 @@ Recent validation in this workspace:
 
 ### Core Analysis Workflow
 
-<video src="gifs/01_Core_analysis_gif.mp4" width="100%" autoplay loop muted playsinline></video>
+![Core Analysis Workflow](gifs/01_Core_analysis_gif.mp4)
 
 ### Intensity Profile Deep Dive
 
-<video src="gifs/02_Intensity_deep_dive_gif.mp4" width="100%" autoplay loop muted playsinline></video>
+![Intensity Profile Deep Dive](gifs/02_Intensity_deep_dive_gif.mp4)
 
 ### Evidence Export
 
-<video src="gifs/03_Evidence_export_gif.mp4" width="100%" autoplay loop muted playsinline></video>
+![Evidence Export](gifs/03_Evidence_export_gif.mp4)
 
 ## Documentation Map
 
