@@ -67,6 +67,20 @@ Recent validation in this workspace:
 - `dotnet build VulcansTrace.sln` succeeded with `0` warnings and `0` errors on April 23, 2026.
 - `dotnet test VulcansTrace.Tests\VulcansTrace.Tests.csproj --no-build` passed `222/222` tests on April 23, 2026.
 
+## Live Demos
+
+### Core Analysis Workflow
+
+<video src="gifs/01_Core_analysis_gif.mp4" width="100%" autoplay loop muted playsinline></video>
+
+### Intensity Profile Deep Dive
+
+<video src="gifs/02_Intensity_deep_dive_gif.mp4" width="100%" autoplay loop muted playsinline></video>
+
+### Evidence Export
+
+<video src="gifs/03_Evidence_export_gif.mp4" width="100%" autoplay loop muted playsinline></video>
+
 ## Documentation Map
 
 - [1 - Log Parsing](./Official-Docs/01-Log-Parsing/README.md)
