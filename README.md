@@ -64,8 +64,8 @@ dotnet run --project VulcansTrace.Wpf
 
 Recent validation in this workspace:
 
-- `dotnet build VulcansTrace.sln` succeeded with `0` warnings and `0` errors on April 23, 2026.
-- `dotnet test VulcansTrace.Tests\VulcansTrace.Tests.csproj --no-build` passed `222/222` tests on April 23, 2026.
+- `dotnet build VulcansTrace.sln --configuration Release` succeeded with `0` warnings and `0` errors on April 24, 2026.
+- `dotnet test VulcansTrace.Tests\VulcansTrace.Tests.csproj --no-build --configuration Release --verbosity normal` passed `223/223` tests on April 24, 2026.
 
 ## Live Demos
 

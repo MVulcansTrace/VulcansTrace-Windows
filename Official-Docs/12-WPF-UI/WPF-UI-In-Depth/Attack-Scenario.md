@@ -30,7 +30,7 @@ The analyst watches the progress indicator until results arrive.
 
 `MainViewModel` delegates to child ViewModels:
 
-- `Evidence.SetEvidenceContext(result, _logText, timestamp)` — prepares export context; `CanExportEvidence()` returns `true` via automatic `CommandManager` re-evaluation, making the Export button available
+- `Evidence.SetEvidenceContext(result, logSnapshot, timestamp)` — prepares export context with the same raw log that was analyzed; `CanExportEvidence()` returns `true` via automatic `CommandManager` re-evaluation, making the Export button available
 - `Findings.LoadResults(result)` — populates the DataGrid with wrapped `FindingItemViewModel` rows
 
 The summary shows: **"Found 7 issues, 4 High/Critical."**

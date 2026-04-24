@@ -178,10 +178,11 @@ public sealed class MainViewModel : ViewModelBase
         var token = _cancellationTokenSource.Token;
 
         AnalysisResult result;
+        string logSnapshot;
         try
         {
             var intensity = _selectedIntensity.Level;
-            var logSnapshot = _logText;
+            logSnapshot = _logText;
             result = await Task.Run(() => AnalyzeWithOverrides(intensity, logSnapshot, token), token);
         }
         catch (OperationCanceledException)
@@ -205,7 +206,7 @@ public sealed class MainViewModel : ViewModelBase
             ?? DateTime.UnixEpoch;
 
         // Delegate to child ViewModels
-        Evidence.SetEvidenceContext(_lastResult, _logText, lastAnalysisTimestampUtc);
+        Evidence.SetEvidenceContext(_lastResult, logSnapshot, lastAnalysisTimestampUtc);
         Findings.LoadResults(result);
 
         // Build summary text

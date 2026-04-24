@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using VulcansTrace.Core;
 using VulcansTrace.Core.Security;
 using VulcansTrace.Engine;
 using VulcansTrace.Engine.Configuration;
@@ -142,6 +144,97 @@ public class MainViewModelIntegrationTests
 
         thread.Start();
         await tcs.Task;
+    }
+
+    [Fact]
+    public async Task ExportEvidence_UsesAnalyzedLogSnapshot_WhenLogTextChangesDuringAnalysis()
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        var thread = new Thread(() =>
+        {
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(dispatcher));
+
+            dispatcher.InvokeAsync(async () =>
+            {
+                try
+                {
+                    await RunSnapshotExportScenarioAsync();
+                    tcs.SetResult(true);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+                finally
+                {
+                    dispatcher.InvokeShutdown();
+                }
+            });
+
+            Dispatcher.Run();
+        })
+        {
+            IsBackground = true
+        };
+        thread.SetApartmentState(ApartmentState.STA);
+
+        thread.Start();
+        await tcs.Task;
+    }
+
+    private static async Task RunSnapshotExportScenarioAsync()
+    {
+        var parser = new VulcansTrace.Core.Parsing.WindowsFirewallLogParser();
+        var profileProvider = new AnalysisProfileProvider();
+        var detector = new BlockingDetector();
+        var riskEscalator = new RiskEscalator();
+        var analyzer = new SentryAnalyzer(parser, profileProvider, new IDetector[] { detector }, riskEscalator);
+
+        var hasher = new IntegrityHasher();
+        var csvFormatter = new CsvFormatter();
+        var markdownFormatter = new MarkdownFormatter();
+        var htmlFormatter = new HtmlFormatter();
+        var evidenceBuilder = new EvidenceBuilder(hasher, csvFormatter, markdownFormatter, htmlFormatter);
+
+        var dialog = new FakeDialogService();
+        var vm = new MainViewModel(analyzer, evidenceBuilder, dialog, profileProvider);
+
+        const string analyzedLog = "2024-01-01 12:00:00 ALLOW TCP 192.168.1.100 203.0.113.50 50000 21 60 - - - - - - - SEND";
+        const string editedLog = "2024-01-01 12:00:00 ALLOW TCP 192.168.1.200 203.0.113.99 50000 23 60 - - - - - - - SEND";
+
+        vm.LogText = analyzedLog;
+        vm.SelectedIntensity = vm.Intensities.First(i => i.Level == IntensityLevel.High);
+
+        vm.AnalyzeCommand.Execute(null);
+
+        Assert.True(await detector.WaitUntilStartedAsync(), "Detector did not start within the expected time.");
+        vm.LogText = editedLog;
+        detector.Release();
+
+        await WaitForCompletion(vm, timeoutMs: 2000);
+
+        var tempPath = Path.GetTempFileName();
+        try
+        {
+            dialog.SavePath = tempPath;
+            vm.Evidence.ExportEvidenceCommand.Execute(null);
+            await WaitForExport(vm, tempPath, timeoutMs: 2000);
+
+            using var zip = ZipFile.OpenRead(tempPath);
+            var logEntry = zip.GetEntry("log.txt");
+            Assert.NotNull(logEntry);
+            using var reader = new StreamReader(logEntry.Open());
+            var exportedLog = await reader.ReadToEndAsync();
+
+            Assert.Equal(analyzedLog, exportedLog);
+            Assert.DoesNotContain("192.168.1.200", exportedLog, StringComparison.Ordinal);
+        }
+        finally
+        {
+            if (File.Exists(tempPath))
+                File.Delete(tempPath);
+        }
     }
 
     private static async Task RunPortScanCapScenarioAsync()
@@ -372,5 +465,38 @@ public class MainViewModelIntegrationTests
         }
 
         throw new TimeoutException("Export did not complete within the expected time.");
+    }
+
+    private sealed class BlockingDetector : IDetector
+    {
+        private readonly ManualResetEventSlim _started = new();
+        private readonly ManualResetEventSlim _release = new();
+
+        public IEnumerable<Finding> Detect(IReadOnlyList<LogEntry> entries, AnalysisProfile profile, CancellationToken token)
+        {
+            _started.Set();
+            if (!_release.Wait(TimeSpan.FromSeconds(2), token))
+                throw new TimeoutException("Timed out waiting for test release.");
+
+            return new[]
+            {
+                new Finding
+                {
+                    Category = "SnapshotProbe",
+                    Severity = Severity.High,
+                    SourceHost = "192.168.1.100",
+                    Target = "203.0.113.50:21",
+                    TimeRangeStart = entries.First().Timestamp,
+                    TimeRangeEnd = entries.First().Timestamp,
+                    ShortDescription = "Snapshot probe finding",
+                    Details = "Used by WPF snapshot export regression test."
+                }
+            };
+        }
+
+        public Task<bool> WaitUntilStartedAsync() =>
+            Task.Run(() => _started.Wait(TimeSpan.FromSeconds(2)));
+
+        public void Release() => _release.Set();
     }
 }

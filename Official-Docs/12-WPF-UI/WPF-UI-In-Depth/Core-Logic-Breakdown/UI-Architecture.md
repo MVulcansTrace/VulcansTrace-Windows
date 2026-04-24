@@ -188,7 +188,7 @@ private async Task AnalyzeAsync()
     var lastAnalysisTimestampUtc = result.TimeRangeEnd?.ToUniversalTime()
         ?? result.TimeRangeStart?.ToUniversalTime()
         ?? DateTime.UnixEpoch;
-    Evidence.SetEvidenceContext(_lastResult, _logText, lastAnalysisTimestampUtc);
+    Evidence.SetEvidenceContext(_lastResult, logSnapshot, lastAnalysisTimestampUtc);
     Findings.LoadResults(result);
     // ... build summary, update advisor message, set busy false
 }
@@ -197,12 +197,10 @@ private async Task AnalyzeAsync()
 **Rationale:**
 
 - `Task.Run` offloads to a thread pool thread — UI stays responsive for the progress indicator and analysis cancel button
-- `logSnapshot` captures `_logText` before dispatching — analyzer sees a stable input even if the user edits the text box
+- `logSnapshot` captures `_logText` before dispatching — analyzer and evidence export use the same stable input even if the user edits the text box
 - `AnalyzeWithOverrides` conditionally applies the `PortScanMaxEntriesPerSource` profile override before calling `SentryAnalyzer.Analyze` — the override is applied only when the cap is set to a value greater than zero
 - Error handling surfaces exceptions clearly — analysts know when analysis failed and why
 - Cancellation produces clean early exit — no partial results corrupt the display
-
-**Known limitation:** `Evidence.SetEvidenceContext` receives the live `_logText` field, not the snapshot. If the user edits the log after analysis starts, the exported raw log can differ from the analyzed text. This is documented and accepted as a trade-off for simplicity.
 
 ---
 

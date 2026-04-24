@@ -47,7 +47,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 - [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite attack, escalation, parameterized timing (206 lines)
 - [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crash tolerance, cancellation, high-volume (109 lines)
 - [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, determinism (776 lines)
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF workflow (376 lines)
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF workflow (502 lines)
 
 ---
 
@@ -57,4 +57,3 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 - **Fakes over mocks** because testing focuses on orchestration outputs, not interaction sequences — fakes survive refactoring
 - **Parameterized integration tests** because C2 beacons don't always arrive at exactly 60 seconds — real-world timing varies
 - **Three test categories** because unit catches logic bugs, integration catches orchestration bugs, robustness catches crash bugs
-

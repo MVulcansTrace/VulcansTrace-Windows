@@ -22,15 +22,15 @@ This document covers what the WPF UI architecture does not handle and where the 
 
 ---
 
-## Data Integrity Gaps
+## Data Integrity Boundaries
 
-### Evidence Snapshot Divergence
+### Evidence Snapshot Scope
 
-`MainViewModel.AnalyzeAsync` captures `var logSnapshot = _logText` before dispatching to the background thread, ensuring the analyzer sees stable input. However, `Evidence.SetEvidenceContext(_lastResult, _logText, lastAnalysisTimestampUtc)` passes the live `_logText` field — not the snapshot.
+`MainViewModel.AnalyzeAsync` captures `var logSnapshot = _logText` before dispatching to the background thread, ensuring the analyzer sees stable input. The same snapshot is passed to `Evidence.SetEvidenceContext(_lastResult, logSnapshot, lastAnalysisTimestampUtc)` after analysis succeeds.
 
-**Impact:** If the analyst edits the text box while the analysis is running (between the `logSnapshot` capture and the `SetEvidenceContext` call), the exported `log.txt` in the ZIP can differ from the text that was actually analyzed. After analysis completes, `SetEvidenceContext` stores its own copy in `EvidenceViewModel._logSnapshot`, so further edits do not affect the export.
+**Impact:** If the analyst edits the text box while analysis is running, the analyzer and exported `log.txt` still use the input that existed when Analyze was clicked. After analysis completes, `SetEvidenceContext` stores its own copy in `EvidenceViewModel._logSnapshot`, so further edits do not affect the export.
 
-**Mitigation:** The analysis snapshot could be preserved and passed to `SetEvidenceContext` instead of the live field. The current trade-off accepts this gap for simplicity — the divergence window is limited to the duration of the analysis Task.Run, and the exported evidence reflects the log text at analysis-completion time, which may be the analyst's corrected version.
+**Boundary:** This protects analysis/export consistency inside the application. It does not prove the pasted log was authentic before the analyst clicked Analyze.
 
 ### ICollectionView Refresh Is O(n)
 
@@ -50,7 +50,7 @@ HMAC-SHA-256 signing protects the exported ZIP bundle against modification after
 
 - Prove the source log was authentic before it was loaded into VulcansTrace
 - Establish chain of custody between the firewall and the application
-- Prevent the analyst from modifying the log text before analysis or export
+- Prevent the analyst from modifying the log text before analysis
 - Detect files added to the ZIP that are not listed in the manifest
 
 **Impact:** The integrity guarantee covers the export-to-verification path only. Pre-export chain of custody requires additional controls (log collection agents, SIEM integration, write-once storage).

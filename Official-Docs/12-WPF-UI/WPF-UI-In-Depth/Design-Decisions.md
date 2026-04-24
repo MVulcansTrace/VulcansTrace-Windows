@@ -52,7 +52,9 @@ Every major choice in the WPF UI has a security rationale, a performance implica
 
 **Rationale:** Ensures the analyzer sees stable input. Users can edit the text box while analysis runs without affecting the analysis.
 
-**Trade-off:** `Evidence.SetEvidenceContext` receives the live `_logText` field after analysis completes, not the snapshot. The exported raw log can diverge from the analyzed text if the user modifies the text box between clicking Analyze and clicking Export. This is documented and accepted.
+**Implementation:** The same snapshot is passed to `Evidence.SetEvidenceContext` after analysis completes, so the exported raw log matches the text that was analyzed even if the user edits the text box while analysis is running.
+
+**Trade-off:** The application still cannot prove the pasted log was authentic before the user clicked Analyze. Pre-analysis chain of custody belongs to log collection and storage controls outside the WPF UI.
 
 ---
 
@@ -124,7 +126,7 @@ Every major choice in the WPF UI has a security rationale, a performance implica
 | Hand-rolled MVVM | Dependency-free security tool | No external trust required |
 | Background thread analysis | Availability | UI remains responsive during analysis |
 | Cooperative cancellation | Analyst control | Escape hatch for long-running operations |
-| Log snapshot capture | Analysis stability | User edits don't affect in-progress analysis |
+| Log snapshot capture | Analysis/export consistency | User edits don't affect in-progress analysis or exported raw log |
 | ICollectionView filtering | Memory efficiency | No allocations on filter change |
 | Multi-field text search | Triage efficiency | Analysts find findings faster |
 | CSPRNG key generation | Cryptographic security | Unpredictable signing keys |
