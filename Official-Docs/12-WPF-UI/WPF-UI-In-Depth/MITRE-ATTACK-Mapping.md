@@ -86,7 +86,7 @@ The UI displays findings from all six detectors. The table below lists the attac
 | Lateral Movement | TA0008 | LateralMovementDetector | Findings table with host spread and admin ports |
 | Impact | TA0040 | FloodDetector | Findings table with event count and time range |
 | Exfiltration | TA0010 | PolicyViolationDetector | Findings table with disallowed port and destination |
-| Reconnaissance | TA0007 | NoveltyDetector | Findings table with singleton destinations (High intensity only) |
+| Discovery | TA0007 | NoveltyDetector | Findings table with singleton destinations (High intensity only) |
 
 > **Note:** The UI also displays escalation status — findings from hosts with both Beaconing and LateralMovement are escalated to Critical severity by the RiskEscalator component.
 
