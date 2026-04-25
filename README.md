@@ -9,6 +9,8 @@ This repository is structured to be easy for both recruiters and technical revie
 - The code shows the production-facing implementation across parsing, detection, evidence packaging, testing, and WPF UI layers.
 - [Official-Docs](./Official-Docs/README.md) contains recruiter-friendly and technical case studies for the main parts of the system.
 
+> **Portfolio edition note:** VulcansTrace began as a local learning/build project in 2024 and evolved through iterative development, bug fixes, refactors, test expansion, UI work, documentation corrections, and portfolio packaging. This repository is a cleaned public portfolio edition organized for reviewability; the visible history is curated to present the final architecture, runnable code, tests, and documentation clearly.
+
 ## Why This Project Stands Out
 
 - End-to-end ownership: raw firewall text goes in, structured findings and integrity-protected investigation artifacts come out.
