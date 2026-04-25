@@ -12,7 +12,7 @@ Each failure mode requires a different testing approach. A single testing strate
 
 ## Implementation Overview
 
-A four-step testing strategy that maps each failure mode to a specific testing approach:
+A five-step testing strategy that maps each failure mode to a specific testing approach:
 
 ```text
 Production Code

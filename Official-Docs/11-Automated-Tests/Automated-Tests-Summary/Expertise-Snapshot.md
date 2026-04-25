@@ -56,4 +56,4 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 - **Paired threshold tests** because either below-threshold or above-threshold alone is insufficient — a detector that never fires passes every below-threshold test
 - **Fakes over mocks** because testing focuses on orchestration outputs, not interaction sequences — fakes survive refactoring
 - **Parameterized integration tests** because C2 beacons don't always arrive at exactly 60 seconds — real-world timing varies
-- **Three test categories** because unit catches logic bugs, integration catches orchestration bugs, robustness catches crash bugs
+- **Three engine test categories** because unit catches logic bugs, integration catches orchestration bugs, robustness catches crash bugs

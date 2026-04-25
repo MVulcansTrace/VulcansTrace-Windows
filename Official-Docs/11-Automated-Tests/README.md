@@ -11,7 +11,7 @@ Documentation is organized for two audiences:
 
 - [Expertise Snapshot](./Automated-Tests-Summary/Expertise-Snapshot.md): 1-page overview for quick review
 - [Why This Matters](./Automated-Tests-In-Depth/Why-This-Matters.md): business value, security framing, and project context
-- [Testing Algorithm](./Automated-Tests-In-Depth/Core-Logic-Breakdown/Testing-Algorithm.md): the four-step testing pipeline and its trade-offs
+- [Testing Algorithm](./Automated-Tests-In-Depth/Core-Logic-Breakdown/Testing-Algorithm.md): the five-step testing pipeline and its trade-offs
 - [Design Decisions](./Automated-Tests-In-Depth/Design-Decisions.md): why key testing choices were made
 - [Code Patterns](./Automated-Tests-In-Depth/Code-Patterns.md): repeatable implementation patterns that support testability
 - [Attack Scenario](./Automated-Tests-In-Depth/Attack-Scenario.md): a worked example showing how tests catch detection regressions

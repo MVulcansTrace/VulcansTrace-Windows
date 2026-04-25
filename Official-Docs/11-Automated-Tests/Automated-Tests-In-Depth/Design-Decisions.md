@@ -119,7 +119,7 @@ public static IEnumerable<object[]> BeaconOffsetData()
 
 | Decision | Security Principle | Maintenance Impact |
 |----------|-------------------|--------------------|
-| Three test categories | Defense in depth | More test code, fewer production bugs |
+| Three engine test categories | Defense in depth | More test code, fewer production bugs |
 | Paired threshold tests | Symmetric failure testing | Twice the tests, calibrated boundaries |
 | Fakes over mocks | Decoupled testing | Refactoring-friendly, easy to debug |
 | Parameterized integration | Real-world timing patterns | One method, multiple scenarios |
