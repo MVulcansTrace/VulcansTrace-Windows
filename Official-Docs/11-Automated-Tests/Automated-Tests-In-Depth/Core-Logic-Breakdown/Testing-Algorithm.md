@@ -364,7 +364,7 @@ public void Build_WithSigningKey_CreatesValidHmac()
 | WPF test files | 3 |
 | Functional test files | 1 (`FunctionalTestRunner.cs`) |
 | Test infrastructure files | 1 (`FakeDialogService.cs`) |
-| Inline test doubles | 4 (inside test files) |
+| Inline test doubles | 5 (inside test files) |
 
 ---
 
