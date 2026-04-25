@@ -163,10 +163,11 @@ private async Task AnalyzeAsync()
     var token = _cancellationTokenSource.Token;
 
     AnalysisResult result;
+    string logSnapshot;
     try
     {
         var intensity = _selectedIntensity.Level;
-        var logSnapshot = _logText;
+        logSnapshot = _logText;
         result = await Task.Run(() => AnalyzeWithOverrides(intensity, logSnapshot, token), token);
     }
     catch (OperationCanceledException)
