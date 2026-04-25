@@ -64,7 +64,7 @@ The result is a 6-entry ZIP (findings.csv, log.txt, report.html, summary.md, man
 | **Output security** | CSV injection, XSS, Markdown escaping, and bundle-metadata timestamp normalization |
 | **Deterministic builds** | Alphabetical file ordering, normalized timestamps, indented JSON |
 | **Transparency** | Warnings preserved inside the archive for reviewer awareness |
-| **Explicit scope** | HMAC proves keyed manifest verification, not signer identity — documented explicitly |
+| **Explicit scope** | HMAC verifies keyed manifest integrity, not signer identity — documented explicitly |
 
 ---
 
@@ -101,5 +101,5 @@ The result is a 6-entry ZIP (findings.csv, log.txt, report.html, summary.md, man
 2. **Two-layer cryptography provides defense in depth** — file hashes plus manifest signing means two independent failure detectors
 3. **Output formats are an attack surface** — CSV injection and XSS are real second-order attacks against analyst workstations
 4. **Tested deterministic builds aid independent verification** — reproducible output is easier to compare when the same inputs are available
-5. **Explicit scope is critical** — HMAC proves the manifest was signed, not who signed it; that distinction matters in legal contexts
+5. **Explicit scope is critical** — HMAC verifies key possession and manifest integrity, not signer identity; that distinction matters in legal contexts
 

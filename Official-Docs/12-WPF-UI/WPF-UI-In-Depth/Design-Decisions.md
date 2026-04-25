@@ -112,7 +112,7 @@ Every major choice in the WPF UI has a security rationale, a performance implica
 
 **Decision:** Use HMAC-SHA256 for evidence signing, not RSA signatures with PKI.
 
-**Rationale:** HMAC targets the internal incident response team who receives the shared secret out-of-band. This keeps the implementation simple while providing strong integrity guarantees.
+**Rationale:** HMAC targets the internal incident response team who receives the shared secret out-of-band. This keeps the implementation simple while providing strong post-export integrity checks.
 
 **Trade-off:** HMAC requires key sharing between analyst and verifier. If evidence needed to be verifiable by external parties (court, auditors), RSA signatures with PKI would be appropriate.
 

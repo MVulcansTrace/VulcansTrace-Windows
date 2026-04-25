@@ -53,7 +53,7 @@ HMAC-SHA256 signing protects the exported ZIP bundle against modification after 
 - Prevent the analyst from modifying the log text before analysis
 - Detect files added to the ZIP that are not listed in the manifest
 
-**Impact:** The integrity guarantee covers the export-to-verification path only. Pre-export chain of custody requires additional controls (log collection agents, SIEM integration, write-once storage).
+**Impact:** The integrity model covers the export-to-verification path only. Pre-export chain of custody requires additional controls (log collection agents, SIEM integration, write-once storage).
 
 ### HMAC Requires Key Sharing
 

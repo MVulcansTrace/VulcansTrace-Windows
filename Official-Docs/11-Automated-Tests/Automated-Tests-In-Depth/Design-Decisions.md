@@ -93,7 +93,7 @@ public static IEnumerable<object[]> BeaconOffsetData()
 
 **Decision:** Tests that verify the HMAC signature on evidence packages is cryptographically valid.
 
-**Rationale:** HMAC verification tests ensure security evidence is tamper-evident during incident review and handoff — the signature proves the manifest has not been modified since it was signed — enabling repeatable integrity checks on evidence packages.
+**Rationale:** HMAC verification tests ensure security evidence is tamper-evident during incident review and handoff — the signature detects post-export manifest changes when verified with the expected key — enabling repeatable integrity checks on evidence packages.
 
 **Security properties tested:**
 

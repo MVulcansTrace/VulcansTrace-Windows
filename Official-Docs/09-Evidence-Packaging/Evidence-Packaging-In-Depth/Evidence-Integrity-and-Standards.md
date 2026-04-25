@@ -93,7 +93,7 @@ The pipeline provides Layers 1 and 2. Layer 3 is an operational responsibility t
 ## Security Takeaways
 
 1. **Evidence packaging maps to forensic standards** — NIST, FRE, and ISO-style timestamp conventions
-2. **Integrity supports the detection workflow** — tamper-resistant evidence deters post-export manipulation
+2. **Integrity supports the detection workflow** — tamper-evident evidence exposes post-export manipulation
 3. **Multi-format output supports diverse stakeholders** — different audiences need different access methods (CSV for analysis, HTML for review, Markdown for documentation)
 4. **Explicit scope matters** — the pipeline documents what it proves and what it cannot prove
 

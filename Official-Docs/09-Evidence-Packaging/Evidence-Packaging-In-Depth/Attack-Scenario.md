@@ -54,7 +54,7 @@ else:
     print("ALERT: Manifest signature mismatch")
 ```
 
-**What the HMAC proves:** The manifest was signed by someone holding the key. If someone modified `manifest.json` in transit, the HMAC would not match.
+**What the HMAC verifies:** The manifest matches the expected shared key. If someone modified `manifest.json` in transit, the HMAC would not match.
 
 **What the HMAC does not prove:** That the analyst (and not someone else with the key) signed it. Identity requires a certificate-backed digital signature, which is out of scope.
 
@@ -81,7 +81,7 @@ else:
     print("ALERT: findings.csv has been modified")
 ```
 
-**What the SHA-256 proves:** This specific byte sequence is the same one that was hashed during packaging. Any modification — even a single bit — produces a completely different hash due to the avalanche effect.
+**What the SHA-256 verifies:** This specific byte sequence is the same one that was hashed during packaging. Any modification — even a single bit — produces a completely different hash due to the avalanche effect.
 
 ---
 

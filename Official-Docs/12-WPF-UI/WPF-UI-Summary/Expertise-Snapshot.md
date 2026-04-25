@@ -29,7 +29,7 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 - Hand-rolled MVVM avoids external dependencies — smaller attack surface, easier auditing for a security tool
 - `Task.Run` with cancellation keeps the UI responsive during heavy detection work — analysts can abort and switch to urgent tasks
 - `ICollectionView` filtering does not modify the source collection — evidence export builds from `AnalysisResult` directly, so filtering never excludes findings from the export
-- HMAC-SHA256 signing with CSPRNG keys gives each export an independent integrity guarantee
+- HMAC-SHA256 signing with CSPRNG keys gives each export an independent integrity check
 
 ---
 
@@ -47,5 +47,5 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 
 - **Hand-rolled MVVM** because external frameworks add dependencies with larger attack surfaces, for the purpose of keeping the security tool auditable and dependency-free
 - **`ICollectionView` over LINQ filtering** because LINQ creates new collections each time, for the purpose of keeping the source collection intact for evidence export
-- **Per-export CSPRNG key** because key reuse weakens HMAC guarantees across bundles, for the purpose of making each export cryptographically independent
+- **Per-export CSPRNG key** because key reuse weakens HMAC protection across bundles, for the purpose of making each export cryptographically independent
 - **Log snapshot capture** because users can edit the text box during analysis, for the purpose of ensuring both the analyzer and exported `log.txt` use the exact input that was present when Analyze was clicked

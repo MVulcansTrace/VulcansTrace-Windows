@@ -231,4 +231,4 @@ Assert.Equal(expectedHmacHex, actualHmacHex);
 2. **Inline test doubles keep infrastructure co-located** — each double lives with the tests that use it
 3. **Parameterized tests cover multiple attack patterns** — one method, multiple beacon timings
 4. **Full-stack WPF tests verify the user workflow** — from log text to exported ZIP
-5. **HMAC verification proves evidence integrity** — cryptographic signatures tested programmatically
+5. **HMAC verification checks post-export evidence integrity** — cryptographic signatures tested programmatically

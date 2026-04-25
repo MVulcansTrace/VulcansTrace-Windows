@@ -10,7 +10,7 @@ The pipeline must:
 
 - Generate reports in formats that serve analysts, managers, developers, and automated systems simultaneously
 - Protect every file with a cryptographic fingerprint
-- Produce a signed manifest that proves the entire package is intact
+- Produce a signed manifest that supports post-export package integrity verification
 - Produce byte-for-byte identical output given identical input and timestamp
 
 ---

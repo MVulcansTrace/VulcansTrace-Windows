@@ -38,7 +38,7 @@ Rebuilds the entire archive with modified findings.
 HMAC validates because the key is correct.
 ```
 
-**Why it works:** HMAC proves the manifest was signed by a key holder, not *which* key holder. A compromised key cannot be distinguished from a legitimate one.
+**Why it works:** HMAC verifies that the manifest matches a shared key, not *which* key holder produced it. A compromised key cannot be distinguished from a legitimate one.
 
 **Mitigation:** Key management hygiene — store in a vault (Azure Key Vault, AWS KMS), rotate after each export, log key usage. For environments requiring identity proof, upgrade to certificate-backed digital signatures (RSA-PSS, ECDSA).
 
@@ -94,7 +94,7 @@ manifest.json still shows the original createdUtc.
 ```text
 Phase 1: AES-256 ZIP encryption          → Protect contents at rest            (planned, not yet implemented)
 Phase 2: Streaming ZIP creation           → Reduce memory for large datasets   (planned, not yet implemented)
-Phase 3: Certificate-backed signatures    → Prove signer identity, not just key possession (planned, not yet implemented)
+Phase 3: Certificate-backed signatures    → Establish signer identity, not just key possession (planned, not yet implemented)
 Phase 4: Key rotation and escrow          → Long-term verification capability  (planned, not yet implemented)
 Phase 5: Parallel hashing                 → Multi-core SHA-256 for large files (planned, not yet implemented)
 ```
@@ -103,14 +103,14 @@ Phase 5: Parallel hashing                 → Multi-core SHA-256 for large files
 
 ## Why Limitations Matter
 
-Every cryptographic system has boundaries. A security tool that claims to prove things it cannot prove is more dangerous than one that is clear about its scope. The HMAC proves the manifest was signed; it does not prove who signed it. That distinction matters in legal contexts, and the distinction should be documented explicitly.
+Every cryptographic system has boundaries. A security tool that claims to prove things it cannot prove is more dangerous than one that is clear about its scope. HMAC verifies key possession and manifest integrity; it does not establish who produced the archive. That distinction matters in legal contexts, and the distinction should be documented explicitly.
 
 ---
 
 ## Security Takeaways
 
 1. **Integrity scope starts at export** — pre-export tampering requires upstream controls
-2. **HMAC proves key possession, not identity** — identity requires certificates
+2. **HMAC verifies key possession, not identity** — identity requires certificates
 3. **Key management is the hard problem** — cryptography is the easy part
 4. **ZIP timestamps are cosmetic** — the manifest's `createdUtc` is the forensic record
 5. **Memory vs. atomicity is a real trade-off** — streaming could reduce memory pressure but would complicate the current all-or-nothing in-memory model

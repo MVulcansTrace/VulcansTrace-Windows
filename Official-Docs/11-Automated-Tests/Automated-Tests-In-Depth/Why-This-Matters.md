@@ -76,13 +76,13 @@ The test suite covers:
 
 ## Elevator Pitch
 
-> *"The defense-in-depth test suite proves that every detector triggers when it should and stays silent when it should not — addressing the asymmetric failure costs of security detection tools where false positives waste analyst time and false negatives mean missed attacks.*
+> *"The defense-in-depth test suite exercises detector trigger and silence paths for the implemented scenarios — addressing the asymmetric failure costs of security detection tools where false positives waste analyst time and false negatives mean missed attacks.*
 >
 > *Statistical detectors like PortScan, Beaconing, Flood, and LateralMovement get threshold boundary tests: below-threshold to prevent false positives, above-threshold to ensure detection fires. Rule-based detectors like PolicyViolation and Novelty get scenario tests for allowed versus disallowed traffic.*
 >
 > *The analyzer is isolated from detector logic using test doubles — fake implementations that return predictable findings — because when testing orchestration, real detector logic is a distraction. Integration tests run composite attack logs through all six detectors plus the RiskEscalator to verify that Beaconing + LateralMovement from the same host escalates to Critical severity.*
 >
-> *Robustness tests verify that a crashing detector does not take down the pipeline, that cooperative cancellation works, and that 5,000-entry logs produce correct results. Evidence integrity tests verify the HMAC-SHA256 signature on evidence packages — the signature proves the manifest has not been tampered with.*
+> *Robustness tests verify that a crashing detector does not take down the pipeline, that cooperative cancellation works, and that 5,000-entry logs produce correct results. Evidence integrity tests verify the HMAC-SHA256 signature on evidence packages — the signature detects post-export manifest changes when verified with the expected key.*
 >
 > *Every testing decision is grounded in the specific failure mode it prevents. The suite is not exhaustive — the gaps are documented explicitly, including slow-scanning evasion, missing stress tests, and cloud-scale limitations."*
 

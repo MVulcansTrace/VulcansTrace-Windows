@@ -100,7 +100,7 @@ If the analyst realizes they pasted the wrong log during analysis:
 | Log snapshot | Analysis and exported `log.txt` use the correct input even if the analyst edits the text box |
 | `ICollectionView` filtering | Severity + IP filtering narrows to relevant findings without losing data |
 | Source collection untouched | All 7 findings are exported regardless of the current filter state |
-| Per-export CSPRNG key | Each export has an independent integrity guarantee |
+| Per-export CSPRNG key | Each export has an independent integrity check |
 | Key masking | The signing key is not visible on the analyst's screen |
 | `CancellationToken` | Wrong-log analysis is aborted cleanly with no partial results |
 | Advisor message | Analyst gets immediate guidance on triage priority |

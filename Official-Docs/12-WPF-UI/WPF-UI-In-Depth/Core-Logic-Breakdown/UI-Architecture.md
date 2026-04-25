@@ -262,7 +262,7 @@ private bool FilterFindings(object item)
 
 **File:** `VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs`
 
-`EvidenceViewModel` with per-export CSPRNG key generation and HMAC-SHA256 signing prevents key reuse which would weaken integrity guarantees across bundles — making each exported ZIP independently verifiable by the incident response team.
+`EvidenceViewModel` with per-export CSPRNG key generation and HMAC-SHA256 signing prevents key reuse which would weaken integrity protection across bundles — making each exported ZIP independently verifiable by the incident response team.
 
 ```csharp
 private byte[] GenerateNewSigningKey()

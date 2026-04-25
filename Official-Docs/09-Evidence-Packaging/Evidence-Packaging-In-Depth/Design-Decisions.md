@@ -15,7 +15,7 @@ Every major choice in this pipeline has a security rationale, a performance impl
 | SHA-256 per file | Accidental corruption, tampering of individual files | Just the file bytes |
 | HMAC-SHA256 | Manifest tampering (including hash replacement) | The signing key |
 
-**Trade-off:** HMAC proves the manifest was signed by someone holding the key, not *who* that someone is. For identity-level proof, a digital signature (e.g., RSA-PSS with a certificate) would be needed — but that adds key management complexity that is out of scope for this tool.
+**Trade-off:** HMAC verifies shared-key possession and manifest integrity, not *who* produced the archive. For identity-level proof, a digital signature (e.g., RSA-PSS with a certificate) would be needed — but that adds key management complexity that is out of scope for this tool.
 
 ---
 
