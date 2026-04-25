@@ -1,4 +1,4 @@
-# MITRE ATT&CK Mapping
+# Detection Coverage and Profile Tuning
 
 This document maps the intensity profile system to the detection techniques it tunes across the built-in detector set.
 
@@ -87,7 +87,7 @@ Port additions work best for techniques with stable service ports. DCOM/RPC beha
 ## Operational Impact
 
 - Enables threat detection with documented algorithmic approaches
-- Supports MITRE ATT&CK mapping for security operations alignment
+- Shows how profile choice changes detection sensitivity across ATT&CK-mapped detector behaviors
 - Provides tunable sensitivity through configurable thresholds
 ---
 

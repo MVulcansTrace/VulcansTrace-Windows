@@ -16,7 +16,7 @@ Documentation is organized for two audiences:
 - [Code Patterns](./WPF-UI-In-Depth/Code-Patterns.md): repeatable implementation patterns that support testability
 - [Attack Scenario](./WPF-UI-In-Depth/Attack-Scenario.md): a worked example showing the UI workflow during an active investigation
 - [Evasion and Limitations](./WPF-UI-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
-- [MITRE ATT&CK Mapping](./WPF-UI-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Analyst Workflow and Standards](./WPF-UI-In-Depth/Analyst-Workflow-and-Standards.md): analyst triage, incident-response workflow, and evidence-handoff standards context
 
 ## System Capabilities
 

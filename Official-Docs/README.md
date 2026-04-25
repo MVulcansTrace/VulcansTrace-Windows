@@ -41,13 +41,13 @@ If you want the full end-to-end story, read in this order:
 - How the WPF application exposes the workflow to an analyst
 - How the automated test suite supports confidence in the implementation
 
-## How Each Case Study Is Organized
+## How The Case Studies Are Organized
 
-Each numbered folder follows the same structure:
+Each numbered folder uses a consistent entry-point pattern, while individual deep-dive pages vary by subsystem so the documentation fits the code rather than forcing every topic into the same security framework.
 
 - `README.md`: the entry point for that topic
 - `*-Summary`: accessible snapshots, quick references, and concise overviews
-- `*-In-Depth`: technical walkthroughs, design decisions, worked examples, limitations, and implementation evidence
+- `*-In-Depth`: technical walkthroughs, design decisions, worked examples, limitations, standards context, and implementation evidence where they are relevant
 
 ## Best Entry Points By Interest
 

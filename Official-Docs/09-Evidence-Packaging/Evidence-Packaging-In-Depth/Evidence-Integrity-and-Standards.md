@@ -1,12 +1,12 @@
-# MITRE ATT&CK Mapping
+# Evidence Integrity and Standards
 
-This document maps the evidence packaging pipeline to the security standards and frameworks that matter for evidence integrity and post-export handoff.
+This document maps the evidence packaging pipeline to the standards, controls, and framework language that matter for evidence integrity and post-export handoff.
 
 ---
 
 ## Capability Mapping
 
-The evidence packaging pipeline does not detect attacks — it protects the *output* of detection. Its MITRE relevance is in enabling the detection-to-response workflow and maintaining forensic integrity.
+The evidence packaging pipeline does not detect attacks. It protects the *output* of detection by making exported reports, raw logs, and manifest metadata verifiable after handoff.
 
 | Capability | Security Function | Relevant Framework |
 |-----------|-------------------|-------------------|
@@ -57,7 +57,7 @@ The pipeline specifically counters these defense evasion techniques:
 
 ---
 
-## Related Attack Tactics (Context)
+## Detector Coverage Feeding the Pipeline
 
 All six VulcansTrace detectors feed this pipeline. The table below lists those with explicit MITRE ATT&CK tactic or technique mappings in the codebase:
 
@@ -92,7 +92,7 @@ The pipeline provides Layers 1 and 2. Layer 3 is an operational responsibility t
 
 ## Security Takeaways
 
-1. **Evidence packaging maps to forensic standards** — NIST, FRE, and ISO frameworks, not just MITRE
+1. **Evidence packaging maps to forensic standards** — NIST, FRE, and ISO-style timestamp conventions
 2. **Integrity supports the detection workflow** — tamper-resistant evidence deters post-export manipulation
 3. **Multi-format output supports diverse stakeholders** — different audiences need different access methods (CSV for analysis, HTML for review, Markdown for documentation)
 4. **Explicit scope matters** — the pipeline documents what it proves and what it cannot prove

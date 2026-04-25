@@ -16,7 +16,7 @@ Documentation is organized for two audiences:
 - [Code Patterns](./Automated-Tests-In-Depth/Code-Patterns.md): repeatable implementation patterns that support testability
 - [Attack Scenario](./Automated-Tests-In-Depth/Attack-Scenario.md): a worked example showing how tests catch detection regressions
 - [Evasion and Limitations](./Automated-Tests-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
-- [MITRE ATT&CK Mapping](./Automated-Tests-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Test Coverage by Threat Behavior](./Automated-Tests-In-Depth/Test-Coverage-by-Threat-Behavior.md): automated coverage for ATT&CK-related detector behavior
 
 ## System Capabilities
 

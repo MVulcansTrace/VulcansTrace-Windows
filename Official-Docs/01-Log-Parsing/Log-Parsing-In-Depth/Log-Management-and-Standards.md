@@ -1,12 +1,12 @@
-# MITRE ATT&CK Mapping
+# Log Management and Standards
 
-This document maps the log parsing pipeline to the security standards and frameworks that matter for evidence integrity and data ingestion.
+This document maps the log parsing pipeline to the standards and security practices that matter for data ingestion, evidence integrity, and downstream detection quality.
 
 ---
 
 ## Capability Mapping
 
-The log parser does not detect attacks — it structures the input that all detectors depend on. Its MITRE relevance is in enabling the detection workflow and maintaining data quality at ingestion.
+The log parser does not detect attacks. It structures the input that all detectors depend on, preserves raw-line context, and rejects malformed data before it can distort downstream findings.
 
 | Capability | Security Function | Relevant Framework |
 |-----------|-------------------|-------------------|

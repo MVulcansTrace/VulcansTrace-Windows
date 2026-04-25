@@ -16,7 +16,7 @@ Documentation is organized for two audiences:
 - [Code Patterns](./Log-Parsing-In-Depth/Code-Patterns.md): the main implementation patterns used throughout the parser
 - [Attack Scenario](./Log-Parsing-In-Depth/Attack-Scenario.md): a worked example showing why fail-soft parsing matters in a real investigation
 - [Evasion and Limitations](./Log-Parsing-In-Depth/Evasion-and-Limitations.md): constraints and extension paths
-- [MITRE ATT&CK Mapping](./Log-Parsing-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Log Management and Standards](./Log-Parsing-In-Depth/Log-Management-and-Standards.md): ingestion, validation, and evidence-quality standards context
 
 ## System Capabilities
 

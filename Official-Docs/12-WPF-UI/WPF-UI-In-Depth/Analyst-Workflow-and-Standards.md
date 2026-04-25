@@ -1,12 +1,12 @@
-# MITRE ATT&CK Mapping
+# Analyst Workflow and Standards
 
-This document maps the WPF UI to the security standards and frameworks that matter for analyst workflow and incident response.
+This document maps the WPF UI to the standards and workflow concerns that matter for analyst triage, incident response, and evidence handoff.
 
 ---
 
 ## Capability Mapping
 
-The WPF UI does not detect attacks — it presents detection results and enables analyst interaction. Its MITRE relevance is in supporting the detection-to-response workflow and maintaining analyst effectiveness.
+The WPF UI does not detect attacks. It presents detection results, keeps the analyst workflow responsive, and exposes evidence export controls for post-analysis handoff.
 
 | Capability | Security Function | Relevant Framework |
 |-----------|-------------------|-------------------|
@@ -44,14 +44,9 @@ The UI supports the incident handling lifecycle:
 
 ---
 
-## Federal Rules of Evidence (FRE) Mapping
+## Evidence Handoff Context
 
-| Rule | What It Requires | How The UI Supports It |
-|------|-----------------|------------------------|
-| **FRE 901** (Authentication) | Evidence must be what the proponent claims | Evidence packaging includes SHA-256 hashes and HMAC signature for integrity verification |
-| **FRE 901(b)(9)** (Process Authentication) | Evidence produced by a process must be authenticated | Reproducible analysis flow plus a manifest that records file hashes, lengths, warnings, and bundle creation time |
-| **FRE 1001** (Definitions for ESI) | Electronically stored information is defined and discoverable | All export formats (CSV, HTML, Markdown, JSON) qualify as ESI |
-| **FRE 1002** (Best Evidence) | Original content required | Raw log preserved as `log.txt` in evidence package with SHA-256 integrity fingerprint |
+The UI exposes evidence export, but the cryptographic integrity model lives in the Evidence Packaging subsystem. See [Evidence Integrity and Standards](../../09-Evidence-Packaging/Evidence-Packaging-In-Depth/Evidence-Integrity-and-Standards.md) for the detailed SHA-256, HMAC-SHA256, NIST, and Federal Rules of Evidence discussion.
 
 ---
 
@@ -75,7 +70,7 @@ The UI provides all five layers. Analyst effectiveness is maintained even during
 
 ---
 
-## Related Attack Tactics (Context)
+## Detector Findings Presented by the UI
 
 The UI displays findings from all six detectors. The table below lists the attack tactics that VulcansTrace detects and presents through the UI:
 

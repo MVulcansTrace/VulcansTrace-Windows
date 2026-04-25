@@ -16,7 +16,7 @@ Documentation is organized for two audiences:
 - [Code Patterns](./Evidence-Packaging-In-Depth/Code-Patterns.md): repeatable implementation patterns that support testability
 - [Attack Scenario](./Evidence-Packaging-In-Depth/Attack-Scenario.md): a worked example showing evidence packaging for a multi-finding investigation
 - [Evasion and Limitations](./Evidence-Packaging-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
-- [MITRE ATT&CK Mapping](./Evidence-Packaging-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Evidence Integrity and Standards](./Evidence-Packaging-In-Depth/Evidence-Integrity-and-Standards.md): post-export integrity, evidence handoff, and standards context
 
 ## System Capabilities
 

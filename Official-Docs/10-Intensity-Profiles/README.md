@@ -16,7 +16,7 @@ Documentation is organized for two audiences:
 - [Code Patterns](./Intensity-Profiles-In-Depth/Code-Patterns.md): repeatable implementation patterns that support testability
 - [Attack Scenario](./Intensity-Profiles-In-Depth/Attack-Scenario.md): a worked example showing how profile selection changes detection output
 - [Evasion and Limitations](./Intensity-Profiles-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
-- [MITRE ATT&CK Mapping](./Intensity-Profiles-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Detection Coverage and Profile Tuning](./Intensity-Profiles-In-Depth/Detection-Coverage-and-Profile-Tuning.md): how profile choice changes coverage across detector behaviors
 
 ## System Capabilities
 

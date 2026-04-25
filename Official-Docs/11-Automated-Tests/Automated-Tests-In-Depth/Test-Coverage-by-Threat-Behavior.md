@@ -1,10 +1,10 @@
-# MITRE ATT&CK Mapping
+# Test Coverage by Threat Behavior
 
-This document maps test coverage to the industry-standard threat framework used by SOCs worldwide.
+This document maps automated test coverage to the detector behaviors that analysts may relate to MITRE ATT&CK techniques. The tests validate VulcansTrace behavior; they are not themselves a detection capability.
 
 ---
 
-## Technique Mapping
+## Detector Behavior Coverage
 
 | Technique | ID | Detector | Test Coverage | Detection Quality |
 |-----------|-----|----------|---------------|-------------------|
@@ -17,7 +17,7 @@ This document maps test coverage to the industry-standard threat framework used 
 
 ---
 
-## Test Evidence by Technique
+## Test Evidence by Detector Behavior
 
 ### T1046 — Network Service Discovery
 
@@ -121,14 +121,14 @@ If Beaconing (T1071) + LateralMovement (T1021) from same host:
 ## Operational Impact
 
 - Enables threat detection with documented algorithmic approaches
-- Supports MITRE ATT&CK mapping for security operations alignment
+- Shows which ATT&CK-related detector behaviors are covered by automated tests
 - Provides tunable sensitivity through configurable thresholds
 ---
 
 ## Security Takeaways
 
-1. **ATT&CK provides a common reference model** — mapping test coverage helps align validation work with standard terminology
-2. **Five tactics covered with automated tests** — Discovery, C2, Lateral Movement, Exfiltration, Impact
+1. **ATT&CK provides a common reference model** — mapping detector test coverage helps align validation work with standard terminology
+2. **Five tactic areas have detector behavior covered by tests** — Discovery, C2, Lateral Movement, Exfiltration, Impact
 3. **RiskEscalator adds cross-technique correlation** — T1071 + T1021 = Critical
 4. **Coverage gaps are documented** — DCOM, WinRM, cloud services, and slow-rate attacks need additional context
 
