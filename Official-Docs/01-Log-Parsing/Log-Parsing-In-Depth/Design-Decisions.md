@@ -73,7 +73,7 @@ if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith("#"))
 
 // ... timestamp, IP, and port validation gates ...
 
-if (!TryParsePort(dstPortRaw, out var dstPort))
+if (!TryParsePort(protocol, dstPortRaw, out var dstPort))
 {
     ignoredLines++;
     parseErrors.Add($"Line {totalLines}: Invalid destination port '{dstPortRaw}'. Content: {trimmed}");
