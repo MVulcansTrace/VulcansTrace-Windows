@@ -25,7 +25,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 | WPF test files | 3 (full-stack integration, display encoding, validation rules) |
 | Functional test files | 1 (comprehensive multi-profile validation) |
 | Test infrastructure files | 1 (`FakeDialogService.cs`) |
-| Inline test doubles | 4 (`FakeDetector`, `CrashingDetector`, `WorkingDetector`, `EscalationTestDetector`) |
+| Inline test doubles | 5 (`FakeDetector`, `CrashingDetector`, `WorkingDetector`, `EscalationTestDetector`, `BlockingDetector`) |
 | Maximum test volume | 5,000 entries (robustness test) |
 
 ---

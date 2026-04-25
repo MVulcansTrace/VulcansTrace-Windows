@@ -44,7 +44,7 @@ For IP validation, the parser uses `IPAddress.TryParse(..., out _)` because only
 
 Port validation is intentionally staged:
 
-1. Reject `-` placeholders
+1. Reject `-` placeholders (except ICMP-style protocols, where `-` maps to `null` port)
 2. Parse integer with `InvariantCulture`
 3. Enforce `0-65535`
 

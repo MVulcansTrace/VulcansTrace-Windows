@@ -39,7 +39,7 @@ Every major choice in this test suite has a security rationale, a maintenance im
 
 ## Decision 3: Fakes Over Mocks for Analyzer Tests
 
-**Decision:** Inline fake implementations (`FakeDetector`, `CrashingDetector`, `WorkingDetector`) instead of mocking frameworks.
+**Decision:** Inline fake detector implementations (`FakeDetector`, `CrashingDetector`, `WorkingDetector`, `EscalationTestDetector`) for analyzer-focused tests, instead of mocking frameworks.
 
 **Rationale:** Fakes test the outputs the analyzer produces from given detector inputs, not whether specific detector methods were called in a specific order — testing orchestration behavior in isolation without coupling tests to implementation details.
 
@@ -109,7 +109,7 @@ public static IEnumerable<object[]> BeaconOffsetData()
 
 **Decision:** Test doubles defined as private inner classes inside the test files that use them, rather than shared infrastructure files.
 
-**Rationale:** Inline test doubles serve specific test file needs — `CrashingDetector` is only relevant to robustness tests, `FakeDetector` is only relevant to analyzer unit tests — keeping test code co-located with the tests that consume it.
+**Rationale:** Inline test doubles serve specific test file needs — `FakeDetector` and `EscalationTestDetector` support analyzer orchestration checks, `CrashingDetector` and `WorkingDetector` support robustness checks, and `BlockingDetector` supports WPF snapshot timing checks — keeping test code co-located with the tests that consume it.
 
 **Trade-off:** If multiple test files needed the same double, it would need extraction. Currently only `FakeDialogService` is shared across WPF test files.
 

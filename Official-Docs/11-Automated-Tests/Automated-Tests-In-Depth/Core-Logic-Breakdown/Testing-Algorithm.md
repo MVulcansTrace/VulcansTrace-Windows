@@ -318,6 +318,7 @@ private class FakeDetector : IDetector
 | `CrashingDetector` | `SentryAnalyzerRobustnessTests.cs` | Throws `InvalidOperationException` for fault-tolerance testing |
 | `WorkingDetector` | `SentryAnalyzerRobustnessTests.cs` | Returns one High-severity finding, continues when others crash |
 | `EscalationTestDetector` | `SentryAnalyzerTests.cs` | Returns Beaconing + LateralMovement findings for escalation testing |
+| `BlockingDetector` | `MainViewModelIntegrationTests.cs` | Blocks detection with `ManualResetEventSlim` for log snapshot timing tests |
 | `FakeDialogService` | `VulcansTrace.Tests/Wpf/FakeDialogService.cs` | Captures dialog messages, returns configurable save path |
 
 ---

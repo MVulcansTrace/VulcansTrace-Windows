@@ -39,7 +39,7 @@ The result is a 6-entry ZIP (findings.csv, log.txt, report.html, summary.md, man
 - 2-layer cryptographic model: SHA-256 per file + HMAC-SHA256 over the manifest
 - 4 output-security protections: CSV injection, XSS, Markdown escaping, bundle-metadata timestamp normalization
 - Deterministic builds: same analysis result, raw log, signing key, and timestamp produce byte-for-byte identical ZIPs in the current implementation and test suite
-- 50 test methods across 5 test files covering the full pipeline
+- 50 test methods (53 expanded tests) across 5 test files covering the full pipeline
 
 ---
 
@@ -76,7 +76,7 @@ The result is a 6-entry ZIP (findings.csv, log.txt, report.html, summary.md, man
 - [MarkdownFormatter.cs](../../../VulcansTrace.Evidence/Formatters/MarkdownFormatter.cs): escaped GFM output (92 lines)
 - [IntegrityHasher.cs](../../../VulcansTrace.Core/Security/IntegrityHasher.cs): SHA-256 and HMAC-SHA256 primitives (35 lines)
 - [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): 21 tests — ZIP structure, HMAC, determinism, timestamps, cancellation
-- [CsvFormatterTests.cs](../../../VulcansTrace.Tests/Evidence/CsvFormatterTests.cs): 10 tests — escaping, quoting, formula injection
+- [CsvFormatterTests.cs](../../../VulcansTrace.Tests/Evidence/CsvFormatterTests.cs): 10 test methods (13 expanded tests) — escaping, quoting, formula injection
 - [HtmlFormatterTests.cs](../../../VulcansTrace.Tests/Evidence/HtmlFormatterTests.cs): 5 tests — HTML encoding, warnings, parse errors
 - [MarkdownFormatterTests.cs](../../../VulcansTrace.Tests/Evidence/MarkdownFormatterTests.cs): 5 tests — escaping, structure, warnings
 - [IntegrityHasherTests.cs](../../../VulcansTrace.Tests/Core/IntegrityHasherTests.cs): 9 tests — SHA-256 and HMAC-SHA256 correctness, determinism, key sensitivity

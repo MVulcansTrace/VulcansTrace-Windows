@@ -43,6 +43,7 @@
 | `CrashingDetector` | `SentryAnalyzerRobustnessTests.cs` | Throws for fault tolerance |
 | `WorkingDetector` | `SentryAnalyzerRobustnessTests.cs` | Continues when others crash |
 | `EscalationTestDetector` | `SentryAnalyzerTests.cs` | Beaconing + LateralMovement |
+| `BlockingDetector` | `MainViewModelIntegrationTests.cs` | Blocks for snapshot timing tests |
 | `FakeDialogService` | `Wpf/FakeDialogService.cs` | Captures dialogs, avoids modals |
 
 ---

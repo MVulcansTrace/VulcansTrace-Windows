@@ -93,6 +93,7 @@ private class WorkingDetector : IDetector
 | `CrashingDetector` | `SentryAnalyzerRobustnessTests.cs` | Throws for fault-tolerance testing |
 | `WorkingDetector` | `SentryAnalyzerRobustnessTests.cs` | Continues when others crash |
 | `EscalationTestDetector` | `SentryAnalyzerTests.cs` | Returns Beaconing + LateralMovement for escalation |
+| `BlockingDetector` | `MainViewModelIntegrationTests.cs` | Blocks detection with `ManualResetEventSlim` for snapshot timing tests |
 | `FakeDialogService` | `Wpf/FakeDialogService.cs` | Captures dialog messages, avoids modal popups |
 
 ---

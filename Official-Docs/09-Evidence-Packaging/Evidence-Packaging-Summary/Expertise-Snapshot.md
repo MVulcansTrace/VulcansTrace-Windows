@@ -19,7 +19,7 @@ A **cryptographic evidence packaging pipeline** for VulcansTrace that transforms
 | Output-security protections | 4 (CSV injection, XSS, Markdown escaping, bundle timestamp normalization) |
 | ZIP archive entries | 6 (3 reports + raw log + manifest.json + manifest.hmac) |
 | Build determinism | Byte-for-byte identical given the same analysis result, raw log, signing key, and timestamp |
-| Test coverage | 50 test methods across 5 test files |
+| Test coverage | 50 test methods (53 expanded tests) across 5 test files |
 
 ---
 

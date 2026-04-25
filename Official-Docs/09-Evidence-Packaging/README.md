@@ -35,7 +35,7 @@ Documentation is organized for two audiences:
 - [IntegrityHasher.cs](../../VulcansTrace.Core/Security/IntegrityHasher.cs): SHA-256 and HMAC-SHA256 cryptographic primitives
 - [AnalysisResult.cs](../../VulcansTrace.Core/AnalysisResult.cs): domain model consumed by the pipeline
 - [EvidenceBuilderTests.cs](../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): 21 tests — ZIP structure, HMAC, determinism, timestamps, cancellation
-- [CsvFormatterTests.cs](../../VulcansTrace.Tests/Evidence/CsvFormatterTests.cs): 10 tests — escaping, quoting, formula injection
+- [CsvFormatterTests.cs](../../VulcansTrace.Tests/Evidence/CsvFormatterTests.cs): 10 test methods (13 expanded tests) — escaping, quoting, formula injection
 - [HtmlFormatterTests.cs](../../VulcansTrace.Tests/Evidence/HtmlFormatterTests.cs): 5 tests — HTML encoding, warnings, parse errors
 - [MarkdownFormatterTests.cs](../../VulcansTrace.Tests/Evidence/MarkdownFormatterTests.cs): 5 tests — escaping, structure, warnings
 - [IntegrityHasherTests.cs](../../VulcansTrace.Tests/Core/IntegrityHasherTests.cs): 9 tests — SHA-256 and HMAC-SHA256 correctness, determinism, key sensitivity

@@ -98,7 +98,7 @@ Step D: Create ZIP — MemoryStream-backed, optimal compression
 | Test File | Count | Covers |
 |-----------|-------|--------|
 | EvidenceBuilderTests | 21 | ZIP structure, HMAC, determinism, timestamps, cancellation |
-| CsvFormatterTests | 10 | Quoting/escaping, formula injection, dates, warnings |
+| CsvFormatterTests | 10 methods (13 expanded) | Quoting/escaping, formula injection, dates, warnings |
 | HtmlFormatterTests | 5 | HTML encoding, warnings, parse errors |
 | MarkdownFormatterTests | 5 | Escaping, structure, warnings |
 | IntegrityHasherTests | 9 | SHA-256 correctness, HMAC correctness, determinism, key sensitivity |
