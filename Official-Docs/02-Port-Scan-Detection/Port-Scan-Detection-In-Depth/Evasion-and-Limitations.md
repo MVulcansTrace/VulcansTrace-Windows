@@ -1,4 +1,4 @@
-# Evasion Techniques & Limitations
+# Evasion and Limitations
 
 > **Understanding blind spots enables compensating controls for each limitation.**
 

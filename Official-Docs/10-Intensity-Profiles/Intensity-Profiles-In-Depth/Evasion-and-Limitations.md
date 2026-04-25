@@ -1,4 +1,4 @@
-# Evasion Techniques and Limitations
+# Evasion and Limitations
 
 Gaps, blind spots, and compensating controls for the intensity profile system.
 
