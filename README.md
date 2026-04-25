@@ -1,6 +1,6 @@
 # VulcansTrace
 
-VulcansTrace is a Windows desktop security analysis tool that parses Windows Firewall logs, runs multiple behavioral detectors, correlates related findings, and packages investigation results into signed evidence exports. **All analysis runs locally, logs never leave the machine.**
+VulcansTrace is a Windows desktop security analysis tool that parses Windows Firewall logs, runs multiple behavioral detectors, correlates related findings, and packages investigation results into HMAC-signed evidence exports. **All analysis runs locally, logs never leave the machine.**
 
 ![VulcansTrace Architecture](./VulcansTrace-Infograph.png)
 
@@ -11,7 +11,7 @@ This repository is structured to be easy for both recruiters and technical revie
 
 ## Why This Project Stands Out
 
-- End-to-end ownership: raw firewall text goes in, structured findings and signed investigation artifacts come out.
+- End-to-end ownership: raw firewall text goes in, structured findings and integrity-protected investigation artifacts come out.
 - Security focus: the project centers on threat detection, forensic traceability, and honest handling of trade-offs and limitations.
 - Strong engineering proof: the solution builds cleanly and the automated test suite covers parser, detector, evidence, and WPF workflows.
 - Clear communication: the documentation is organized for both quick recruiter review and deeper engineering evaluation.
@@ -41,7 +41,7 @@ If you are reviewing this repo quickly, use this path:
 1. Read [Official-Docs](./Official-Docs/README.md) for the portfolio index.
 2. Open [Port Scan Detection](./Official-Docs/02-Port-Scan-Detection/README.md) for a representative detector case study.
 3. Open [Risk Escalation](./Official-Docs/08-Risk-Escalation/README.md) to see how findings are correlated into higher-confidence host risk.
-4. Open [Evidence Packaging](./Official-Docs/09-Evidence-Packaging/README.md) to see how results are turned into shareable signed artifacts.
+4. Open [Evidence Packaging](./Official-Docs/09-Evidence-Packaging/README.md) to see how results are turned into shareable HMAC-signed artifacts.
 5. Open [WPF UI](./Official-Docs/12-WPF-UI/README.md) to see how the product is surfaced in a desktop workflow.
 
 ## Running The Project
