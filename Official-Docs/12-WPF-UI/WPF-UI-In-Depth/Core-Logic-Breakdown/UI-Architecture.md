@@ -10,7 +10,7 @@ VulcansTrace's WPF UI solves these problems through three design commitments:
 
 1. **Responsive analysis** — CPU-bound detection runs on a background thread with cancellation support
 2. **Safe filtering** — `ICollectionView` filters the view without touching the source collection, so export always includes all findings
-3. **Cryptographic export integrity** — per-export HMAC-SHA-256 signing with a CSPRNG-generated key
+3. **Cryptographic export integrity** — per-export HMAC-SHA256 signing with a CSPRNG-generated key
 
 ---
 
@@ -262,7 +262,7 @@ private bool FilterFindings(object item)
 
 **File:** `VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs`
 
-`EvidenceViewModel` with per-export CSPRNG key generation and HMAC-SHA-256 signing prevents key reuse which would weaken integrity guarantees across bundles — making each exported ZIP independently verifiable by the incident response team.
+`EvidenceViewModel` with per-export CSPRNG key generation and HMAC-SHA256 signing prevents key reuse which would weaken integrity guarantees across bundles — making each exported ZIP independently verifiable by the incident response team.
 
 ```csharp
 private byte[] GenerateNewSigningKey()
@@ -285,13 +285,13 @@ public string MaskedSigningKey =>
 **Rationale:**
 
 - `RandomNumberGenerator` is a CSPRNG — keys are unpredictable, unlike `System.Random`
-- 32 bytes = 256 bits, matching HMAC-SHA-256 output size for full security strength
+- 32 bytes = 256 bits, matching HMAC-SHA256 output size for full security strength
 - Key is masked as asterisks in the UI (length matches hex key) — prevents shoulder-surfing
 - Copy to clipboard is available for out-of-band sharing with the IR team
 - No key persistence — each export is cryptographically independent
 - `StatusChanged` event notifies parent ViewModel of export progress
 
-**Security relevance:** The exported ZIP contains per-file SHA-256 hashes and an HMAC-SHA-256 signature over the manifest. Recipients with the key can verify the bundle was not modified after export. This protects post-export integrity only — it does not prove source-log authenticity or establish chain of custody before the log was loaded.
+**Security relevance:** The exported ZIP contains per-file SHA-256 hashes and an HMAC-SHA256 signature over the manifest. Recipients with the key can verify the bundle was not modified after export. This protects post-export integrity only — it does not prove source-log authenticity or establish chain of custody before the log was loaded.
 
 ---
 
@@ -343,7 +343,7 @@ public string MaskedSigningKey =>
 >
 > *`FindingsViewModel` uses `ICollectionView` for filtering instead of LINQ because LINQ creates new collections each time a filter changes, and the source collection needs to stay intact for evidence export. The filter checks severity and searches four fields: category, source host, target, and description.*
 >
-> *`EvidenceViewModel` generates a unique 256-bit signing key per export using `RandomNumberGenerator` — a CSPRNG, not `System.Random` which is predictable. The key signs the manifest via HMAC-SHA-256 so the incident response team can verify the bundle wasn't modified after export. The key is masked in the UI to prevent shoulder-surfing, and never persisted."*
+> *`EvidenceViewModel` generates a unique 256-bit signing key per export using `RandomNumberGenerator` — a CSPRNG, not `System.Random` which is predictable. The key signs the manifest via HMAC-SHA256 so the incident response team can verify the bundle wasn't modified after export. The key is masked in the UI to prevent shoulder-surfing, and never persisted."*
 
 ---
 

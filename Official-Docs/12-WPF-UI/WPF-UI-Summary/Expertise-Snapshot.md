@@ -18,7 +18,7 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 | Framework code | ~70 lines (`ViewModelBase` + `RelayCommand`) |
 | ViewModels | 3 state-bearing (`MainViewModel`, `FindingsViewModel`, `EvidenceViewModel`) |
 | Detection pipeline integration | 6 detectors wired through `SentryAnalyzer` |
-| Export integrity | HMAC-SHA-256 with 256-bit CSPRNG key, per-export regeneration |
+| Export integrity | HMAC-SHA256 with 256-bit CSPRNG key, per-export regeneration |
 | Filtering | `ICollectionView` with severity filter + text search across 4 fields (category, source host, target, short description) |
 | Cancellation | User-facing analysis cancellation plus ViewModel-level export cancellation support |
 
@@ -29,7 +29,7 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 - Hand-rolled MVVM avoids external dependencies — smaller attack surface, easier auditing for a security tool
 - `Task.Run` with cancellation keeps the UI responsive during heavy detection work — analysts can abort and switch to urgent tasks
 - `ICollectionView` filtering does not modify the source collection — evidence export builds from `AnalysisResult` directly, so filtering never excludes findings from the export
-- HMAC-SHA-256 signing with CSPRNG keys gives each export an independent integrity guarantee
+- HMAC-SHA256 signing with CSPRNG keys gives each export an independent integrity guarantee
 
 ---
 

@@ -46,7 +46,7 @@ This document covers what the WPF UI architecture does not handle and where the 
 
 ### Post-Export Integrity Only
 
-HMAC-SHA-256 signing protects the exported ZIP bundle against modification after export. It does not:
+HMAC-SHA256 signing protects the exported ZIP bundle against modification after export. It does not:
 
 - Prove the source log was authentic before it was loaded into VulcansTrace
 - Establish chain of custody between the firewall and the application
@@ -57,7 +57,7 @@ HMAC-SHA-256 signing protects the exported ZIP bundle against modification after
 
 ### HMAC Requires Key Sharing
 
-HMAC-SHA-256 uses a shared secret. Both the analyst and the verifier need the key. Key sharing is out-of-band (clipboard copy, encrypted message) and not managed by the application.
+HMAC-SHA256 uses a shared secret. Both the analyst and the verifier need the key. Key sharing is out-of-band (clipboard copy, encrypted message) and not managed by the application.
 
 **Impact:** If the key is intercepted during sharing, an attacker could forge a valid HMAC signature. If the key is lost, the evidence bundle cannot be verified.
 

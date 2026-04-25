@@ -108,9 +108,9 @@ Every major choice in the WPF UI has a security rationale, a performance implica
 
 ---
 
-## Decision 11: HMAC-SHA-256 Instead of RSA Signature
+## Decision 11: HMAC-SHA256 Instead of RSA Signature
 
-**Decision:** Use HMAC-SHA-256 for evidence signing, not RSA signatures with PKI.
+**Decision:** Use HMAC-SHA256 for evidence signing, not RSA signatures with PKI.
 
 **Rationale:** HMAC targets the internal incident response team who receives the shared secret out-of-band. This keeps the implementation simple while providing strong integrity guarantees.
 

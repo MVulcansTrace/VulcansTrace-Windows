@@ -73,7 +73,7 @@ User clicks Analyze
 User clicks Export Evidence
   → CanExportEvidence() check
   → GenerateNewSigningKey() — 32 bytes from CSPRNG
-  → EvidenceBuilder.BuildAsync — SHA-256 hashes + HMAC-SHA-256 signature
+  → EvidenceBuilder.BuildAsync — SHA-256 hashes + HMAC-SHA256 signature
   → Save dialog → Write ZIP to disk
   → Key masked in UI (asterisks), copy to clipboard for sharing
 ```
@@ -89,7 +89,7 @@ evidence.zip
 ├── report.html
 ├── summary.md
 ├── manifest.json    — File hashes (SHA-256), timestamps, and warnings
-└── manifest.hmac    — HMAC-SHA-256 of manifest.json
+└── manifest.hmac    — HMAC-SHA256 of manifest.json
 ```
 
 ## Filtering

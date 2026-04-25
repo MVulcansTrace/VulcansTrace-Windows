@@ -23,7 +23,7 @@ Documentation is organized for two audiences:
 - MVVM architecture: hand-rolled `ViewModelBase` and `RelayCommand` (~70 lines total) instead of a framework, because fewer dependencies means smaller attack surface for a security tool
 - Async analysis with cancellation: `Task.Run` offloads detection work from the UI thread, and `CancellationToken` support lets analysts abort long-running scans
 - Real-time findings filtering: `ICollectionView` filters without modifying the source collection; evidence export builds from `AnalysisResult` directly, so filtering never excludes findings from the export
-- Cryptographic evidence export: per-export HMAC-SHA-256 signing with a CSPRNG-generated key, key masking to prevent shoulder-surfing, and no key persistence
+- Cryptographic evidence export: per-export HMAC-SHA256 signing with a CSPRNG-generated key, key masking to prevent shoulder-surfing, and no key persistence
 
 ## Implementation Evidence
 
