@@ -146,7 +146,21 @@ public sealed class MainViewModel : ViewModelBase
         SelectedIntensity = Intensities[0];
         PortScanMaxEntriesPerSource = 0;
 
-        AnalyzeCommand = new RelayCommand(async _ => await AnalyzeAsync(), _ => CanAnalyze());
+        AnalyzeCommand = new RelayCommand(
+            async _ =>
+            {
+                try
+                {
+                    await AnalyzeAsync();
+                }
+                catch (Exception ex)
+                {
+                    SummaryText = $"Analysis failed: {ex.Message}";
+                    AdvisorMessage = "Analysis failed.";
+                    IsBusy = false;
+                }
+            },
+            _ => CanAnalyze());
         CancelCommand = new RelayCommand(_ => CancelAnalysis(), _ => CanCancel());
     }
 

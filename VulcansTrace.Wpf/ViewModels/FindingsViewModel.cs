@@ -137,6 +137,12 @@ public sealed class FindingsViewModel : ViewModelBase
     /// <param name="result">The analysis result to load.</param>
     public void LoadResults(AnalysisResult result)
     {
+        if (System.Windows.Application.Current?.Dispatcher?.CheckAccess() == false)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => LoadResults(result));
+            return;
+        }
+
         // Clear previous data
         Items.Clear();
         ParseErrors.Clear();

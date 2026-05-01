@@ -1,363 +1,545 @@
-<Window x:Class="VulcansTrace.Wpf.MainWindow"
+﻿<Window x:Class="VulcansTrace.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:VulcansTrace.Wpf.ViewModels"
         xmlns:val="clr-namespace:VulcansTrace.Wpf.Validation"
-        Title="VulcansTrace" Height="720" Width="1200">
+        Title="VulcansTrace"
+        Height="760"
+        Width="1280"
+        MinWidth="960"
+        MinHeight="600"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{StaticResource BackgroundDeepBrush}"
+        FontFamily="Segoe UI, sans-serif">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0"
+                      CaptionHeight="0"
+                      ResizeBorderThickness="6"
+                      CornerRadius="8"/>
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-        <LinearGradientBrush x:Key="AdvisorBubbleBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#f6f9ff" Offset="0"/>
-            <GradientStop Color="#e3edfb" Offset="1"/>
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="BadgeNeutralBrush" Color="#eef2f7"/>
-        <SolidColorBrush x:Key="BadgeHighBrush" Color="#fff3e0"/>
-        <SolidColorBrush x:Key="BadgeWarnBrush" Color="#fff8e1"/>
-        <SolidColorBrush x:Key="BadgeErrorBrush" Color="#ffebee"/>
-        <SolidColorBrush x:Key="WarningPanelBrush" Color="#fff8e1"/>
-        <SolidColorBrush x:Key="WarningBorderBrush" Color="#ffe0b2"/>
-        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#666666"/>
-        <SolidColorBrush x:Key="RowAltBrush" Color="#f5f5f5"/>
-        <Style TargetType="TabControl">
-            <Setter Property="Background" Value="#f9f9f9"/>
-        </Style>
-        <Style TargetType="TabItem">
-            <Setter Property="Foreground" Value="#222"/>
-            <Setter Property="Background" Value="#e6e6e6"/>
-            <Setter Property="BorderBrush" Value="#c5c5c5"/>
-            <Setter Property="Padding" Value="8,4"/>
+
+        <Style x:Key="WindowControlButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">
+                    <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"/>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#dcdcdc"/>
-                                <Setter Property="BorderBrush" Value="#b3b3b3"/>
-                                <Setter Property="Foreground" Value="#222"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="#888"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-        <Style x:Key="SeverityChip" TargetType="Border">
-            <Setter Property="CornerRadius" Value="6"/>
-            <Setter Property="Padding" Value="4,2"/>
-            <Setter Property="Margin" Value="0,0,6,0"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#334"/>
-            <Setter Property="Background" Value="#eef2f7"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Severity}" Value="Info">
-                    <Setter Property="Background" Value="#e3f2fd"/>
-                    <Setter Property="BorderBrush" Value="#90caf9"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Severity}" Value="Low">
-                    <Setter Property="Background" Value="#e8f5e9"/>
-                    <Setter Property="BorderBrush" Value="#a5d6a7"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Severity}" Value="Medium">
-                    <Setter Property="Background" Value="#fff8e1"/>
-                    <Setter Property="BorderBrush" Value="#ffecb3"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Severity}" Value="High">
-                    <Setter Property="Background" Value="#ffebee"/>
-                    <Setter Property="BorderBrush" Value="#ef9a9a"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Severity}" Value="Critical">
-                    <Setter Property="Background" Value="#fce4ec"/>
-                    <Setter Property="BorderBrush" Value="#f48fb1"/>
-                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource TextMutedBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MinimizeWindowButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MaximizeWindowButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AccentGlowBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource BackgroundDeepBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CloseWindowButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource CriticalBrush}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
 
-        <!-- Summary and warnings -->
-        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical" Margin="0,0,0,12">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,6" HorizontalAlignment="Left">
-                <Border Background="#eef2f7" Padding="8,4" CornerRadius="6" Margin="0,0,8,0">
-                    <TextBlock>
-                    <Run Text="Findings: "/><Run Text="{Binding Findings.FindingsCount, Mode=OneWay}" FontWeight="Bold"/>
-                    </TextBlock>
-                </Border>
-                <Border Background="#fff3e0" Padding="8,4" CornerRadius="6" Margin="0,0,8,0">
-                    <TextBlock>
-                        <Run Text="High/Critical: "/><Run Text="{Binding Findings.HighCriticalCount, Mode=OneWay}" FontWeight="Bold"/>
-                    </TextBlock>
-                </Border>
-                <Border Background="#fff8e1" Padding="8,4" CornerRadius="6" Margin="0,0,8,0">
-                    <TextBlock>
-                        <Run Text="Warnings: "/><Run Text="{Binding Findings.WarningCount, Mode=OneWay}" FontWeight="Bold"/>
-                    </TextBlock>
-                </Border>
-                <Border Background="#ffebee" Padding="8,4" CornerRadius="6">
-                    <TextBlock>
-                        <Run Text="Parse Errors: "/><Run Text="{Binding Findings.ParseErrorCount, Mode=OneWay}" FontWeight="Bold"/>
-                    </TextBlock>
-                </Border>
-            </StackPanel>
-            <Border Background="#fff8e1"
-                    BorderBrush="#ffe0b2"
-                    BorderThickness="1"
-                    Padding="8"
-                    CornerRadius="6"
-                    Visibility="{Binding Findings.HasWarnings, Converter={StaticResource BoolToVisibility}}">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Warnings detected during analysis:" FontWeight="Bold" />
-                    <ItemsControl ItemsSource="{Binding Findings.Warnings}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <Run Text="* " Foreground="DarkOrange"/>
-                                    <Run Text="{Binding}"/>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
-            <Border Background="#ffebee"
-                    BorderBrush="#ef9a9a"
-                    BorderThickness="1"
-                    Padding="8"
-                    CornerRadius="6"
-                    Visibility="{Binding Findings.HasParseErrors, Converter={StaticResource BoolToVisibility}}">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Parse errors detected in the log:" FontWeight="Bold" />
-                    <ItemsControl ItemsSource="{Binding Findings.ParseErrors}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock TextWrapping="Wrap">
-                                    <Run Text="* " Foreground="Red"/>
-                                    <Run Text="{Binding}"/>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
-        </StackPanel>
+    <Border Background="{StaticResource BackgroundDeepBrush}"
+            BorderBrush="{StaticResource BorderStrongBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Left: bot + controls -->
-        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,16,0">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <!-- Bot avatar -->
-                <Image Width="48"
-                       Height="48"
-                       Margin="0,0,12,0"
-                       Source="pack://application:,,,/Assets/VulcansTraceAvatar.png"
-                       Stretch="Uniform"
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       SnapsToDevicePixels="True">
-                    <Image.Clip>
-                        <EllipseGeometry RadiusX="24" RadiusY="24" Center="24,24" />
-                    </Image.Clip>
-                </Image>
-                <TextBlock Text="{Binding BotIntroText}"
-                           TextWrapping="Wrap"
-                           VerticalAlignment="Center"
-                           Width="260"/>
-            </StackPanel>
-            <Grid Margin="12,0,0,12" Visibility="{Binding HasAdvisorMessage, Converter={StaticResource BoolToVisibility}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <!-- ========================================== -->
+            <!-- TITLE BAR                                    -->
+            <!-- ========================================== -->
+            <Grid Grid.Row="0"
+                  Height="44"
+                  Background="{StaticResource BackgroundPanelBrush}"
+                  MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+                  WindowChrome.IsHitTestVisibleInChrome="True">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Background="{StaticResource AdvisorBubbleBrush}"
-                        BorderBrush="#c3d3ea"
-                        BorderThickness="1"
-                        CornerRadius="10"
-                        Padding="8"
-                        Width="280"
-                        HorizontalAlignment="Left">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Tip:" FontWeight="Bold" Margin="0,0,6,0" VerticalAlignment="Top"/>
-                        <TextBlock Grid.Column="1" Text="{Binding AdvisorMessage}" TextWrapping="Wrap"/>
-                    </Grid>
+                <!-- Icon + Brand -->
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="16,0,0,0">
+                    <Image Width="22"
+                           Height="22"
+                           Source="pack://application:,,,/Assets/VulcansTraceAvatar.png"
+                           Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           SnapsToDevicePixels="True">
+                        <Image.Clip>
+                            <EllipseGeometry RadiusX="11" RadiusY="11" Center="11,11"/>
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock Text="VULCANSTRACE"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Foreground="{StaticResource AccentGlowBrush}"
+                               />
+                </StackPanel>
+
+                <!-- Window controls -->
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal">
+                    <Button Style="{StaticResource MinimizeWindowButton}"
+                            Content="−"
+                            Click="MinimizeButton_Click"
+                            ToolTip="Minimize"/>
+                    <Button Style="{StaticResource MaximizeWindowButton}"
+                            Content="□"
+                            Click="MaximizeButton_Click"
+                            ToolTip="Maximize"/>
+                    <Button Style="{StaticResource CloseWindowButton}"
+                            Content="×"
+                            Click="CloseButton_Click"
+                            ToolTip="Close"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- ========================================== -->
+            <!-- CONTENT                                      -->
+            <!-- ========================================== -->
+            <Grid Grid.Row="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Summary badges -->
+                <StackPanel Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            Margin="0,0,0,16">
+                    <Border Style="{StaticResource BadgeNeutral}">
+                        <TextBlock>
+                            <Run Text="Findings: " Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                            <Run Text="{Binding Findings.FindingsCount, Mode=OneWay}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Style="{StaticResource BadgeHigh}">
+                        <TextBlock>
+                            <Run Text="High/Critical: " Foreground="{StaticResource HighBrush}" FontSize="12"/>
+                            <Run Text="{Binding Findings.HighCriticalCount, Mode=OneWay}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource HighBrush}"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Style="{StaticResource BadgeWarn}">
+                        <TextBlock>
+                            <Run Text="Warnings: " Foreground="{StaticResource MediumBrush}" FontSize="12"/>
+                            <Run Text="{Binding Findings.WarningCount, Mode=OneWay}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource MediumBrush}"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Style="{StaticResource BadgeError}">
+                        <TextBlock>
+                            <Run Text="Parse Errors: " Foreground="{StaticResource CriticalBrush}" FontSize="12"/>
+                            <Run Text="{Binding Findings.ParseErrorCount, Mode=OneWay}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource CriticalBrush}"/>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+
+                <!-- Warning panel -->
+                <Border Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Style="{StaticResource WarningPanel}"
+                        Visibility="{Binding Findings.HasWarnings, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,40,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Warnings detected during analysis:"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource MediumBrush}"
+                                   Margin="0,0,0,6"/>
+                        <ItemsControl ItemsSource="{Binding Findings.Warnings}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Margin="0,2">
+                                        <Run Text="&#x2022; " Foreground="{StaticResource MediumBrush}"/>
+                                        <Run Text="{Binding Mode=OneWay}" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Border>
 
-                <Polygon Points="0,0 0,12 12,6"
-                         Fill="#eaf1fc"
-                         Stroke="#c3d3ea"
-                         StrokeThickness="1"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Margin="12,60,0,0"/>
+                <!-- Parse error panel -->
+                <Border Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Style="{StaticResource ErrorPanel}"
+                        Visibility="{Binding Findings.HasParseErrors, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,40,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Parse errors detected in the log:"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource CriticalBrush}"
+                                   Margin="0,0,0,6"/>
+                        <ItemsControl ItemsSource="{Binding Findings.ParseErrors}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Margin="0,2">
+                                        <Run Text="&#x2022; " Foreground="{StaticResource CriticalBrush}"/>
+                                        <Run Text="{Binding Mode=OneWay}" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ========================================== -->
+                <!-- LEFT PANEL                                   -->
+                <!-- ========================================== -->
+                <Border Grid.Row="1"
+                        Grid.Column="0"
+                        Background="{StaticResource BackgroundPanelBrush}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="20"
+                        Margin="0,0,16,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <!-- Bot header -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <Border Width="44"
+                                        Height="44"
+                                        CornerRadius="22"
+                                        BorderBrush="{StaticResource BorderAccentBrush}"
+                                        BorderThickness="2"
+                                        Padding="2">
+                                    <Image Source="pack://application:,,,/Assets/VulcansTraceAvatar.png"
+                                           Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           SnapsToDevicePixels="True">
+                                        <Image.Clip>
+                                            <EllipseGeometry RadiusX="19" RadiusY="19" Center="19,19"/>
+                                        </Image.Clip>
+                                    </Image>
+                                </Border>
+                                <TextBlock Text="{Binding BotIntroText}"
+                                           TextWrapping="Wrap"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0,0,0"
+                                           FontSize="13"
+                                           LineHeight="18"
+                                           Width="260"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </StackPanel>
+
+                            <!-- Advisor bubble -->
+                            <Grid Margin="0,0,0,16"
+                                  Visibility="{Binding HasAdvisorMessage, Converter={StaticResource BoolToVisibility}}">
+                                <Border Background="{StaticResource AdvisorBubbleBrush}"
+                                        BorderBrush="{StaticResource BorderStrongBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="12"
+                                        HorizontalAlignment="Left">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="Tip:"
+                                                   FontWeight="Bold"
+                                                   Margin="0,0,8,0"
+                                                   VerticalAlignment="Top"
+                                                   Foreground="{StaticResource AccentGlowBrush}"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding AdvisorMessage}"
+                                                   TextWrapping="Wrap"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+                            <!-- Intensity -->
+                            <TextBlock Text="Scan Intensity"
+                                       FontWeight="Bold"
+                                       FontSize="13"
+                                       Margin="0,0,0,6"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <ComboBox ItemsSource="{Binding Intensities}"
+                                      SelectedItem="{Binding SelectedIntensity}"
+                                      Margin="0,0,0,12"/>
+
+                            <!-- Advanced -->
+                            <Expander Header="Advanced Options"
+                                      Margin="0,0,0,16"
+                                      Foreground="{StaticResource TextMutedBrush}">
+                                <StackPanel Margin="0,8,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+                                        <TextBlock Text="Port scan max events/source (0 = unbounded):"
+                                                   VerticalAlignment="Center"
+                                                   Width="240"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="12"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBox Width="80"
+                                                 VerticalAlignment="Center"
+                                                 Margin="8,0,0,0">
+                                            <TextBox.Text>
+                                                <Binding Path="PortScanMaxEntriesPerSource"
+                                                         UpdateSourceTrigger="PropertyChanged"
+                                                         NotifyOnValidationError="True"
+                                                         ValidatesOnExceptions="True">
+                                                    <Binding.ValidationRules>
+                                                        <val:NonNegativeIntValidationRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Expander>
+
+                            <!-- Log input -->
+                            <TextBlock Text="Windows Firewall Log"
+                                       FontWeight="Bold"
+                                       FontSize="13"
+                                       Margin="0,0,0,6"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <Grid Margin="0,0,0,12">
+                                <TextBox Text="{Binding LogText, UpdateSourceTrigger=PropertyChanged}"
+                                         AcceptsReturn="True"
+                                         VerticalScrollBarVisibility="Auto"
+                                         HorizontalScrollBarVisibility="Auto"
+                                         Height="220"
+                                         FontSize="12"/>
+                                <TextBlock Text="Paste or type firewall log lines here..."
+                                           Foreground="{StaticResource TextMutedBrush}"
+                                           Margin="10,10,0,0"
+                                           IsHitTestVisible="False"
+                                           FontSize="12">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding LogText}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+
+                            <!-- Action buttons -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Button Content="Analyze"
+                                        Width="100"
+                                        Margin="0,0,8,0"
+                                        Style="{StaticResource AccentButton}"
+                                        Command="{Binding AnalyzeCommand}"/>
+                                <Button Content="Cancel"
+                                        Width="100"
+                                        Margin="0,0,8,0"
+                                        Command="{Binding CancelCommand}"/>
+                                <Button Content="Export Evidence"
+                                        Width="120"
+                                        Command="{Binding Evidence.ExportEvidenceCommand}"/>
+                            </StackPanel>
+
+                            <!-- Progress -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,0,0,12"
+                                        Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
+                                <ProgressBar Width="140"
+                                             IsIndeterminate="True"
+                                             VerticalAlignment="Center"/>
+                                <TextBlock Text="Analyzing..."
+                                           Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource AccentGlowBrush}"
+                                           FontSize="12"/>
+                            </StackPanel>
+
+                            <!-- HMAC Key -->
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,12">
+                                <TextBlock Text="Session HMAC Key"
+                                           FontWeight="Bold"
+                                           FontSize="11"
+                                           Foreground="{StaticResource TextMutedBrush}"/>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding Evidence.MaskedSigningKey}"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               Margin="0,0,10,0"
+                                               FontFamily="Consolas"/>
+                                    <Button Content="Copy key"
+                                            Command="{Binding Evidence.CopySigningKeyCommand}"
+                                            FontSize="10"
+                                            Padding="8,3"
+                                            Foreground="{StaticResource AccentGlowBrush}"
+                                            BorderBrush="{StaticResource BorderStrongBrush}"
+                                            ToolTip="Copies full signing key to clipboard"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Summary -->
+                            <TextBlock Text="{Binding SummaryText}"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       FontSize="12"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- ========================================== -->
+                <!-- RIGHT PANEL                                  -->
+                <!-- ========================================== -->
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Background="{StaticResource BackgroundPanelBrush}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16">
+                    <TabControl>
+                        <TabItem Header="Findings">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,0,0,12"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="Search"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,8,0"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <TextBox Text="{Binding Findings.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="200"
+                                             VerticalAlignment="Center"
+                                             FontFamily="Segoe UI"/>
+                                    <TextBlock Text="Severity"
+                                               VerticalAlignment="Center"
+                                               Margin="16,0,8,0"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <ComboBox ItemsSource="{Binding Findings.SeverityFilters}"
+                                              SelectedItem="{Binding Findings.SelectedSeverityFilter}"
+                                              Width="150"
+                                              VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="1"
+                                          ItemsSource="{Binding Findings.ItemsView}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Category"
+                                                            Binding="{Binding Category}"
+                                                            Width="*"/>
+                                        <DataGridTemplateColumn Header="Severity" Width="90">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Style="{StaticResource SeverityChip}">
+                                                        <TextBlock Text="{Binding Severity}"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="11"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Source"
+                                                            Binding="{Binding SourceHost}"
+                                                            Width="*"/>
+                                        <DataGridTextColumn Header="Target"
+                                                            Binding="{Binding Target}"
+                                                            Width="*"/>
+                                        <DataGridTextColumn Header="Start"
+                                                            Binding="{Binding TimeStart}"
+                                                            Width="*"/>
+                                        <DataGridTextColumn Header="End"
+                                                            Binding="{Binding TimeEnd}"
+                                                            Width="*"/>
+                                        <DataGridTextColumn Header="Description"
+                                                            Binding="{Binding ShortDescription}"
+                                                            Width="2*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="Parse Errors">
+                            <ListBox ItemsSource="{Binding Findings.ParseErrors}"
+                                     Foreground="{StaticResource CriticalBrush}"
+                                     FontFamily="Consolas, monospace"
+                                     FontSize="12"/>
+                        </TabItem>
+
+                        <TabItem Header="Warnings">
+                            <ListBox ItemsSource="{Binding Findings.Warnings}"
+                                     Foreground="{StaticResource MediumBrush}"
+                                     FontFamily="Consolas, monospace"
+                                     FontSize="12"/>
+                        </TabItem>
+                    </TabControl>
+                </Border>
             </Grid>
 
-            <TextBlock Text="Scan intensity:" FontWeight="Bold"/>
-            <ComboBox ItemsSource="{Binding Intensities}"
-                      SelectedItem="{Binding SelectedIntensity}"
-                      Margin="0,4,0,4"/>
 
-            <Expander Header="Advanced" Margin="0,0,0,12">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
-                        <TextBlock Text="Port scan max events/source (0 = unbounded):"
-                                   VerticalAlignment="Center"
-                                   Width="260"/>
-                        <TextBox Width="80"
-                                 VerticalAlignment="Center">
-                        <TextBox.Text>
-                            <Binding Path="PortScanMaxEntriesPerSource" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnExceptions="True">
-                                <Binding.ValidationRules>
-                                    <val:NonNegativeIntValidationRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    </StackPanel>
-                </StackPanel>
-            </Expander>
-
-            <TextBlock Text="Paste Windows Firewall log:" FontWeight="Bold"/>
-            <Grid Margin="0,4,0,8">
-                <TextBox Text="{Binding LogText, UpdateSourceTrigger=PropertyChanged}"
-                         AcceptsReturn="True"
-                         VerticalScrollBarVisibility="Auto"
-                         HorizontalScrollBarVisibility="Auto"
-                         Height="260"/>
-                <TextBlock Text="Paste or type firewall log lines here..."
-                           Foreground="#888"
-                           Margin="6,6,0,0"
-                           IsHitTestVisible="False">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding LogText}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </Grid>
-
-            <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
-                <Button Content="Analyze"
-                        Width="100"
-                        Margin="0,0,8,0"
-                        Command="{Binding AnalyzeCommand}"/>
-
-                <Button Content="Cancel"
-                        Width="100"
-                        Margin="0,0,8,0"
-                        Command="{Binding CancelCommand}"/>
-
-                <Button x:Name="ExportButton"
-                        Content="Export Evidence"
-                        Width="130"
-                        Command="{Binding Evidence.ExportEvidenceCommand}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,4,0,4"
-                        Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
-                <ProgressBar Height="6"
-                             Width="140"
-                             IsIndeterminate="True"
-                             VerticalAlignment="Center"/>
-                <TextBlock Text="Working..." Margin="8,0,0,0" VerticalAlignment="Center" Foreground="#444"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Vertical" Margin="0,0,0,8">
-                <TextBlock Text="Session HMAC Key (masked; copy to view):" FontWeight="Bold" FontSize="10" Foreground="Gray"/>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Evidence.MaskedSigningKey}" FontSize="10" Foreground="Gray" Margin="0,0,8,0"/>
-                    <Button Content="Copy signing key" Command="{Binding Evidence.CopySigningKeyCommand}" FontSize="10" Padding="6,2" ToolTip="Copies full signing key to clipboard"/>
-                </StackPanel>
-            </StackPanel>
-
-            <TextBlock Text="{Binding SummaryText}"
-                       TextWrapping="Wrap"
-                       Margin="0,4,0,0"/>
-        </StackPanel>
-
-        <!-- Right: findings and errors tabs -->
-        <TabControl Grid.Row="1" Grid.Column="1" Margin="0">
-            <TabItem Header="Findings">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
-                        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBox Text="{Binding Findings.SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                                 Width="200" 
-                                 VerticalAlignment="Center"/>
-                        <TextBlock Text="Severity filter:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-                        <ComboBox ItemsSource="{Binding Findings.SeverityFilters}"
-                                  SelectedItem="{Binding Findings.SelectedSeverityFilter}"
-                                  Width="170"
-                                  VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <DataGrid Grid.Row="1"
-                              ItemsSource="{Binding Findings.ItemsView}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True"
-                              CanUserAddRows="False"
-                              BorderThickness="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
-                            <DataGridTemplateColumn Header="Severity" Width="100">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource SeverityChip}">
-                                            <TextBlock Text="{Binding Severity}" FontWeight="Bold" />
-                                        </Border>
-
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Source" Binding="{Binding SourceHost}" Width="*"/>
-                            <DataGridTextColumn Header="Target" Binding="{Binding Target}" Width="*"/>
-                            <DataGridTextColumn Header="Start" Binding="{Binding TimeStart}" Width="*"/>
-                            <DataGridTextColumn Header="End" Binding="{Binding TimeEnd}" Width="*"/>
-                            <DataGridTextColumn Header="Description" Binding="{Binding ShortDescription}" Width="2*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Parse Errors">
-                <ListBox ItemsSource="{Binding Findings.ParseErrors}" 
-                         BorderThickness="0"
-                         Foreground="Red"
-                         FontFamily="Consolas"/>
-            </TabItem>
-            <TabItem Header="Warnings">
-                <ListBox ItemsSource="{Binding Findings.Warnings}"
-                         BorderThickness="0"
-                         Foreground="DarkOrange"
-                         FontFamily="Consolas"/>
-            </TabItem>
-        </TabControl>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>

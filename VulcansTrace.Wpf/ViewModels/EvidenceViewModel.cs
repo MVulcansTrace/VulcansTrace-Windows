@@ -57,7 +57,21 @@ public sealed class EvidenceViewModel : ViewModelBase
         _evidenceBuilder = evidenceBuilder;
         _dialogService = dialogService;
 
-        ExportEvidenceCommand = new RelayCommand(async _ => await ExportEvidenceAsync(), _ => CanExportEvidence());
+        ExportEvidenceCommand = new RelayCommand(
+            async _ =>
+            {
+                try
+                {
+                    await ExportEvidenceAsync();
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowError($"Export failed: {ex.Message}", "VulcansTrace");
+                    StatusChanged?.Invoke(this, "Export failed.");
+                    IsBusy = false;
+                }
+            },
+            _ => CanExportEvidence());
         CancelExportCommand = new RelayCommand(_ => CancelExport(), _ => CanCancel());
         CopySigningKeyCommand = new RelayCommand(_ => CopySigningKey(), _ => !string.IsNullOrEmpty(SigningKey));
     }
