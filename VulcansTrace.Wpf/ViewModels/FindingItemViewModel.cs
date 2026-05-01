@@ -8,7 +8,7 @@ namespace VulcansTrace.Wpf.ViewModels;
 /// </summary>
 public sealed class FindingItemViewModel
 {
-    public string Category { get; }
+    public string Category { get; set; }
     public string Severity { get; }
     public string SourceHost { get; }
     public string Target { get; }

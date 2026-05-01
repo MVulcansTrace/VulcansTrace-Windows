@@ -239,8 +239,9 @@ public sealed class FindingsViewModel : ViewModelBase
                 var minTime = hostFindings.Min(f => f.TimeRangeStart);
                 var maxTime = hostFindings.Max(f => f.TimeRangeEnd);
 
+                var countLabel = hostFindings.Count > 1 ? $" (×{hostFindings.Count})" : "";
                 yield return new FindingItemViewModel(
-                    category: "Novelty",
+                    category: $"Novelty{countLabel}",
                     severity: hostFindings[0].Severity.ToString(),
                     sourceHost: host,
                     target: $"{hostFindings.Count} unique external destinations",
