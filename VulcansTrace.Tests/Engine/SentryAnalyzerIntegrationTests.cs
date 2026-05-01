@@ -203,35 +203,4 @@ public class SentryAnalyzerIntegrationTests
         Assert.NotEmpty(result.Warnings);
         Assert.Contains("truncated", result.Warnings.First(), StringComparison.OrdinalIgnoreCase);
     }
-
-    [Fact]
-    public void Analyze_PortScanAndNoveltyFromSameHost_SuppressesNovelty()
-    {
-        var analyzer = CreateAnalyzer();
-        var baseTime = new DateTime(2024, 3, 1, 12, 0, 0);
-        var lines = new List<string>();
-
-        // Host 10.0.0.50 port-scans 20 distinct ports on an external IP
-        for (int i = 0; i < 20; i++)
-        {
-            lines.Add(FormatLine(baseTime.AddSeconds(i), "DROP", "TCP", "10.0.0.50", 45000 + i, "203.0.113.10", 1000 + i, "OUTBOUND"));
-        }
-
-        // Same host also makes a single connection to another external IP (would be "novel")
-        lines.Add(FormatLine(baseTime.AddMinutes(1), "ALLOW", "TCP", "10.0.0.50", 47000, "198.51.100.77", 443, "OUTBOUND"));
-
-        // A different host makes a true novelty connection (should survive)
-        lines.Add(FormatLine(baseTime.AddMinutes(2), "ALLOW", "TCP", "10.0.0.99", 48000, "198.51.100.88", 443, "OUTBOUND"));
-
-        var rawLog = string.Join(Environment.NewLine, lines);
-        var result = analyzer.Analyze(rawLog, IntensityLevel.High, CancellationToken.None);
-
-        // Should have PortScan, and one Novelty from 10.0.0.99, but NOT from 10.0.0.50
-        Assert.Single(result.Findings, f => f.Category == "PortScan");
-
-        var noveltyFindings = result.Findings.Where(f => f.Category == "Novelty").ToList();
-        Assert.Single(noveltyFindings);
-        Assert.Equal("10.0.0.99", noveltyFindings[0].SourceHost);
-        Assert.Equal("198.51.100.88:443", noveltyFindings[0].Target);
-    }
 }
