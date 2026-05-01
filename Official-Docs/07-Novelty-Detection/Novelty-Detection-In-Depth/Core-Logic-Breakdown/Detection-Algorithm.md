@@ -162,13 +162,15 @@ return findings;
 
 ## Downstream Pipeline
 
-After the detector creates findings:
+After the detector creates findings, the analysis pipeline performs two additional steps before presenting results to the user:
 
-1. **RiskEscalator** — Groups findings by SourceHost. If a host has both Beaconing and LateralMovement findings, ALL findings for that host escalate to Critical, including Novelty.
-2. **MinSeverityToShow filter** — Novelty findings (Low) appear only at High intensity where MinSeverityToShow = Info.
+1. **Cross-Detector Suppression** — `SentryAnalyzer` removes Novelty findings from any source host that also triggered a `PortScan` finding. A port scanner's singleton destinations are scan targets, not anomalous first-contact behavior. This prevents port-scan activity from flooding the findings list with Low-severity noise.
+2. **RiskEscalator** — Groups findings by SourceHost. If a host has both Beaconing and LateralMovement findings, ALL remaining findings for that host escalate to Critical, including any Novelty findings that survived suppression.
+3. **MinSeverityToShow filter** — Novelty findings (Low) appear only at High intensity where MinSeverityToShow = Info.
 
 ```text
 NoveltyDetector (Low)
+    → Cross-Detector Suppression (Novelty removed if same host has PortScan)
     → RiskEscalator (Low → Critical if Beaconing + LateralMovement also present)
     → MinSeverityToShow filter (visible only at High intensity unless escalated)
 ```

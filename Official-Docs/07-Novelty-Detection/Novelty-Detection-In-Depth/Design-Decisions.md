@@ -99,6 +99,16 @@ Tuple grouping:    count = 1 each → three singletons → detected
 
 ---
 
+## Decision 7: Cross-Detector Suppression (PortScan → Novelty)
+
+**Decision:** `SentryAnalyzer` removes Novelty findings from any source host that also produced a `PortScan` finding.
+
+**Why:** Port scanning inherently generates many singleton connections — each probed port is a distinct `(DstIp, DstPort)` tuple contacted exactly once. Without suppression, a single port scan produces one PortScan finding and dozens of Novelty findings, drowning the analyst in noise. The NoveltyDetector cannot distinguish a scan target from a genuine first-contact anomaly because both look like singletons at the network layer.
+
+**Trade-off:** A host that both port-scans AND makes a legitimate novel connection to a different destination will have that legitimate novelty suppressed. This is accepted because the host is already flagged for hostile reconnaissance, making its other connections lower-priority signals.
+
+---
+
 ## Summary
 
 | Decision | Security Principle | Operational Impact |
@@ -109,4 +119,5 @@ Tuple grouping:    count = 1 each → three singletons → detected
 | Severity = Low | Accurate risk communication | Filtered unless escalated or High intensity |
 | Profile-gating | Alert fatigue prevention | Analyst controls noise level |
 | Cancellation | Availability | Cancellable background analysis |
+| Cross-detector suppression | Noise reduction from correlated activity | Prevents scan floods from masking real anomalies |
 

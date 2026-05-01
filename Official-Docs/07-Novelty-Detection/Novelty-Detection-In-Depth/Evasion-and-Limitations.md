@@ -23,8 +23,8 @@ At the **Medium** profile, Novelty runs but its findings are silently discarded 
 | Evasion | How It Works | Detection Status | Compensating Control |
 |---------|-------------|-----------------|---------------------|
 | **Multiple beacons** | 2+ connections to same destination | Not detected | BeaconingDetector catches regular periodic patterns (requires 4+ events at High intensity, 6+ at Medium, 8+ at Low, over a 2-minute minimum duration; does not cover the 2-beacon case at any profile) |
-| **Fast flux DNS** | Rotating IPs fragment campaign into singletons | Partially detected | Each rotating IP is flagged individually; DNS analysis needed for correlation |
-| **Domain fronting** | CDN hides true destination behind popular IP | Not detected — CDN IP may have count > 1 | TLS inspection and traffic analysis |
+| **Fast flux DNS** | Rotating IPs fragment campaign into singletons | Partially detected | Each rotating IP is flagged individually; DNS analysis needed for correlation. Note: if the same source is also port-scanning, cross-detector suppression removes the noise. |
+| **Port scan as cover** | Attacker port-scans 30+ ports; each probe is a singleton | Suppressed | Cross-detector suppression removes Novelty findings from hosts already flagged for PortScan |
 | **Delay between beacons** | Log rotation resets history; same dest becomes "novel" again | Not addressed | Persistent first-seen database or time-windowed novelty |
 | **Popular services** | C2 via well-known IP:port; count > 1 from other users | Not detected | Behavioral analysis and threat intel enrichment |
 | **Shared destination from multiple sources** | Two hosts each connect once to same tuple → count = 2 | Not detected | Per-source counting (design change) |
@@ -57,6 +57,8 @@ Result: THREE separate findings (each is a singleton)
 ```
 
 **Why it is partial:** Novelty flags each rotating IP as a separate singleton. It cannot determine they are related because it tracks IP:port tuples, not domains. An analyst would need DNS correlation or threat intel to connect the dots.
+
+**Cross-detector note:** If the fast-flux source is *also* port-scanning (e.g., probing many ports on each rotating IP), cross-detector suppression will remove the Novelty findings entirely. This is desirable noise reduction, but it means pure fast-flux without port scanning is the only variant that produces Novelty output today.
 
 ---
 
@@ -94,7 +96,8 @@ Phase 1: Persistent first-seen database    → Solve batch-boundary problem
 Phase 2: Per-source counting               → Catch shared-destination scenarios
 Phase 3: Time-windowed novelty             → "First seen in last N hours" semantics
 Phase 4: Destination enrichment            → ASN, geolocation, reputation scoring
-Phase 5: Cross-detector singleton scoring   → Weight singletons higher when correlated with other findings
+Phase 5: Cross-detector singleton scoring  → Weight singletons higher when correlated with other findings
+                                            ✅ Implemented: PortScan → Novelty suppression in SentryAnalyzer
 ```
 
 ---

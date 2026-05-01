@@ -33,5 +33,6 @@ Documentation is organized for two audiences:
 - [RiskEscalator.cs](../../VulcansTrace.Engine/RiskEscalator.cs): cross-detector correlation that escalates to Critical when Beaconing + LateralMovement co-occur on the same host
 - [NoveltyDetectorTests.cs](../../VulcansTrace.Tests/Engine/Detectors/NoveltyDetectorTests.cs): singleton detection, repeated-destination, disabled, empty, internal-only, mixed, and multi-port coverage
 - [RiskEscalatorTests.cs](../../VulcansTrace.Tests/Engine/RiskEscalatorTests.cs): escalation scenarios including Novelty findings promoted to Critical
-- [SentryAnalyzerIntegrationTests.cs](../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): end-to-end intensity-based visibility tests confirming standalone Novelty appears at High intensity, while Medium filters Low-severity Novelty unless escalation changes severity
+- [SentryAnalyzer.cs](../../VulcansTrace.Engine/SentryAnalyzer.cs): orchestrates the full analysis pipeline including cross-detector suppression (removes Novelty findings from hosts already flagged for PortScan)
+- [SentryAnalyzerIntegrationTests.cs](../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): end-to-end intensity-based visibility tests confirming standalone Novelty appears at High intensity, while Medium filters Low-severity Novelty unless escalation changes severity; also validates PortScan-to-Novelty suppression
 

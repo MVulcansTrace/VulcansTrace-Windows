@@ -110,6 +110,18 @@ public sealed class SentryAnalyzer
             }
         }
 
+        // Suppress novelty findings from hosts already flagged for port scanning.
+        // A port scanner's "novel" destinations are scan targets, not anomalies.
+        var portScanSources = allFindings
+            .Where(f => f.Category == "PortScan")
+            .Select(f => f.SourceHost)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        if (portScanSources.Count > 0)
+        {
+            allFindings.RemoveAll(f => f.Category == "Novelty" && portScanSources.Contains(f.SourceHost));
+        }
+
         var escalated = _riskEscalator.Escalate(allFindings);
 
         result.AddFindings(
