@@ -488,9 +488,30 @@
                                           IsReadOnly="True"
                                           CanUserAddRows="False">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Category"
-                                                            Binding="{Binding Category}"
-                                                            Width="*"/>
+                                        <DataGridTemplateColumn Header="Category" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Category}"
+                                                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                                                   VerticalAlignment="Center"/>
+                                                        <Border Background="{StaticResource BackgroundDeep}"
+                                                                BorderBrush="{StaticResource MediumBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="8"
+                                                                Padding="4,0"
+                                                                Margin="6,0,0,0"
+                                                                Visibility="{Binding IsGrouped, Converter={StaticResource BoolToVisibility}}">
+                                                            <TextBlock Text="{Binding GroupCount, StringFormat=×{0}}"
+                                                                       Foreground="{StaticResource MediumBrush}"
+                                                                       FontSize="10"
+                                                                       FontWeight="Bold"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Header="Severity" Width="90">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>

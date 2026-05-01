@@ -148,10 +148,11 @@ public sealed class FindingsViewModel : ViewModelBase
         ParseErrors.Clear();
         Warnings.Clear();
 
-        // Load findings
-        foreach (var f in result.Findings)
+        // Load findings — group Novelty entries by source host to reduce grid noise
+        var groupedFindings = GroupNoveltyFindings(result.Findings);
+        foreach (var vm in groupedFindings)
         {
-            Items.Add(new FindingItemViewModel(f));
+            Items.Add(vm);
         }
 
         // Load parse errors (with limit)
@@ -195,6 +196,61 @@ public sealed class FindingsViewModel : ViewModelBase
         HighCriticalCount = 0;
         WarningCount = 0;
         ParseErrorCount = 0;
+    }
+
+    /// <summary>
+    /// Groups Novelty findings by source host. When a host has 2+ Novelty findings,
+    /// they are collapsed into a single aggregate row to reduce UI noise.
+    /// Other finding categories are passed through unchanged.
+    /// </summary>
+    private static IEnumerable<FindingItemViewModel> GroupNoveltyFindings(IReadOnlyList<Finding> findings)
+    {
+        var noveltyGroups = findings
+            .Where(f => f.Category.Equals("Novelty", StringComparison.OrdinalIgnoreCase))
+            .GroupBy(f => f.SourceHost ?? string.Empty)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        foreach (var finding in findings)
+        {
+            // Pass non-Novelty findings through unchanged
+            if (!finding.Category.Equals("Novelty", StringComparison.OrdinalIgnoreCase))
+            {
+                yield return new FindingItemViewModel(finding);
+                continue;
+            }
+
+            // Only emit the grouped aggregate once per host
+            var host = finding.SourceHost ?? string.Empty;
+            if (!noveltyGroups.TryGetValue(host, out var hostFindings))
+                continue;
+
+            // Remove from dictionary so we only emit once
+            noveltyGroups.Remove(host);
+
+            if (hostFindings.Count == 1)
+            {
+                // Single Novelty finding — show as-is
+                yield return new FindingItemViewModel(hostFindings[0]);
+            }
+            else
+            {
+                // Multiple Novelty findings — collapse into aggregate row
+                var targets = hostFindings.Select(f => f.Target).ToList();
+                var minTime = hostFindings.Min(f => f.TimeRangeStart);
+                var maxTime = hostFindings.Max(f => f.TimeRangeEnd);
+
+                yield return new FindingItemViewModel(
+                    category: "Novelty",
+                    severity: hostFindings[0].Severity.ToString(),
+                    sourceHost: host,
+                    target: $"{hostFindings.Count} unique external destinations",
+                    timeStart: minTime,
+                    timeEnd: maxTime,
+                    shortDescription: $"Novel external destinations from {host}",
+                    groupCount: hostFindings.Count,
+                    groupDetails: string.Join("\n", targets));
+            }
+        }
     }
 
     private bool FilterFindings(object item)
