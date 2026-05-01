@@ -391,7 +391,7 @@
                                         Margin="0,0,8,0"
                                         Command="{Binding CancelCommand}"/>
                                 <Button Content="Export Evidence"
-                                        Width="120"
+                                        Width="140"
                                         Command="{Binding Evidence.ExportEvidenceCommand}"/>
                             </StackPanel>
 
