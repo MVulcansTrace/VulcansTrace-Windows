@@ -128,6 +128,23 @@ public partial class MainWindow : Window
         Close();
     }
 
+    private void DetailsButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button button) return;
+        if (button.DataContext is not FindingItemViewModel vm) return;
+
+        var message = string.IsNullOrWhiteSpace(vm.GroupDetails)
+            ? vm.ShortDescription
+            : $"{vm.ShortDescription}\n\nDestinations:\n{vm.GroupDetails}";
+
+        System.Windows.MessageBox.Show(
+            this,
+            message,
+            $"{vm.Category} — {vm.Severity}",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+    }
+
     #region Win32 interop for correct maximize
 
     private const int WM_GETMINMAXINFO = 0x0024;

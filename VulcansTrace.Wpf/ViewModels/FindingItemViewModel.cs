@@ -9,6 +9,7 @@ namespace VulcansTrace.Wpf.ViewModels;
 public sealed class FindingItemViewModel
 {
     public string Category { get; set; }
+    public string DetailButtonText => IsGrouped ? "Details" : "";
     public string Severity { get; }
     public string SourceHost { get; }
     public string Target { get; }

@@ -486,36 +486,7 @@
                                           ItemsSource="{Binding Findings.ItemsView}"
                                           AutoGenerateColumns="False"
                                           IsReadOnly="True"
-                                          CanUserAddRows="False"
-                                          RowDetailsVisibilityMode="VisibleWhenSelected">
-                                    <DataGrid.RowDetailsTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{StaticResource BackgroundCard}"
-                                                    BorderBrush="{StaticResource BorderBrush}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="6"
-                                                    Padding="12"
-                                                    Margin="4,2,4,8">
-                                                <StackPanel>
-                                                    <TextBlock Text="Finding Details"
-                                                               FontWeight="Bold"
-                                                               FontSize="12"
-                                                               Foreground="{StaticResource TextPrimaryBrush}"
-                                                               Margin="0,0,0,8"/>
-                                                    <TextBlock Text="{Binding GroupDetails}"
-                                                               FontFamily="Consolas, monospace"
-                                                               FontSize="12"
-                                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                                               TextWrapping="Wrap"
-                                                               Margin="0,0,0,6"/>
-                                                    <TextBlock Text="{Binding ShortDescription}"
-                                                               FontSize="12"
-                                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                                               TextWrapping="Wrap"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </DataGrid.RowDetailsTemplate>
+                                          CanUserAddRows="False">
                                     <DataGrid.Columns>
                                         <DataGridTemplateColumn Header="Category" Width="*">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -553,6 +524,19 @@
                                         <DataGridTextColumn Header="Description"
                                                             Binding="{Binding ShortDescription}"
                                                             Width="2*"/>
+                                        <DataGridTemplateColumn Header="" Width="70">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding DetailButtonText}"
+                                                            Click="DetailsButton_Click"
+                                                            Style="{StaticResource WindowControlButton}"
+                                                            FontSize="11"
+                                                            Width="60"
+                                                            Height="24"
+                                                            HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
