@@ -156,13 +156,14 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="380" MinWidth="280"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Summary badges -->
                 <StackPanel Grid.Row="0"
-                            Grid.ColumnSpan="2"
+                            Grid.ColumnSpan="3"
                             Orientation="Horizontal"
                             Margin="0,0,0,16">
                     <Border Style="{StaticResource BadgeNeutral}">
@@ -193,7 +194,7 @@
 
                 <!-- Warning panel -->
                 <Border Grid.Row="0"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="3"
                         Style="{StaticResource WarningPanel}"
                         Visibility="{Binding Findings.HasWarnings, Converter={StaticResource BoolToVisibility}}"
                         Margin="0,40,0,0">
@@ -217,7 +218,7 @@
 
                 <!-- Parse error panel -->
                 <Border Grid.Row="0"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="3"
                         Style="{StaticResource ErrorPanel}"
                         Visibility="{Binding Findings.HasParseErrors, Converter={StaticResource BoolToVisibility}}"
                         Margin="0,40,0,0">
@@ -380,25 +381,26 @@
                             </Grid>
 
                             <!-- Action buttons -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <WrapPanel Margin="0,0,0,12">
                                 <Button Content="Analyze"
-                                        Width="100"
-                                        Margin="0,0,8,0"
+                                        Width="90"
+                                        Margin="0,0,6,6"
                                         Style="{StaticResource AccentButton}"
                                         Command="{Binding AnalyzeCommand}"/>
                                 <Button Content="Cancel"
-                                        Width="100"
-                                        Margin="0,0,8,0"
+                                        Width="80"
+                                        Margin="0,0,6,6"
                                         Command="{Binding CancelCommand}"/>
                                 <Button Content="Export Evidence"
-                                        Width="140"
-                                        Margin="0,0,8,0"
+                                        Width="120"
+                                        Margin="0,0,6,6"
                                         Command="{Binding Evidence.ExportEvidenceCommand}"/>
                                 <Button Content="Load Sample"
-                                        Width="120"
+                                        Width="100"
+                                        Margin="0,0,0,6"
                                         Command="{Binding LoadSampleCommand}"
                                         ToolTip="Load intensity comparison sample data"/>
-                            </StackPanel>
+                            </WrapPanel>
 
                             <!-- Progress -->
                             <StackPanel Orientation="Horizontal"
@@ -445,11 +447,20 @@
                     </ScrollViewer>
                 </Border>
 
+                <!-- GridSplitter for resizable panels -->
+                <GridSplitter Grid.Row="1"
+                              Grid.Column="1"
+                              Width="6"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Stretch"
+                              Background="Transparent"
+                              ShowsPreview="False"/>
+
                 <!-- ========================================== -->
                 <!-- RIGHT PANEL                                  -->
                 <!-- ========================================== -->
                 <Border Grid.Row="1"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Background="{StaticResource BackgroundPanelBrush}"
                         BorderBrush="{StaticResource BorderBrush}"
                         BorderThickness="1"
