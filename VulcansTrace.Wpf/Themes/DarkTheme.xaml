@@ -37,6 +37,11 @@
     <Color x:Key="InfoBgColor">#0F1A3B</Color>
 
     <!-- ========================================== -->
+    <!-- CONVERTERS                                   -->
+    <!-- ========================================== -->
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+    <!-- ========================================== -->
     <!-- BRUSHES                                      -->
     <!-- ========================================== -->
     <SolidColorBrush x:Key="BackgroundDeepBrush" Color="{StaticResource BackgroundDeepColor}"/>

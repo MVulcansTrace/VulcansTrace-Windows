@@ -497,63 +497,102 @@
                                               VerticalAlignment="Center"/>
                                 </StackPanel>
 
-                                <DataGrid Grid.Row="1"
-                                          ItemsSource="{Binding Findings.ItemsView}"
-                                          AutoGenerateColumns="False"
-                                          IsReadOnly="True"
-                                          CanUserAddRows="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTemplateColumn Header="Category" Width="*">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Category}"
-                                                               Foreground="{StaticResource TextPrimaryBrush}"
-                                                               ToolTip="{Binding GroupDetails}"
-                                                               ToolTipService.ShowDuration="15000"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Severity" Width="90">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Border Style="{StaticResource SeverityChip}">
-                                                        <TextBlock Text="{Binding Severity}"
-                                                                   FontWeight="Bold"
-                                                                   FontSize="11"/>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn Header="Source"
-                                                            Binding="{Binding SourceHost}"
-                                                            Width="*"/>
-                                        <DataGridTextColumn Header="Target"
-                                                            Binding="{Binding Target}"
-                                                            Width="*"/>
-                                        <DataGridTextColumn Header="Start"
-                                                            Binding="{Binding TimeStart}"
-                                                            Width="*"/>
-                                        <DataGridTextColumn Header="End"
-                                                            Binding="{Binding TimeEnd}"
-                                                            Width="*"/>
-                                        <DataGridTextColumn Header="Description"
-                                                            Binding="{Binding ShortDescription}"
-                                                            Width="2*"/>
-                                        <DataGridTemplateColumn Header="" Width="70">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="{Binding DetailButtonText}"
-                                                            Click="DetailsButton_Click"
-                                                            Style="{StaticResource WindowControlButton}"
-                                                            FontSize="11"
-                                                            Width="60"
-                                                            Height="24"
-                                                            HorizontalAlignment="Center"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                <Grid Grid.Row="1">
+                                    <DataGrid ItemsSource="{Binding Findings.ItemsView}"
+                                              AutoGenerateColumns="False"
+                                              IsReadOnly="True"
+                                              CanUserAddRows="False">
+                                        <DataGrid.Style>
+                                            <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Findings.HasItems}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.Style>
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Header="Category" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Category}"
+                                                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                                                   ToolTip="{Binding GroupDetails}"
+                                                                   ToolTipService.ShowDuration="15000"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="Severity" Width="90">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Border Style="{StaticResource SeverityChip}">
+                                                            <TextBlock Text="{Binding Severity}"
+                                                                       FontWeight="Bold"
+                                                                       FontSize="11"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn Header="Source"
+                                                                Binding="{Binding SourceHost}"
+                                                                Width="*"/>
+                                            <DataGridTextColumn Header="Target"
+                                                                Binding="{Binding Target}"
+                                                                Width="*"/>
+                                            <DataGridTextColumn Header="Start"
+                                                                Binding="{Binding TimeStart}"
+                                                                Width="*"/>
+                                            <DataGridTextColumn Header="End"
+                                                                Binding="{Binding TimeEnd}"
+                                                                Width="*"/>
+                                            <DataGridTextColumn Header="Description"
+                                                                Binding="{Binding ShortDescription}"
+                                                                Width="2*"/>
+                                            <DataGridTemplateColumn Header="" Width="70">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="{Binding DetailButtonText}"
+                                                                Click="DetailsButton_Click"
+                                                                Style="{StaticResource WindowControlButton}"
+                                                                FontSize="11"
+                                                                Width="60"
+                                                                Height="24"
+                                                                HorizontalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <!-- Empty state -->
+                                    <StackPanel HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Findings.HasItems}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Text="No findings yet"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Paste a firewall log and click Analyze to detect threats."
+                                                   FontSize="13"
+                                                   Foreground="{StaticResource TextMutedBrush}"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,8,0,0"
+                                                   TextWrapping="Wrap"
+                                                   TextAlignment="Center"
+                                                   MaxWidth="360"/>
+                                    </StackPanel>
+                                </Grid>
                             </Grid>
                         </TabItem>
 

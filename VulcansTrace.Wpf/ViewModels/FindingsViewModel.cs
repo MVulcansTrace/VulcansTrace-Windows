@@ -20,6 +20,7 @@ public sealed class FindingsViewModel : ViewModelBase
     private int _parseErrorCount;
     private bool _hasWarnings;
     private bool _hasParseErrors;
+    private bool _hasItems;
 
     /// <summary>Gets the collection of findings to display.</summary>
     public ObservableCollection<FindingItemViewModel> Items { get; } = new();
@@ -116,6 +117,13 @@ public sealed class FindingsViewModel : ViewModelBase
         private set => SetField(ref _hasParseErrors, value);
     }
 
+    /// <summary>Gets whether there are any findings to display.</summary>
+    public bool HasItems
+    {
+        get => _hasItems;
+        private set => SetField(ref _hasItems, value);
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FindingsViewModel"/> class.
     /// </summary>
@@ -182,6 +190,7 @@ public sealed class FindingsViewModel : ViewModelBase
         HighCriticalCount = result.Findings.Count(f => f.Severity >= Severity.High);
         WarningCount = result.Warnings.Count;
         ParseErrorCount = result.ParseErrorCount;
+        HasItems = Items.Count > 0;
     }
 
     /// <summary>
@@ -196,6 +205,7 @@ public sealed class FindingsViewModel : ViewModelBase
         HighCriticalCount = 0;
         WarningCount = 0;
         ParseErrorCount = 0;
+        HasItems = false;
     }
 
     /// <summary>

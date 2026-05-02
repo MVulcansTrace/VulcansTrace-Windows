@@ -82,5 +82,50 @@ public class FindingsViewModelTests
         vm.LoadResults(new AnalysisResult());
         Assert.Empty(vm.Items);
         Assert.Equal(0, vm.FindingsCount);
+        Assert.False(vm.HasItems);
+    }
+
+    [Fact]
+    public void LoadResults_WithFindings_SetsHasItemsTrue()
+    {
+        var vm = new FindingsViewModel();
+        var result = new AnalysisResult();
+        result.AddFinding(new Finding
+        {
+            Category = "PortScan",
+            Severity = Severity.Medium,
+            SourceHost = "10.0.0.1",
+            Target = "multiple hosts/ports",
+            TimeRangeStart = DateTime.Now,
+            TimeRangeEnd = DateTime.Now,
+            ShortDescription = "Port scan detected"
+        });
+
+        vm.LoadResults(result);
+
+        Assert.True(vm.HasItems);
+    }
+
+    [Fact]
+    public void Clear_SetsHasItemsFalse()
+    {
+        var vm = new FindingsViewModel();
+        var result = new AnalysisResult();
+        result.AddFinding(new Finding
+        {
+            Category = "PortScan",
+            Severity = Severity.Medium,
+            SourceHost = "10.0.0.1",
+            Target = "multiple hosts/ports",
+            TimeRangeStart = DateTime.Now,
+            TimeRangeEnd = DateTime.Now,
+            ShortDescription = "Port scan detected"
+        });
+
+        vm.LoadResults(result);
+        Assert.True(vm.HasItems);
+
+        vm.Clear();
+        Assert.False(vm.HasItems);
     }
 }
