@@ -45,12 +45,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource TextMutedBrush}"/>
-                    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <Style x:Key="MinimizeWindowButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
@@ -156,7 +150,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="380" MinWidth="280"/>
+                    <ColumnDefinition Width="400" MinWidth="280"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -396,7 +390,7 @@
                                         Margin="0,0,6,6"
                                         Command="{Binding Evidence.ExportEvidenceCommand}"/>
                                 <Button Content="Load Sample"
-                                        Width="100"
+                                        Width="115"
                                         Margin="0,0,0,6"
                                         Command="{Binding LoadSampleCommand}"
                                         ToolTip="Load intensity comparison sample data"/>
