@@ -137,12 +137,11 @@ public partial class MainWindow : Window
             ? vm.ShortDescription
             : $"{vm.ShortDescription}\n\nDestinations:\n{vm.GroupDetails}";
 
-        System.Windows.MessageBox.Show(
-            this,
-            message,
+        var dialog = new DetailsDialog(
             $"{vm.Category} — {vm.Severity}",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+            message);
+        dialog.Owner = this;
+        dialog.ShowDialog();
     }
 
     #region Win32 interop for correct maximize
