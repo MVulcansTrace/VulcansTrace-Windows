@@ -488,9 +488,16 @@
                                           IsReadOnly="True"
                                           CanUserAddRows="False">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Category"
-                                                            Binding="{Binding Category}"
-                                                            Width="*"/>
+                                        <DataGridTemplateColumn Header="Category" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Category}"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                                               ToolTip="{Binding GroupDetails}"
+                                                               ToolTipService.ShowDuration="15000"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Header="Severity" Width="90">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
