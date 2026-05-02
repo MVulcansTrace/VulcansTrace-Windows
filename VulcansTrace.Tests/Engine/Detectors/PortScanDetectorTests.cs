@@ -282,4 +282,35 @@ public class PortScanDetectorTests
         var warnings = ((IProducesWarnings)detector).Warnings;
         Assert.Empty(warnings);
     }
+
+    [Fact]
+    public void Detect_WithZeroWindowMinutes_ThrowsArgumentOutOfRangeException()
+    {
+        var entries = new List<LogEntry>
+        {
+            new()
+            {
+                Timestamp = new DateTime(2024, 4, 1, 10, 0, 0),
+                SrcIp = "10.0.0.3",
+                DstIp = "10.0.1.1",
+                DstPort = 2000,
+                SrcPort = 6000,
+                Protocol = "TCP",
+                Action = "ALLOW",
+                Direction = "OUTBOUND"
+            }
+        };
+
+        var profile = new AnalysisProfile
+        {
+            EnablePortScan = true,
+            PortScanMinPorts = 5,
+            PortScanWindowMinutes = 0
+        };
+
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            _detector.Detect(entries, profile, CancellationToken.None).ToList());
+
+        Assert.Equal("PortScanWindowMinutes", ex.ParamName);
+    }
 }

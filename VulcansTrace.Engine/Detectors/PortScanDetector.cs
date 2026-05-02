@@ -31,6 +31,9 @@ public sealed class PortScanDetector : IDetector, IProducesWarnings
         if (!profile.EnablePortScan || entries.Count == 0)
             return Enumerable.Empty<Finding>();
 
+        if (profile.PortScanWindowMinutes <= 0)
+            throw new ArgumentOutOfRangeException(nameof(profile.PortScanWindowMinutes), "Must be greater than zero.");
+
         var findings = new List<Finding>();
 
         var bySrc = entries
