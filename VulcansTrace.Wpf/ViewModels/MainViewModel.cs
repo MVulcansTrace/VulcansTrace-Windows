@@ -119,6 +119,9 @@ public sealed class MainViewModel : ViewModelBase
     
     /// <summary>Gets the cancel command.</summary>
     public ICommand CancelCommand { get; }
+    
+    /// <summary>Gets the load sample data command.</summary>
+    public ICommand LoadSampleCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -162,6 +165,7 @@ public sealed class MainViewModel : ViewModelBase
             },
             _ => CanAnalyze());
         CancelCommand = new RelayCommand(_ => CancelAnalysis(), _ => CanCancel());
+        LoadSampleCommand = new RelayCommand(_ => LogText = SampleData.IntensityComparison);
     }
 
     private bool CanAnalyze() =>

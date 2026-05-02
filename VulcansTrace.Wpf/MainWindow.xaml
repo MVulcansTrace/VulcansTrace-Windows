@@ -392,7 +392,12 @@
                                         Command="{Binding CancelCommand}"/>
                                 <Button Content="Export Evidence"
                                         Width="140"
+                                        Margin="0,0,8,0"
                                         Command="{Binding Evidence.ExportEvidenceCommand}"/>
+                                <Button Content="Load Sample"
+                                        Width="120"
+                                        Command="{Binding LoadSampleCommand}"
+                                        ToolTip="Load intensity comparison sample data"/>
                             </StackPanel>
 
                             <!-- Progress -->
