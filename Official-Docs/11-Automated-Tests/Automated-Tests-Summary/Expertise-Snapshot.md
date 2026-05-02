@@ -14,15 +14,15 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 
 | Metric | Value |
 |--------|-------|
-| Test files | 23 |
-| Test methods | 189 (223 total test cases including parameterized data rows) |
+| Test files | 26 |
+| Test methods | 201 (237 total test cases including parameterized data rows) |
 | Detector test files | 6 (PortScan, Beaconing, Flood, LateralMovement, PolicyViolation, Novelty) |
 | Core test files | 3 (log parsing, domain models, SHA-256/HMAC integrity) |
-| Engine pipeline test files | 4 (analyzer orchestration, profile thresholds, IP classification, risk escalation) |
+| Engine pipeline test files | 8 (analyzer orchestration, profile thresholds, IP classification, risk escalation, intensity comparison, threshold override validation, integration, robustness) |
 | Integration test files | 1 (parameterized cross-detector correlation) |
 | Robustness test files | 1 (fault tolerance, cancellation, high-volume) |
 | Evidence test files | 4 (HMAC, ZIP, formatters, timestamp clamping) |
-| WPF test files | 3 (full-stack integration, display encoding, validation rules) |
+| WPF test files | 4 (full-stack integration, display encoding, validation rules, ViewModel grouping logic) |
 | Functional test files | 1 (comprehensive multi-profile validation) |
 | Test infrastructure files | 1 (`FakeDialogService.cs`) |
 | Inline test doubles | 5 (`FakeDetector`, `CrashingDetector`, `WorkingDetector`, `EscalationTestDetector`, `BlockingDetector`) |

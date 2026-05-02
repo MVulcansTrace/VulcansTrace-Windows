@@ -17,7 +17,7 @@
 | Profile tests | 1 | Intensity monotonicity, immutability |
 | Risk escalator tests | 1 | Beaconing + Lateral = Critical escalation |
 | IP classification tests | 1 | RFC 1918, IPv6, mapped addresses |
-| WPF tests | 3 | Full-stack analyze + export, STA threading, validation rules |
+| WPF tests | 4 | Full-stack analyze + export, STA threading, validation rules, ViewModel grouping |
 | Functional tests | 1 | End-to-end smoke test with synthetic multi-pattern log input |
 
 ---
@@ -134,3 +134,6 @@
 | `VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs` | Full-stack WPF |
 | `VulcansTrace.Tests/Wpf/MainViewModelTextTests.cs` | ViewModel text display |
 | `VulcansTrace.Tests/Wpf/NonNegativeIntValidationRuleTests.cs` | WPF validation rules |
+| `VulcansTrace.Tests/Wpf/FindingsViewModelTests.cs` | Novelty grouping logic in ViewModel |
+| `VulcansTrace.Tests/Engine/IntensityComparisonTests.cs` | End-to-end profile behavior with isolated IPs |
+| `VulcansTrace.Tests/Engine/ThresholdOverrideValidationTests.cs` | Threshold override input validation |

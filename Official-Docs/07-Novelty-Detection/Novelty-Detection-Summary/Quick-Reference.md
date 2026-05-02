@@ -79,6 +79,20 @@ NoveltyDetector (Low)
 
 ---
 
+## UI Presentation (WPF)
+
+When multiple `Novelty` findings share the same `SourceHost`, the presentation layer collapses them into a single aggregate row:
+
+| Behavior | Detail |
+|----------|--------|
+| Count badge | `Novelty (×N)` shown in the Category column |
+| Target text | `N unique external destinations` instead of a single IP:port |
+| Details button | Clicking opens a dialog listing all grouped destinations |
+| Tooltip | Hovering the Category cell shows the full destination list (`GroupDetails`) |
+| Single findings | Unchanged — displayed as a normal row without aggregation |
+
+> **Note:** Grouping is a UI-layer concern only. The engine emits one `Finding` per singleton tuple. Evidence export contains the complete, ungrouped findings.
+
 ## Evasion Summary
 
 | Technique | Status | Countermeasure |

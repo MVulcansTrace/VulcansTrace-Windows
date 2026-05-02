@@ -31,6 +31,7 @@ Documentation is organized for two audiences:
 - [AnalysisProfile.cs](../../VulcansTrace.Engine/AnalysisProfile.cs): detector configuration model including `EnableNovelty` flag
 - [AnalysisProfileProvider.cs](../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): built-in Low, Medium, and High profiles that gate novelty by intensity
 - [RiskEscalator.cs](../../VulcansTrace.Engine/RiskEscalator.cs): cross-detector correlation that escalates to Critical when Beaconing + LateralMovement co-occur on the same host
+- [FindingsViewModel.cs](../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): UI-layer grouping of same-source Novelty findings into aggregate rows with count badges and detail popups
 - [NoveltyDetectorTests.cs](../../VulcansTrace.Tests/Engine/Detectors/NoveltyDetectorTests.cs): singleton detection, repeated-destination, disabled, empty, internal-only, mixed, and multi-port coverage
 - [RiskEscalatorTests.cs](../../VulcansTrace.Tests/Engine/RiskEscalatorTests.cs): escalation scenarios including Novelty findings promoted to Critical
 - [SentryAnalyzerIntegrationTests.cs](../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): end-to-end intensity-based visibility tests confirming standalone Novelty appears at High intensity, while Medium filters Low-severity Novelty unless escalation changes severity

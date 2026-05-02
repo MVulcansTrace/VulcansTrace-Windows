@@ -52,9 +52,9 @@ User-visible findings in AnalysisResult
 
 ## Step A: Toggle Gate
 
-**Process:** If `profile.EnablePortScan` is false or entries are empty, return immediately.
+**Process:** If `profile.EnablePortScan` is false or entries are empty, return immediately. The detector also validates that `profile.PortScanWindowMinutes > 0`; if zero or negative, it throws `ArgumentOutOfRangeException`.
 
-**Rationale:** Zero-cost disable. Teams that don't need port scan detection pay nothing.
+**Rationale:** Zero-cost disable. Teams that don't need port scan detection pay nothing. The window validation is a guard against misconfigured custom profiles.
 
 **Security Angle:** Defense in depth — the detector is one layer that can be toggled without affecting the rest of the pipeline.
 

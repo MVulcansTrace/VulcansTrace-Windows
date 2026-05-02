@@ -355,13 +355,13 @@ public void Build_WithSigningKey_CreatesValidHmac()
 
 | Metric | Value |
 |--------|-------|
-| Test files | 23 |
-| Test methods | 189 (223 total test cases including parameterized data rows) |
+| Test files | 26 |
+| Test methods | 201 (237 total test cases including parameterized data rows) |
 | Detector unit test files | 6 |
 | Integration test files | 1 (parameterized) |
 | Robustness test files | 1 |
 | Evidence test files | 4 |
-| WPF test files | 3 |
+| WPF test files | 4 |
 | Functional test files | 1 (`FunctionalTestRunner.cs`) |
 | Test infrastructure files | 1 (`FakeDialogService.cs`) |
 | Inline test doubles | 5 (inside test files) |

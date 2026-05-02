@@ -21,6 +21,7 @@ A **novelty detection engine** for VulcansTrace that identifies singleton extern
 | Severity | Low (Critical when correlated with Beaconing + LateralMovement) |
 | Profile gating | Disabled at Low, filtered at Medium (unless escalated to Critical), visible at High |
 | Cross-detector correlation | Beaconing + LateralMovement on same host → all findings escalate to Critical |
+| UI aggregation | Same-source Novelty rows collapse into single row with count badge and Details button |
 
 ---
 
@@ -41,6 +42,7 @@ A **novelty detection engine** for VulcansTrace that identifies singleton extern
 - [RiskEscalator.cs](../../../VulcansTrace.Engine/RiskEscalator.cs): cross-detector correlation (Beaconing + LateralMovement → Critical)
 - [NoveltyDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/NoveltyDetectorTests.cs): 8 tests — singleton, repeated, disabled, empty, internal-only, mixed, same-IP-diff-ports, diff-IP-same-port
 - [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): end-to-end intensity visibility tests
+- [FindingsViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): UI-layer aggregation of same-source Novelty findings into grouped rows
 - [RiskEscalatorTests.cs](../../../VulcansTrace.Tests/Engine/RiskEscalatorTests.cs): escalation scenarios including Novelty promoted to Critical
 
 ---

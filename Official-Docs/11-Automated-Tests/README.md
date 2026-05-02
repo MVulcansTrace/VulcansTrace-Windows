@@ -35,4 +35,7 @@ Documentation is organized for two audiences:
 - [EvidenceBuilderTests.cs](../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): ZIP packaging, HMAC integrity, timestamp clamping, and determinism tests
 - [WindowsFirewallLogParserTests.cs](../../VulcansTrace.Tests/Core/WindowsFirewallLogParserTests.cs): parser edge-case coverage including native `pfirewall.log` rows, ignored `#Fields:` headers, ICMP placeholder ports, trailing fields, IPv6, and malformed lines
 - [MainViewModelIntegrationTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF integration with STA thread and Dispatcher
+- [FindingsViewModelTests.cs](../../VulcansTrace.Tests/Wpf/FindingsViewModelTests.cs): Novelty grouping logic and ViewModel state management
+- [IntensityComparisonTests.cs](../../VulcansTrace.Tests/Engine/IntensityComparisonTests.cs): end-to-end profile behavior using isolated attacker IPs
+- [ThresholdOverrideValidationTests.cs](../../VulcansTrace.Tests/Engine/ThresholdOverrideValidationTests.cs): threshold override input validation and boundary checks
 

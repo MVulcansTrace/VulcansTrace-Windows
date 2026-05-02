@@ -28,8 +28,8 @@ The test suite covers:
 
 **Key metrics:**
 
-- 23 test files across Core, Engine, Evidence, Wpf, and functional layers
-- 189 test methods (223 total test cases including parameterized data rows) covering unit, integration, robustness, and functional categories
+- 26 test files across Core, Engine, Evidence, Wpf, and functional layers
+- 201 test methods (237 total test cases including parameterized data rows) covering unit, integration, robustness, and functional categories
 - 6 detector test files with threshold, statistical, and scenario coverage
 - 1 integration test file with composite attack scenarios across all detectors
 - 1 robustness test file with fault-tolerance and cancellation coverage
@@ -64,7 +64,7 @@ The test suite covers:
 
 ## Implementation Evidence
 
-- [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, multi-source, truncation, and disabled-state coverage (285 lines, 7 tests)
+- [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, multi-source, truncation, and disabled-state coverage (285 lines, 8 tests)
 - [BeaconingDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): regular intervals, irregular intervals, outlier trimming, sample cap, mixed traffic (552 lines, 12 tests)
 - [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite signals across all detectors with RiskEscalator correlation (206 lines, 3 tests)
 - [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crashing detector, cancellation, high-volume (109 lines, 3 tests)
