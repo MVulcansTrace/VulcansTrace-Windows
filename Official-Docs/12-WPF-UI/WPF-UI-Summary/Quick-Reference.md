@@ -127,4 +127,4 @@ evidence.zip
 | ViewModel files | 8 (3 state-bearing + `RelayCommand` + `ViewModelBase` + helpers) |
 | Service files | 2 (`IDialogService` + `WpfDialogService`) |
 | Validation files | 1 (`NonNegativeIntValidationRule`) |
-| Test files | 3 + 1 infrastructure (integration, text, validation + FakeDialogService) |
+| Test files | 4 + 1 infrastructure (integration, text, validation, findings + FakeDialogService) |

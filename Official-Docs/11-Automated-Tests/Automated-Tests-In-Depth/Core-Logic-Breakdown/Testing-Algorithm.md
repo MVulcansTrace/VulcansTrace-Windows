@@ -370,7 +370,7 @@ public void Build_WithSigningKey_CreatesValidHmac()
 
 ## Implementation Evidence
 
-- [PortScanDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above/below threshold, multi-source, truncation (285 lines)
+- [PortScanDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above/below threshold, multi-source, truncation (316 lines)
 - [BeaconingDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): regular/irregular intervals, outlier trim, sample cap (552 lines)
 - [LateralMovementDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/LateralMovementDetectorTests.cs): threshold, multi-source, time-spread (362 lines)
 - [SentryAnalyzerTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerTests.cs): severity filtering, risk escalation with test doubles (312 lines)
