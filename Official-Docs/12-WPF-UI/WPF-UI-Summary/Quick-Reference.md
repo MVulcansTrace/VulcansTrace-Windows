@@ -18,6 +18,12 @@
 | MainViewModel | `LogText` | `TextBox.Text` (TwoWay, PropertyChanged) |
 | MainViewModel | `IsBusy` | StackPanel visibility (ProgressBar + "Working..." text) |
 | MainViewModel | `AnalyzeCommand` | Button.Command |
+| MainViewModel | `LoadSampleCommand` | Button.Command ("Load Sample") |
+| MainViewModel | `BotIntroText` | Intro header text block |
+| MainViewModel | `HasAdvisorMessage` | Advisor message panel visibility |
+| MainViewModel | `AdvisorMessage` | Advisor message text block |
+| MainViewModel | `SummaryText` | Analysis summary text block |
+| MainViewModel | `PortScanMaxEntriesPerSource` | Override text box (TwoWay) |
 | FindingsViewModel | `ItemsView` | DataGrid.ItemsSource (filtered) |
 | FindingsViewModel | `SearchText` | Search TextBox.Text |
 | FindingsViewModel | `SelectedSeverityFilter` | Severity ComboBox |
@@ -33,6 +39,7 @@
 | `ExportEvidenceCommand` | EvidenceViewModel | `_lastResult != null && !IsBusy` |
 | `CancelExportCommand` | EvidenceViewModel | `_isBusy && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested` (defined in the ViewModel, not currently bound in XAML) |
 | `CopySigningKeyCommand` | EvidenceViewModel | `!string.IsNullOrEmpty(SigningKey)` |
+| `LoadSampleCommand` | MainViewModel | `!_isBusy` — loads `SampleData.IntensityComparison` into the log text box |
 
 ## ViewModelBase Pattern
 
@@ -91,6 +98,19 @@ evidence.zip
 ├── manifest.json    — File hashes (SHA-256), timestamps, and warnings
 └── manifest.hmac    — HMAC-SHA256 of manifest.json
 ```
+
+## Layout
+
+| Element | Description |
+|---------|-------------|
+| Window chrome | `WindowStyle="None"` with custom `WindowChrome` (`GlassFrameThickness="0"`, `CaptionHeight="0"`, `ResizeBorderThickness="6"`, `CornerRadius="8"`) |
+| Title bar | Custom grid with app icon, brand text, minimize/maximize/close buttons |
+| Main grid | Three columns: left panel (~400px), GridSplitter (6px), right panel (remaining space) |
+| GridSplitter | `Width="6"`, `Background="Transparent"` — resizes left/right panels |
+| Action buttons | WrapPanel with 4 buttons: Analyze (90px), Cancel (80px), Export Evidence (120px), Load Sample (115px), all `Padding="8,6"` |
+| DataGrid columns | Category, Severity (chip style), Source, Target, Start, End, Description, **Details button** (70px) |
+| Category tooltip | `ToolTip="{Binding GroupDetails}"`, `ShowDuration="15000"` — shows grouped Novelty destinations |
+| ToolTip style | Dark theme (`BackgroundCardBrush`, `BorderStrongBrush`, `CornerRadius="6"`) defined in `DarkTheme.xaml` |
 
 ## Filtering
 

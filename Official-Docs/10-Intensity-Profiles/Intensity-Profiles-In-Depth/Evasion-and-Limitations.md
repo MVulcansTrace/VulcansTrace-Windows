@@ -6,6 +6,16 @@ Gaps, blind spots, and compensating controls for the intensity profile system.
 
 ## Profile-Related Limitations
 
+### RiskEscalator Masks Profile Differences on Multi-Behavior Hosts
+
+When a single source host exhibits **both Beaconing and LateralMovement**, the `RiskEscalator` promotes **every** finding for that host to `Critical` — regardless of its original severity or detector.
+
+**Consequence:** Profile differences become invisible for that host. On Low profile, a standalone PortScan finding (Medium severity) would normally be filtered out. But if that same host also shows Beaconing + LateralMovement, the PortScan finding is escalated to Critical and survives the Low filter. Every finding on the host is Critical, making it impossible to compare how the raw detectors behave at different sensitivity levels.
+
+**Mitigation in tests:** `IntensityComparisonTests.cs` deliberately isolates each attack behavior to a **unique source IP** so that RiskEscalator never fires. This proves profile-specific threshold behavior without correlation masking the results. The WPF "Load Sample" button uses the same isolated-IP dataset (`SampleData.IntensityComparison`) to demonstrate clean profile differences in the UI.
+
+**Operational implication:** When evaluating profile sensitivity, use isolated attacker data or manually inspect pre-escalation findings. Correlated hosts are compromised-host signals, not profile-sensitivity signals.
+
 ### Low Profile Misses Real Attacks
 
 The Low profile requires high thresholds (30 distinct `(DstIp, DstPort)` targets, 6 lateral hosts, 8 beacon events). Real attacks that fall below these thresholds produce no visible findings.

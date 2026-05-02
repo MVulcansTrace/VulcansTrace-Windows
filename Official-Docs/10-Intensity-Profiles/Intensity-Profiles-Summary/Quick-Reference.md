@@ -86,3 +86,5 @@ Step D: Filter by Severity — findings below MinSeverityToShow are removed
 | RiskEscalator.cs | Cross-detector escalation |
 | AnalysisProfileProviderTests.cs | Threshold and profile tests |
 | SentryAnalyzerTests.cs | Severity filtering tests |
+| IntensityComparisonTests.cs | End-to-end profile behavior with isolated IPs |
+| SampleData.cs | Synthetic log for WPF "Load Sample" demo |

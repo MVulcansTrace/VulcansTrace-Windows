@@ -13,7 +13,9 @@ public static class SampleData
     /// Expected results:
     /// - Low:  1 finding  (PolicyViolation only — High severity)
     /// - Medium: 4 findings (PortScan, Beaconing, LateralMovement, PolicyViolation)
-    /// - High:   6 findings (all above + Flood + Novelty)
+    /// - High:   7 findings (all above + Flood + two Novelty findings)
+    ///           The second Novelty comes from the policy-violation destination
+    ///           (198.51.100.50:21) also being a singleton external tuple.
     /// </summary>
     public static string IntensityComparison => @"#Fields: date time action protocol src-ip dst-ip src-port dst-port direction
 # === PORT SCAN (20 ports) — catches Medium/High, misses Low ===
