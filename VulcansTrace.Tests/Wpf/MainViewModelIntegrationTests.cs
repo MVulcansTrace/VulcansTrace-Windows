@@ -147,6 +147,10 @@ public class MainViewModelIntegrationTests
     }
 
     [Fact]
+    public Task Analyze_WhenCancelled_ClearsPreviousFindingsAndEvidenceContext() =>
+        RunOnStaAsync(RunCancelledAnalysisClearsStaleStateScenarioAsync);
+
+    [Fact]
     public async Task ExportEvidence_UsesAnalyzedLogSnapshot_WhenLogTextChangesDuringAnalysis()
     {
         var tcs = new TaskCompletionSource<bool>();
@@ -280,6 +284,36 @@ public class MainViewModelIntegrationTests
     }
 
 
+    private static async Task RunCancelledAnalysisClearsStaleStateScenarioAsync()
+    {
+        var detector = new CancelOnSecondRunDetector();
+        var vm = CreateViewModel(new IDetector[] { detector }, out _);
+
+        vm.LogText = "2024-01-01 12:00:00 ALLOW TCP 192.168.1.100 203.0.113.50 50000 21 60 - - - - - - - SEND";
+        vm.SelectedIntensity = vm.Intensities.First(i => i.Level == IntensityLevel.High);
+
+        vm.AnalyzeCommand.Execute(null);
+        await WaitForCompletion(vm, timeoutMs: 2000);
+
+        Assert.NotNull(vm.LastResult);
+        Assert.NotEmpty(vm.Findings.Items);
+        Assert.True(vm.Evidence.ExportEvidenceCommand.CanExecute(null));
+
+        vm.LogText = "2024-01-01 12:01:00 ALLOW TCP 192.168.1.200 203.0.113.60 50001 22 60 - - - - - - - SEND";
+        vm.AnalyzeCommand.Execute(null);
+
+        Assert.True(await detector.WaitUntilSecondRunStartedAsync(), "Detector did not start the cancellable run within the expected time.");
+        vm.CancelCommand.Execute(null);
+        await WaitUntilNotBusy(vm, timeoutMs: 2000);
+
+        Assert.Null(vm.LastResult);
+        Assert.Empty(vm.Findings.Items);
+        Assert.Equal(0, vm.Findings.FindingsCount);
+        Assert.False(vm.Findings.HasItems);
+        Assert.False(vm.Evidence.ExportEvidenceCommand.CanExecute(null));
+        Assert.Contains("cancelled", vm.SummaryText, StringComparison.OrdinalIgnoreCase);
+    }
+
     [Fact]
     public async Task ExportEvidence_RegeneratesSigningKeyPerExport()
     {
@@ -357,6 +391,69 @@ public class MainViewModelIntegrationTests
         var secondKey = vm.Evidence.SigningKey;
 
         Assert.NotEqual(firstKey, secondKey); // regenerated per export
+    }
+
+    [Fact]
+    public Task ExportEvidence_KeyClearsWhenAnalysisContextChanges() =>
+        RunOnStaAsync(RunKeyClearsWhenAnalysisContextChangesScenarioAsync);
+
+    [Fact]
+    public Task ExportEvidence_SaveDialogCancelDoesNotExposeSigningKey() =>
+        RunOnStaAsync(RunSaveDialogCancelDoesNotExposeSigningKeyScenarioAsync);
+
+    private static async Task RunKeyClearsWhenAnalysisContextChangesScenarioAsync()
+    {
+        var vm = CreateViewModel(new IDetector[] { new PolicyViolationDetector() }, out var dialog);
+        var firstPath = Path.GetTempFileName();
+
+        try
+        {
+            vm.LogText = "2024-01-01 12:00:00 ALLOW TCP 192.168.1.100 203.0.113.50 50000 21 60 - - - - - - - SEND";
+            vm.SelectedIntensity = vm.Intensities.First(i => i.Level == IntensityLevel.High);
+
+            vm.AnalyzeCommand.Execute(null);
+            await WaitForCompletion(vm, timeoutMs: 2000);
+
+            dialog.SavePath = firstPath;
+            vm.Evidence.ExportEvidenceCommand.Execute(null);
+            await WaitForExport(vm, firstPath, timeoutMs: 2000);
+
+            Assert.False(string.IsNullOrWhiteSpace(vm.Evidence.SigningKey));
+            Assert.False(string.IsNullOrWhiteSpace(vm.Evidence.MaskedSigningKey));
+
+            vm.LogText = "2024-01-01 12:01:00 ALLOW TCP 192.168.1.100 203.0.113.60 50001 23 60 - - - - - - - SEND";
+            vm.AnalyzeCommand.Execute(null);
+            await WaitForCompletion(vm, timeoutMs: 2000);
+
+            Assert.Equal(string.Empty, vm.Evidence.SigningKey);
+            Assert.Equal(string.Empty, vm.Evidence.MaskedSigningKey);
+            Assert.False(vm.Evidence.CopySigningKeyCommand.CanExecute(null));
+        }
+        finally
+        {
+            if (File.Exists(firstPath))
+                File.Delete(firstPath);
+        }
+    }
+
+    private static async Task RunSaveDialogCancelDoesNotExposeSigningKeyScenarioAsync()
+    {
+        var vm = CreateViewModel(new IDetector[] { new PolicyViolationDetector() }, out var dialog);
+
+        vm.LogText = "2024-01-01 12:00:00 ALLOW TCP 192.168.1.100 203.0.113.50 50000 21 60 - - - - - - - SEND";
+        vm.SelectedIntensity = vm.Intensities.First(i => i.Level == IntensityLevel.High);
+
+        vm.AnalyzeCommand.Execute(null);
+        await WaitForCompletion(vm, timeoutMs: 2000);
+
+        dialog.SavePath = null;
+        vm.Evidence.ExportEvidenceCommand.Execute(null);
+        await WaitForExportToFinish(vm, timeoutMs: 2000);
+
+        Assert.Equal(string.Empty, vm.Evidence.SigningKey);
+        Assert.Equal(string.Empty, vm.Evidence.MaskedSigningKey);
+        Assert.False(vm.Evidence.CopySigningKeyCommand.CanExecute(null));
+        Assert.Contains("cancelled", vm.SummaryText, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -451,6 +548,20 @@ public class MainViewModelIntegrationTests
         }
     }
 
+    private static async Task WaitUntilNotBusy(MainViewModel vm, int timeoutMs)
+    {
+        var sw = Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < timeoutMs)
+        {
+            if (!vm.IsBusy)
+                return;
+
+            await Task.Delay(10);
+        }
+
+        throw new TimeoutException("Analysis did not stop within the expected time.");
+    }
+
     private static async Task WaitForExport(MainViewModel vm, string path, int timeoutMs)
     {
         var sw = Stopwatch.StartNew();
@@ -465,6 +576,73 @@ public class MainViewModelIntegrationTests
         }
 
         throw new TimeoutException("Export did not complete within the expected time.");
+    }
+
+    private static async Task WaitForExportToFinish(MainViewModel vm, int timeoutMs)
+    {
+        var sw = Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < timeoutMs)
+        {
+            if (!vm.Evidence.IsBusy)
+                return;
+
+            await Task.Delay(10);
+        }
+
+        throw new TimeoutException("Export did not stop within the expected time.");
+    }
+
+    private static Task RunOnStaAsync(Func<Task> scenario)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        var thread = new Thread(() =>
+        {
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(dispatcher));
+
+            dispatcher.InvokeAsync(async () =>
+            {
+                try
+                {
+                    await scenario();
+                    tcs.SetResult(true);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+                finally
+                {
+                    dispatcher.InvokeShutdown();
+                }
+            });
+
+            Dispatcher.Run();
+        })
+        {
+            IsBackground = true
+        };
+        thread.SetApartmentState(ApartmentState.STA);
+
+        thread.Start();
+        return tcs.Task;
+    }
+
+    private static MainViewModel CreateViewModel(IEnumerable<IDetector> detectors, out FakeDialogService dialog)
+    {
+        var parser = new VulcansTrace.Core.Parsing.WindowsFirewallLogParser();
+        var profileProvider = new AnalysisProfileProvider();
+        var riskEscalator = new RiskEscalator();
+        var analyzer = new SentryAnalyzer(parser, profileProvider, detectors, riskEscalator);
+
+        var hasher = new IntegrityHasher();
+        var csvFormatter = new CsvFormatter();
+        var markdownFormatter = new MarkdownFormatter();
+        var htmlFormatter = new HtmlFormatter();
+        var evidenceBuilder = new EvidenceBuilder(hasher, csvFormatter, markdownFormatter, htmlFormatter);
+
+        dialog = new FakeDialogService();
+        return new MainViewModel(analyzer, evidenceBuilder, dialog, profileProvider);
     }
 
     private sealed class BlockingDetector : IDetector
@@ -498,5 +676,43 @@ public class MainViewModelIntegrationTests
             Task.Run(() => _started.Wait(TimeSpan.FromSeconds(2)));
 
         public void Release() => _release.Set();
+    }
+
+    private sealed class CancelOnSecondRunDetector : IDetector
+    {
+        private readonly ManualResetEventSlim _secondRunStarted = new();
+        private int _runCount;
+
+        public IEnumerable<Finding> Detect(IReadOnlyList<LogEntry> entries, AnalysisProfile profile, CancellationToken token)
+        {
+            if (Interlocked.Increment(ref _runCount) == 1)
+            {
+                return new[]
+                {
+                    BuildFinding(entries, "Initial finding")
+                };
+            }
+
+            _secondRunStarted.Set();
+            token.WaitHandle.WaitOne(TimeSpan.FromSeconds(2));
+            token.ThrowIfCancellationRequested();
+            throw new TimeoutException("Timed out waiting for cancellation.");
+        }
+
+        public Task<bool> WaitUntilSecondRunStartedAsync() =>
+            Task.Run(() => _secondRunStarted.Wait(TimeSpan.FromSeconds(2)));
+
+        private static Finding BuildFinding(IReadOnlyList<LogEntry> entries, string description) =>
+            new()
+            {
+                Category = "CancellationProbe",
+                Severity = Severity.High,
+                SourceHost = "192.168.1.100",
+                Target = "203.0.113.50:21",
+                TimeRangeStart = entries.First().Timestamp,
+                TimeRangeEnd = entries.First().Timestamp,
+                ShortDescription = description,
+                Details = "Used by WPF cancellation regression test."
+            };
     }
 }

@@ -21,6 +21,7 @@ public sealed class EvidenceViewModel : ViewModelBase
     private AnalysisResult? _lastResult;
     private string _logSnapshot = "";
     private DateTime? _analysisTimestamp;
+    private int _contextVersion;
 
     public string SigningKey
     {
@@ -30,6 +31,7 @@ public sealed class EvidenceViewModel : ViewModelBase
             if (SetField(ref _signingKey, value))
             {
                 RaisePropertyChanged(nameof(MaskedSigningKey));
+                CommandManager.InvalidateRequerySuggested();
             }
         }
     }
@@ -81,7 +83,19 @@ public sealed class EvidenceViewModel : ViewModelBase
         _lastResult = result;
         _logSnapshot = logText;
         _analysisTimestamp = timestamp;
-        // CommandManager automatically re-queries command state
+        _contextVersion++;
+        SigningKey = string.Empty;
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    public void ClearEvidenceContext()
+    {
+        _lastResult = null;
+        _logSnapshot = string.Empty;
+        _analysisTimestamp = null;
+        _contextVersion++;
+        SigningKey = string.Empty;
+        CommandManager.InvalidateRequerySuggested();
     }
 
     private bool CanExportEvidence() => _lastResult != null && !IsBusy;
@@ -94,9 +108,15 @@ public sealed class EvidenceViewModel : ViewModelBase
 
     private async Task ExportEvidenceAsync()
     {
-        if (_lastResult == null) return;
+        var result = _lastResult;
+        if (result == null) return;
+
+        var log = _logSnapshot;
+        var ts = _analysisTimestamp;
+        var contextVersion = _contextVersion;
 
         IsBusy = true;
+        SigningKey = string.Empty;
         StatusChanged?.Invoke(this, "Exporting evidence bundle...");
         
         _cancellationTokenSource?.Dispose();
@@ -104,16 +124,11 @@ public sealed class EvidenceViewModel : ViewModelBase
         var token = _cancellationTokenSource.Token;
         // CommandManager automatically re-queries command state
 
-        var signingKeyBytes = GenerateNewSigningKey();
+        var signingKeyBytes = GenerateSigningKeyBytes();
 
         byte[] zipBytes;
         try
         {
-            // Use local copies to avoid race conditions if analysis runs again
-            var result = _lastResult;
-            var log = _logSnapshot;
-            var ts = _analysisTimestamp;
-
             zipBytes = await _evidenceBuilder.BuildAsync(result, log, signingKeyBytes, ts, token);
         }
         catch (Exception ex)
@@ -128,6 +143,8 @@ public sealed class EvidenceViewModel : ViewModelBase
                 StatusChanged?.Invoke(this, "Export failed.");
             }
             IsBusy = false;
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
             return;
         }
 
@@ -143,6 +160,11 @@ public sealed class EvidenceViewModel : ViewModelBase
                 await File.WriteAllBytesAsync(fileName, zipBytes, token);
                 if (!token.IsCancellationRequested)
                 {
+                    if (_contextVersion == contextVersion)
+                    {
+                        SigningKey = Convert.ToHexString(signingKeyBytes);
+                    }
+
                     _dialogService.ShowMessage("Evidence bundle saved.", "VulcansTrace");
                     StatusChanged?.Invoke(this, "Evidence bundle saved.");
                 }
@@ -171,7 +193,7 @@ public sealed class EvidenceViewModel : ViewModelBase
         // CommandManager automatically re-queries command state
     }
 
-    private byte[] GenerateNewSigningKey()
+    private static byte[] GenerateSigningKeyBytes()
     {
         var keyBytes = new byte[32];
         using (var rng = RandomNumberGenerator.Create())
@@ -179,7 +201,6 @@ public sealed class EvidenceViewModel : ViewModelBase
             rng.GetBytes(keyBytes);
         }
 
-        SigningKey = Convert.ToHexString(keyBytes);
         return keyBytes;
     }
 

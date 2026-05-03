@@ -186,6 +186,7 @@ public sealed class MainViewModel : ViewModelBase
             return;
         }
 
+        ClearAnalysisState();
         IsBusy = true;
         SummaryText = "Analyzing log...";
         AdvisorMessage = "Analyzing...";
@@ -258,6 +259,13 @@ public sealed class MainViewModel : ViewModelBase
         };
 
         IsBusy = false;
+    }
+
+    private void ClearAnalysisState()
+    {
+        _lastResult = null;
+        Findings.Clear();
+        Evidence.ClearEvidenceContext();
     }
 
     private AnalysisResult AnalyzeWithOverrides(IntensityLevel intensity, string logText, CancellationToken token)
