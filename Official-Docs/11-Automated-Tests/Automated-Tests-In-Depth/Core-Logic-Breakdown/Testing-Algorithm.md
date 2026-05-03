@@ -356,7 +356,7 @@ public void Build_WithSigningKey_CreatesValidHmac()
 | Metric | Value |
 |--------|-------|
 | Test files | 26 |
-| Test methods | 201 (237 total test cases including parameterized data rows) |
+| Test methods | 209 (251 total test cases including parameterized data rows) |
 | Detector unit test files | 6 |
 | Integration test files | 1 (parameterized) |
 | Robustness test files | 1 |

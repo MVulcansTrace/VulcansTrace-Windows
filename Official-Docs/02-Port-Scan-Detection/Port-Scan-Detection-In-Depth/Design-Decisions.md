@@ -32,7 +32,7 @@
 
 **Decision:** Count distinct targets in the source data that will actually be analyzed. If below threshold, skip window analysis entirely.
 
-**Security Rationale:** When the detector analyzes the full source history, the math is exact: a time window cannot contain more distinct tuples than the full source set, so skipping below-threshold sources introduces no false negatives. If a custom profile enables truncation first, that guarantee no longer holds for the discarded tail, and the decision becomes a deliberate availability trade-off.
+**Security Rationale:** When the detector analyzes the full source history, the math is exact: a time window cannot contain more distinct tuples than the full source set, so skipping below-threshold sources introduces no false negatives. The eligibility check runs **before** truncation, so even when a custom profile enables `PortScanMaxEntriesPerSource`, the guarantee is preserved — a source that qualifies on its full history is never silently discarded. Truncation only affects the windowing stage, not the threshold gate.
 
 ---
 
@@ -54,7 +54,7 @@
 
 **Note:** Truncation is **disabled by default** across all intensity profiles (Low/Medium/High). Enable by configuring `PortScanMaxEntriesPerSource` in a custom profile override.
 
-**Security Rationale:** Graceful degradation. Systems survive adversarial conditions. Analysts are warned, not blindsided. The trade-off is completeness: later events for that source are not analyzed, so truncation can hide evidence that would otherwise cross threshold.
+**Security Rationale:** Graceful degradation. Systems survive adversarial conditions. Analysts are warned, not blindsided. The trade-off is per-window completeness: later events for that source are not analyzed, so truncation can reduce the distinct-target count within individual time windows. The global eligibility check still runs on the full source set, so sources that qualify overall are never silently discarded.
 
 ---
 
@@ -64,6 +64,6 @@
 |----------|-------------------|-------------------|
 | Tuple counting | Comprehensive detection | Catches both scan types |
 | Bucketed windows | Simplicity + auditability | Fast, predictable, debuggable |
-| Global pre-check | Efficiency + bounded analysis | Skips sources below threshold early; mathematically exact only on the full source set |
+| Global pre-check | Efficiency + bounded analysis | Skips sources below threshold early; mathematically exact because eligibility is checked before truncation |
 | Medium severity | Accurate risk communication | Prevents alert fatigue; hidden on Low profile unless escalated |
-| Truncation + warning | Graceful degradation | Bounds per-source cost, but trades away some completeness |
+| Truncation + warning | Graceful degradation | Bounds per-source cost; trades per-window completeness while preserving global eligibility |

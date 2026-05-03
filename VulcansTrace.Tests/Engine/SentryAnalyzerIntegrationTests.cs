@@ -203,4 +203,61 @@ public class SentryAnalyzerIntegrationTests
         Assert.NotEmpty(result.Warnings);
         Assert.Contains("truncated", result.Warnings.First(), StringComparison.OrdinalIgnoreCase);
     }
+
+    [Fact]
+    public void Analyze_PortScanTruncation_DoesNotAffectEligibilityCheck()
+    {
+        var detector = new PortScanDetector();
+        var baseTime = new DateTime(2024, 3, 1, 12, 0, 0);
+
+        // 10 entries: first 5 all target port 80, next 5 each target a different port.
+        // Full set has 6 distinct ports (80, 21, 22, 23, 25, 53).
+        var entries = new List<LogEntry>();
+        for (int i = 0; i < 5; i++)
+        {
+            entries.Add(new LogEntry
+            {
+                Timestamp = baseTime.AddSeconds(i),
+                Action = "DROP",
+                Protocol = "TCP",
+                SrcIp = "10.0.0.50",
+                DstIp = "192.168.1.100",
+                SrcPort = 45000 + i,
+                DstPort = 80
+            });
+        }
+        entries.Add(new LogEntry { Timestamp = baseTime.AddSeconds(5), Action = "DROP", Protocol = "TCP", SrcIp = "10.0.0.50", DstIp = "192.168.1.100", SrcPort = 45005, DstPort = 21 });
+        entries.Add(new LogEntry { Timestamp = baseTime.AddSeconds(6), Action = "DROP", Protocol = "TCP", SrcIp = "10.0.0.50", DstIp = "192.168.1.100", SrcPort = 45006, DstPort = 22 });
+        entries.Add(new LogEntry { Timestamp = baseTime.AddSeconds(7), Action = "DROP", Protocol = "TCP", SrcIp = "10.0.0.50", DstIp = "192.168.1.100", SrcPort = 45007, DstPort = 23 });
+        entries.Add(new LogEntry { Timestamp = baseTime.AddSeconds(8), Action = "DROP", Protocol = "TCP", SrcIp = "10.0.0.50", DstIp = "192.168.1.100", SrcPort = 45008, DstPort = 25 });
+        entries.Add(new LogEntry { Timestamp = baseTime.AddSeconds(9), Action = "DROP", Protocol = "TCP", SrcIp = "10.0.0.50", DstIp = "192.168.1.100", SrcPort = 45009, DstPort = 53 });
+
+        // Without truncation: 6 distinct ports ≥ 4 → port scan detected
+        var noCapProfile = new AnalysisProfile
+        {
+            EnablePortScan = true,
+            PortScanMinPorts = 4,
+            PortScanWindowMinutes = 5,
+            PortScanMaxEntriesPerSource = null
+        };
+        var noCapFindings = detector.Detect(entries, noCapProfile, CancellationToken.None).ToList();
+        Assert.Single(noCapFindings);
+        Assert.Equal("PortScan", noCapFindings[0].Category);
+
+        // With truncation to 5 entries: truncated subset has only 1 distinct port (80),
+        // so no finding is produced from the truncated data. However, the detector must NOT
+        // skip the source at the eligibility stage (which was the bug). Instead, it should
+        // proceed to truncate, emit a warning, and then analyze the truncated data.
+        var capProfile = new AnalysisProfile
+        {
+            EnablePortScan = true,
+            PortScanMinPorts = 4,
+            PortScanWindowMinutes = 5,
+            PortScanMaxEntriesPerSource = 5
+        };
+        var capFindings = detector.Detect(entries, capProfile, CancellationToken.None).ToList();
+        Assert.Empty(capFindings); // truncated subset doesn't meet per-window threshold
+        Assert.Single(detector.Warnings); // but truncation warning proves it didn't skip early
+        Assert.Contains("truncated", detector.Warnings[0], StringComparison.OrdinalIgnoreCase);
+    }
 }

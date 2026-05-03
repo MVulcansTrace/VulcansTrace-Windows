@@ -38,7 +38,7 @@ An **egress policy violation detector** for VulcansTrace that flags internal-to-
 
 - [PolicyViolationDetector.cs](../../../VulcansTrace.Engine/Detectors/PolicyViolationDetector.cs): 53-line detector — gate checks, HashSet initialization, three-condition filter, finding creation
 - [AnalysisProfileProvider.cs](../../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): all three profiles enable policy with ports [21, 23, 445]
-- [IpClassification.cs](../../../VulcansTrace.Engine/Net/IpClassification.cs): RFC 1918 and IPv6 internal/external classification
+- [IpClassification.cs](../../../VulcansTrace.Engine/Net/IpClassification.cs): RFC 1918, IPv4 loopback, and IPv6 internal/external classification
 - [RiskEscalator.cs](../../../VulcansTrace.Engine/RiskEscalator.cs): cross-detector correlation (Beaconing + LateralMovement → Critical for all findings on that host)
 - [PolicyViolationDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PolicyViolationDetectorTests.cs): 9 unit tests — happy path, allowed-port traffic, disabled policy, empty logs, external/internal traffic, multiple violations, empty port list, null config
 - [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): end-to-end pipeline validation

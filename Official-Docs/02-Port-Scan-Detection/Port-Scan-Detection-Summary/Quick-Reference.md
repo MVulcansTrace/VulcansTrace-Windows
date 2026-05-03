@@ -34,7 +34,7 @@ Step E: Count per bucket -> Create Finding if at or above threshold
 | PortScanWindowMinutes | 5 | 5 | 5 |
 | PortScanMaxEntriesPerSource | null | null | null |
 
-Built-in profiles leave truncation disabled. A custom profile can set `PortScanMaxEntriesPerSource`, which bounds per-source work but can hide later evidence for that source.
+Built-in profiles leave truncation disabled. A custom profile can set `PortScanMaxEntriesPerSource`, which bounds per-source work. Eligibility is checked on the full source set before truncation, so qualifying sources are never silently discarded.
 
 ---
 

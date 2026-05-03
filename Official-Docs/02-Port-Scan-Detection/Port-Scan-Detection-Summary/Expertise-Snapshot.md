@@ -43,8 +43,8 @@ A **port scan detection engine** for VulcansTrace that identifies likely reconna
 ## Key Design Choices
 
 - **Distinct `(DstIp, DstPort)` tuples** so the detector can catch both horizontal and vertical scans
-- **Global pre-check** so low-variety sources are skipped before more expensive window analysis; when the full source set is analyzed, this is mathematically lossless
+- **Global pre-check** so low-variety sources are skipped before more expensive window analysis; eligibility is checked on the full source set before truncation, so this is mathematically lossless even with custom profiles
 - **Medium severity by default** because reconnaissance should be investigated, but not treated like confirmed compromise (note: on the Low profile, Medium-severity findings are filtered out by the pipeline's severity gate; only Medium and High profiles surface standalone port scan findings — however, if the same host triggers Beaconing + LateralMovement, RiskEscalator promotes port scan findings to Critical, which passes every profile's severity gate)
 - **Risk escalation awareness** — if the same source IP also triggers Beaconing and LateralMovement findings, the pipeline's RiskEscalator promotes the port scan finding to Critical severity
-- **Truncation with warnings** so custom profiles can bound per-source cost transparently instead of failing silently; the trade-off is reduced completeness on discarded events
+- **Truncation with warnings** so custom profiles can bound per-source cost transparently instead of failing silently; the trade-off is reduced per-window completeness, but global eligibility is preserved
 

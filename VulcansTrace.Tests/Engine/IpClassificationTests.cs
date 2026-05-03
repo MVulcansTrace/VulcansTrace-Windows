@@ -186,4 +186,29 @@ public class IpClassificationTests
         // Assert
         Assert.Equal(expected, result);
     }
+
+    [Theory]
+    [InlineData("127.0.0.1")]
+    [InlineData("127.0.0.50")]
+    [InlineData("127.255.255.255")]
+    public void IsInternal_WithIpv4Loopback_ReturnsTrue(string ip)
+    {
+        // Act
+        var result = IpClassification.IsInternal(ip);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Theory]
+    [InlineData("127.0.0.1")]
+    [InlineData("127.0.0.50")]
+    public void IsExternal_WithIpv4Loopback_ReturnsFalse(string ip)
+    {
+        // Act
+        var result = IpClassification.IsExternal(ip);
+
+        // Assert
+        Assert.False(result);
+    }
 }

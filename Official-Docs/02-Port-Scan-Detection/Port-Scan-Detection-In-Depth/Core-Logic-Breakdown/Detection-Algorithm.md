@@ -70,8 +70,8 @@ User-visible findings in AnalysisResult
 
 The source IP is the key identifier for blocking, threat intelligence, and correlation with other security tools.
 
-**Truncation (after grouping, if configured):**
-The detector takes the first N entries chronologically (not random) to preserve earliest attack behavior and temporal context. The warning ensures analysts know data was limited.
+**Truncation (after eligibility, if configured):**
+After the global threshold check confirms a source qualifies, the detector optionally takes the first N entries chronologically (not random) to preserve earliest attack behavior and temporal context. The warning ensures analysts know data was limited. Truncation runs after the eligibility check so a cap cannot hide a qualifying source from the global gate.
 
 ---
 
@@ -81,7 +81,7 @@ The detector takes the first N entries chronologically (not random) to preserve 
 
 **Rationale:** This is a **mathematical early-exit optimization** when the full source set is analyzed. If a source has only 3 distinct targets globally, no single time window can exceed a threshold of 15. A subset cannot contain more distinct elements than the full set, so skipping that source does not introduce false negatives.
 
-**Security Angle:** This also reduces unnecessary work on low-variety traffic. If a custom profile enables truncation before the pre-check, the detector is explicitly trading completeness for bounded per-source cost.
+**Security Angle:** This also reduces unnecessary work on low-variety traffic. The pre-check runs on the full source set before any truncation, so the mathematical no-false-negative guarantee holds even when `PortScanMaxEntriesPerSource` is configured.
 
 ---
 

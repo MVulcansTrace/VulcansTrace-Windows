@@ -30,7 +30,7 @@ Documentation is organized for two audiences:
 - [PolicyViolationDetector.cs](../../VulcansTrace.Engine/Detectors/PolicyViolationDetector.cs): 53-line linear-scan detector with three-condition filter and structured finding output
 - [AnalysisProfile.cs](../../VulcansTrace.Engine/AnalysisProfile.cs): `EnablePolicy` and `DisallowedOutboundPorts` configuration model
 - [AnalysisProfileProvider.cs](../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): built-in Low, Medium, and High profiles, all enabling policy detection with ports [21, 23, 445]
-- [IpClassification.cs](../../VulcansTrace.Engine/Net/IpClassification.cs): RFC 1918 and IPv6 internal/external classification
+- [IpClassification.cs](../../VulcansTrace.Engine/Net/IpClassification.cs): RFC 1918, IPv4 loopback, and IPv6 internal/external classification
 - [RiskEscalator.cs](../../VulcansTrace.Engine/RiskEscalator.cs): cross-detector correlation that escalates to Critical when Beaconing + LateralMovement co-occur
 - [PolicyViolationDetectorTests.cs](../../VulcansTrace.Tests/Engine/Detectors/PolicyViolationDetectorTests.cs): 9 unit tests covering happy path, allowed-port traffic, disabled policy, empty logs, external/internal traffic, multiple violations, empty/null port lists
 - [SentryAnalyzerIntegrationTests.cs](../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): end-to-end pipeline validation including policy violation findings

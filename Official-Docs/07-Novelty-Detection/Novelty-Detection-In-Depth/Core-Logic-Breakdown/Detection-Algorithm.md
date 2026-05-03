@@ -76,10 +76,10 @@ if (externalEntries.Count == 0)
 |-------------|-----------|--------|
 | Internal-to-internal singletons | Excluded | DHCP, printing, DNS, NTP — noise |
 | External singletons | Kept | First-contact destinations — signal |
-| Loopback (127.x.x.x) | Kept | Not classified as internal by `IpClassification` |
+| Loopback (127.x.x.x) | Excluded | Classified as internal by `IpClassification` |
 | Link-local (169.254.x.x) | Kept | Not classified as internal by `IpClassification` |
 
-**Edge case:** IPv4 loopback and link-local addresses are not classified as internal by `IpClassification`, so they pass through the filter. IPv6 loopback (::1) and link-local (fe80::/10) are classified as internal.
+**Edge case:** IPv4 loopback (127.0.0.0/8) is classified as internal by `IpClassification`, so it is excluded. IPv4 link-local (169.254.x.x) is not classified as internal, so it passes through the filter. IPv6 loopback (::1) and link-local (fe80::/10) are classified as internal.
 
 ---
 

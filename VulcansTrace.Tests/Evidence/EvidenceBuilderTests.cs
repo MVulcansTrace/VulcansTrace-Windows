@@ -16,6 +16,19 @@ namespace VulcansTrace.Tests.Evidence;
 public class EvidenceBuilderTests
 {
     [Fact]
+    public void Build_WithNullResult_ThrowsArgumentNullException()
+    {
+        var hasher = new IntegrityHasher();
+        var csvFormatter = new CsvFormatter();
+        var markdownFormatter = new MarkdownFormatter();
+        var htmlFormatter = new HtmlFormatter();
+        var builder = new EvidenceBuilder(hasher, csvFormatter, markdownFormatter, htmlFormatter);
+
+        Assert.Throws<ArgumentNullException>(() =>
+            builder.Build(null!, "log", Encoding.UTF8.GetBytes("key")));
+    }
+
+    [Fact]
     public void Build_WithEmptyResult_CreatesZipWithAllEntries()
     {
         // Arrange

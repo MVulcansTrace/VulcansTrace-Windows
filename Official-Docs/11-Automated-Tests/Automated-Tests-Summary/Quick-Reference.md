@@ -16,7 +16,7 @@
 | Core integrity tests | 1 | SHA-256/HMAC cryptographic integrity |
 | Profile tests | 1 | Intensity monotonicity, immutability |
 | Risk escalator tests | 1 | Beaconing + Lateral = Critical escalation |
-| IP classification tests | 1 | RFC 1918, IPv6, mapped addresses |
+| IP classification tests | 1 | RFC 1918, IPv4 loopback, IPv6, mapped addresses |
 | WPF tests | 4 | Full-stack analyze + export, STA threading, validation rules, ViewModel grouping |
 | Functional tests | 1 | End-to-end smoke test with synthetic multi-pattern log input |
 
@@ -130,7 +130,7 @@
 | `VulcansTrace.Tests/Core/IntegrityHasherTests.cs` | SHA-256/HMAC integrity |
 | `VulcansTrace.Tests/Engine/AnalysisProfileProviderTests.cs` | Profile thresholds |
 | `VulcansTrace.Tests/Engine/RiskEscalatorTests.cs` | Risk escalation logic |
-| `VulcansTrace.Tests/Engine/IpClassificationTests.cs` | IP classification (RFC 1918, IPv6) |
+| `VulcansTrace.Tests/Engine/IpClassificationTests.cs` | IP classification (RFC 1918, IPv4 loopback, IPv6) |
 | `VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs` | Full-stack WPF |
 | `VulcansTrace.Tests/Wpf/MainViewModelTextTests.cs` | ViewModel text display |
 | `VulcansTrace.Tests/Wpf/NonNegativeIntValidationRuleTests.cs` | WPF validation rules |

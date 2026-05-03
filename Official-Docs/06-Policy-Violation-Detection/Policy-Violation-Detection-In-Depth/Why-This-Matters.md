@@ -72,7 +72,7 @@ The detector:
 - [PolicyViolationDetector.cs](../../../VulcansTrace.Engine/Detectors/PolicyViolationDetector.cs): gate checks, HashSet initialization, three-condition filter, and finding creation
 - [AnalysisProfile.cs](../../../VulcansTrace.Engine/AnalysisProfile.cs): `EnablePolicy` and `DisallowedOutboundPorts` configuration
 - [AnalysisProfileProvider.cs](../../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): all three profiles enable policy with ports [21, 23, 445]
-- [IpClassification.cs](../../../VulcansTrace.Engine/Net/IpClassification.cs): RFC 1918 and IPv6 internal/external classification
+- [IpClassification.cs](../../../VulcansTrace.Engine/Net/IpClassification.cs): RFC 1918, IPv4 loopback, and IPv6 internal/external classification
 - [RiskEscalator.cs](../../../VulcansTrace.Engine/RiskEscalator.cs): cross-detector escalation logic
 - [PolicyViolationDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PolicyViolationDetectorTests.cs): 9 tests covering happy path, allowed ports, disabled policy, empty logs, traffic direction, multiple violations, empty ports, and null config
 

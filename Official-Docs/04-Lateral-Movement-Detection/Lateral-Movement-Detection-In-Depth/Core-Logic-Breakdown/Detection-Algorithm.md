@@ -66,7 +66,7 @@ var filtered = entries.Where(e =>
 | Server reply traffic | Excluded | Ephemeral destination ports |
 | Actual lateral movement | Kept | Internal-to-internal on admin ports |
 
-**IP Classification:** `IpClassification.IsInternal()` covers IPv4 RFC1918 ranges (10.x, 172.16-31.x, 192.168.x) and IPv6 local ranges (::1, fc00::/7, fe80::/10).
+**IP Classification:** `IpClassification.IsInternal()` covers IPv4 RFC1918 ranges (10.x, 172.16-31.x, 192.168.x), IPv4 loopback (127.0.0.0/8), and IPv6 local ranges (::1, fc00::/7, fe80::/10).
 
 ---
 

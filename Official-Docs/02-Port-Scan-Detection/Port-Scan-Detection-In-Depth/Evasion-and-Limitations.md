@@ -58,7 +58,7 @@ Port scan findings are always emitted at Medium severity. Under the Low analysis
 
 ## Custom-Profile Note
 
-If a team enables `PortScanMaxEntriesPerSource`, the detector also accepts a completeness trade-off on very large sources. That cap can prevent resource exhaustion, but it can also hide later events that would have changed the result.
+If a team enables `PortScanMaxEntriesPerSource`, the detector bounds per-source cost while preserving the global eligibility guarantee. The cap can hide later events from individual time windows, but a source that qualifies on its full distinct-target count is never silently discarded.
 
 ---
 

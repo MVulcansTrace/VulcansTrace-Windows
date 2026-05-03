@@ -15,7 +15,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 | Metric | Value |
 |--------|-------|
 | Test files | 26 |
-| Test methods | 201 (237 total test cases including parameterized data rows) |
+| Test methods | 209 (251 total test cases including parameterized data rows) |
 | Detector test files | 6 (PortScan, Beaconing, Flood, LateralMovement, PolicyViolation, Novelty) |
 | Core test files | 3 (log parsing, domain models, SHA-256/HMAC integrity) |
 | Engine pipeline test files | 8 (analyzer orchestration, profile thresholds, IP classification, risk escalation, intensity comparison, threshold override validation, integration, robustness) |

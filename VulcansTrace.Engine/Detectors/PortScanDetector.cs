@@ -48,13 +48,6 @@ public sealed class PortScanDetector : IDetector, IProducesWarnings
             var ordered = srcGroup.OrderBy(e => e.Timestamp).ToList();
             var totalForSource = ordered.Count;
 
-            var maxEntries = profile.PortScanMaxEntriesPerSource.GetValueOrDefault();
-            if (maxEntries > 0 && ordered.Count > maxEntries)
-            {
-                ordered = ordered.Take(maxEntries).ToList();
-                _warnings.Add($"Port scan analysis for {srcIp} truncated to {maxEntries} events out of {totalForSource}.");
-            }
-
             var distinctTargetsForSource = ordered
                 .Select(e => (e.DstIp, e.DstPort))
                 .Distinct()
@@ -62,6 +55,13 @@ public sealed class PortScanDetector : IDetector, IProducesWarnings
 
             if (distinctTargetsForSource < profile.PortScanMinPorts)
                 continue;
+
+            var maxEntries = profile.PortScanMaxEntriesPerSource.GetValueOrDefault();
+            if (maxEntries > 0 && ordered.Count > maxEntries)
+            {
+                ordered = ordered.Take(maxEntries).ToList();
+                _warnings.Add($"Port scan analysis for {srcIp} truncated to {maxEntries} events out of {totalForSource}.");
+            }
 
             var byWindow = ordered.GroupBy(e =>
                 new DateTime(

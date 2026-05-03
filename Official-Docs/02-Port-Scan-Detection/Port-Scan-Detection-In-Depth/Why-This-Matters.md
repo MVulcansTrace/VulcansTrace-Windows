@@ -34,7 +34,7 @@ The **port scan detection engine** in VulcansTrace:
 **Key metrics:**
 - O(n log n) worst-case time complexity (dominant cost is per-group sorting)
 - Three built-in sensitivity profiles with thresholds verified in tests
-- Global pre-check has a mathematical no-false-negative guarantee only when the full source set is analyzed; if a custom profile enables truncation first, that becomes an explicit availability-versus-completeness trade-off
+- Global pre-check has a mathematical no-false-negative guarantee because eligibility is evaluated on the full source set before any truncation is applied
 
 ---
 
@@ -58,7 +58,7 @@ The **port scan detection engine** in VulcansTrace:
 | **Defense in Depth** | Parser validates data → Detector finds patterns → RiskEscalator escalates severity when correlated threats are found → Severity filter removes below-threshold findings |
 | **Fail-Soft Design** | High-volume sources can be truncated (configurable), not rejected — analysis continues |
 | **Accurate Risk Communication** | Severity=Medium for recon (not Critical) — prevents alert fatigue; note that the Low profile's severity filter hides Medium findings by default |
-| **Resource Protection** | Early exits reduce unnecessary work, and configurable truncation can cap per-source cost when `PortScanMaxEntriesPerSource` is set in a custom profile |
+| **Resource Protection** | Early exits reduce unnecessary work, and configurable truncation can cap per-source cost when `PortScanMaxEntriesPerSource` is set in a custom profile, without hiding qualifying sources from the global gate |
 | **Transparency** | Warnings emitted when truncation is active — no silent data loss |
 | **Separation of Concerns** | Parser validates, detector analyzes, escalator escalates severity, filter controls visibility |
 

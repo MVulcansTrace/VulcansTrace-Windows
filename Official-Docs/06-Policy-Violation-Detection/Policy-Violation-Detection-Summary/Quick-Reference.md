@@ -66,6 +66,7 @@ PolicyViolationDetector (High)
 | 10.0.0.0/8 | Internal |
 | 172.16.0.0/12 | Internal |
 | 192.168.0.0/16 | Internal |
+| 127.0.0.0/8 | Internal (IPv4 loopback) |
 | ::1 | Internal (IPv6 loopback) |
 | fc00::/7 | Internal (IPv6 ULA) |
 | fe80::/10 | Internal (IPv6 link-local) |

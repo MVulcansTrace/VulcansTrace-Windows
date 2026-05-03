@@ -29,7 +29,7 @@ The test suite covers:
 **Key metrics:**
 
 - 26 test files across Core, Engine, Evidence, Wpf, and functional layers
-- 201 test methods (237 total test cases including parameterized data rows) covering unit, integration, robustness, and functional categories
+- 209 test methods (251 total test cases including parameterized data rows) covering unit, integration, robustness, and functional categories
 - 6 detector test files with threshold, statistical, and scenario coverage
 - 1 integration test file with composite attack scenarios across all detectors
 - 1 robustness test file with fault-tolerance and cancellation coverage

@@ -100,6 +100,7 @@ public sealed class EvidenceBuilder
     /// <returns>A byte array containing the ZIP file contents.</returns>
     public byte[] Build(AnalysisResult result, string rawLog, byte[] signingKey, DateTime? analysisTimestampUtc, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(result);
         cancellationToken.ThrowIfCancellationRequested();
 
         var timestampOffset = NormalizeTimestamp(result, analysisTimestampUtc);
