@@ -45,7 +45,7 @@ public sealed class FindingsViewModel : ViewModelBase
         {
             if (SetField(ref _searchText, value))
             {
-                ItemsView.Refresh();
+                RefreshItemsView();
             }
         }
     }
@@ -58,7 +58,7 @@ public sealed class FindingsViewModel : ViewModelBase
         {
             if (SetField(ref _selectedSeverityFilter, value))
             {
-                ItemsView.Refresh();
+                RefreshItemsView();
             }
         }
     }
@@ -190,7 +190,7 @@ public sealed class FindingsViewModel : ViewModelBase
         HighCriticalCount = result.Findings.Count(f => f.Severity >= Severity.High);
         WarningCount = result.Warnings.Count;
         ParseErrorCount = result.ParseErrorCount;
-        HasItems = Items.Count > 0;
+        RefreshItemsView();
     }
 
     /// <summary>
@@ -206,6 +206,12 @@ public sealed class FindingsViewModel : ViewModelBase
         WarningCount = 0;
         ParseErrorCount = 0;
         HasItems = false;
+    }
+
+    private void RefreshItemsView()
+    {
+        ItemsView.Refresh();
+        HasItems = !ItemsView.IsEmpty;
     }
 
     /// <summary>

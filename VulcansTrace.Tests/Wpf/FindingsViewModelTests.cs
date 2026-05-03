@@ -128,4 +128,50 @@ public class FindingsViewModelTests
         vm.Clear();
         Assert.False(vm.HasItems);
     }
+
+    [Fact]
+    public void SearchText_WhenNoFilteredItems_SetsHasItemsFalse()
+    {
+        var vm = new FindingsViewModel();
+        var result = new AnalysisResult();
+        result.AddFinding(new Finding
+        {
+            Category = "PortScan",
+            Severity = Severity.Medium,
+            SourceHost = "10.0.0.1",
+            Target = "multiple hosts/ports",
+            TimeRangeStart = DateTime.Now,
+            TimeRangeEnd = DateTime.Now,
+            ShortDescription = "Port scan detected"
+        });
+
+        vm.LoadResults(result);
+        vm.SearchText = "does-not-match";
+
+        Assert.False(vm.HasItems);
+        Assert.True(vm.ItemsView.IsEmpty);
+    }
+
+    [Fact]
+    public void SelectedSeverityFilter_WhenNoFilteredItems_SetsHasItemsFalse()
+    {
+        var vm = new FindingsViewModel();
+        var result = new AnalysisResult();
+        result.AddFinding(new Finding
+        {
+            Category = "PortScan",
+            Severity = Severity.Medium,
+            SourceHost = "10.0.0.1",
+            Target = "multiple hosts/ports",
+            TimeRangeStart = DateTime.Now,
+            TimeRangeEnd = DateTime.Now,
+            ShortDescription = "Port scan detected"
+        });
+
+        vm.LoadResults(result);
+        vm.SelectedSeverityFilter = vm.SeverityFilters.Single(f => f.MinSeverity == Severity.Critical);
+
+        Assert.False(vm.HasItems);
+        Assert.True(vm.ItemsView.IsEmpty);
+    }
 }
