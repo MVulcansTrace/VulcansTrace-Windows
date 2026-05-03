@@ -26,7 +26,7 @@ The detector behavior is:
 
 1. Keep all 16 events for source `10.0.0.5`
 2. Pass the global distinct-target pre-check
-3. Place all events into the same `12:00-12:05` bucket
+3. Evaluate the burst inside one 5-minute sliding window
 4. Emit one Medium port-scan finding for that source and time range
 
 ---
@@ -37,7 +37,7 @@ The detector behavior is:
 |------|--------|
 | **A: Group** | `10.0.0.5` → 16 entries |
 | **B: Global Check** | 16 distinct tuples >= 15 (Medium threshold) → Proceed |
-| **C: Bucket** | All 16 entries in 12:00-12:05 bucket |
+| **C: Window** | All 16 entries fall within one 5-minute sliding window |
 | **D: Detect** | 16 >= 15 → Finding created |
 
 ---
@@ -82,7 +82,7 @@ The result is one explainable finding instead of a pile of disconnected events.
 | Detector Behavior | Security Benefit |
 |-------------------|------------------|
 | **Distinct tuple counting** | Catches both host breadth and service breadth |
-| **Fixed bucket window** | Makes the burst easy to explain and verify |
+| **Sliding time window** | Catches bursts without relying on wall-clock bucket boundaries |
 | **Structured finding output** | Gives analysts attribution, time range, and scope |
 | **Low-profile suppression note** | Explains why a true detection may still be hidden from the user |
 
@@ -96,7 +96,7 @@ The result is one explainable finding instead of a pile of disconnected events.
 | Medium | 15 | 16 >= 15 | **DETECTED** |
 | High | 8 | 16 >= 8 | **DETECTED** |
 
-An attacker can scan 29 targets per aligned 5-minute bucket in a Low-profile environment without triggering detector logic at all.
+An attacker can scan 29 targets within any 5-minute window in a Low-profile environment without triggering detector logic at all.
 
 > **Double suppression at Low profile:** The Low profile does not just set a high threshold. It also sets `MinSeverityToShow = Severity.High`. Since `PortScanDetector` always creates findings at `Severity.Medium`, any PortScan finding that does exceed the Low threshold of 30 targets would still be suppressed by the severity filter in `SentryAnalyzer` unless some other correlated findings cause `RiskEscalator` to raise it to `Critical`.
 

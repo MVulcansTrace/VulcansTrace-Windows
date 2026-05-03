@@ -120,7 +120,7 @@ cancellationToken.ThrowIfCancellationRequested();
 
 | Pattern | PortScan | Beaconing | LateralMovement |
 |--------|----------|-----------|-----------------|
-| Window type | Bucketed | Statistical | Sliding |
+| Window type | Sliding | Statistical | Sliding |
 | Resource limit | Truncation + warning | Sample cap | Filtering only |
 | Per-source limit | Max entries per source | N most recent | One finding then break |
 | Complexity | O(Σ m log m) | O(Σ m log m) | O(Σ mᵢ²) ≤ O(n × m) |

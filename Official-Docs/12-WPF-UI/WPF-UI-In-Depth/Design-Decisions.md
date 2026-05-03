@@ -16,7 +16,7 @@ Every major choice in the WPF UI has a security rationale, a performance implica
 
 ## Decision 2: Hand-Rolled MVVM Instead of a Framework
 
-**Decision:** `ViewModelBase` and `RelayCommand` built from scratch (~70 lines combined) rather than using CommunityToolkit.Mvvm or MVVM Light.
+**Decision:** `ViewModelBase` and `RelayCommand` built from scratch (~60 lines combined) rather than using CommunityToolkit.Mvvm or MVVM Light.
 
 **Rationale:** Adding NuGet packages would introduce dependencies whose internals would need to be trusted. Keeping the security tool dependency-free and easily auditable is prioritized over framework convenience.
 

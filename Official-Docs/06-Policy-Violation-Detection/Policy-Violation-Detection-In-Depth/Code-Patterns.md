@@ -123,7 +123,7 @@ cancellationToken.ThrowIfCancellationRequested();
 
 | Pattern | PortScan | Beaconing | LateralMovement | PolicyViolation |
 |--------|----------|-----------|-----------------|-----------------|
-| Window type | Bucketed | Statistical | Sliding | None (linear scan) |
+| Window type | Sliding | Statistical | Sliding | None (linear scan) |
 | Grouping | By source | By tuple | By source | None |
 | Per-source limit | Max entries | Sample cap | One finding then break | None (all violations) |
 | Complexity | O(n log n)ᵃ | O(n log n)ᵇ | O(n × m)ᶜ | **O(n)** |

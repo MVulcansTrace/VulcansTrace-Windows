@@ -15,7 +15,7 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 | Metric | Value |
 |--------|-------|
 | Architecture pattern | MVVM with manual composition |
-| Framework code | ~70 lines (`ViewModelBase` + `RelayCommand`) |
+| Framework code | ~60 lines (`ViewModelBase` + `RelayCommand`) |
 | ViewModels | 3 state-bearing (`MainViewModel`, `FindingsViewModel`, `EvidenceViewModel`) |
 | Detection pipeline integration | 6 detectors wired through `SentryAnalyzer` |
 | Export integrity | HMAC-SHA256 with 256-bit CSPRNG key, per-export regeneration |

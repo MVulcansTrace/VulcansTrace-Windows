@@ -102,7 +102,7 @@ if (!profile.EnableNovelty || entries.Count == 0)
 
 | Pattern | PortScan | Beaconing | LateralMovement | Novelty |
 |--------|----------|-----------|-----------------|---------|
-| Window type | Bucketed | Statistical | Sliding | None (full dataset) |
+| Window type | Sliding | Statistical | Sliding | None (full dataset) |
 | Grouping key | Source IP | Source-dest-port triple | Source IP | Dest (IP, port) |
 | Time complexity | O(n log n) | O(n log n) | O(n × m) typical; O(n²) worst | O(n) |
 | Per-source limit | Max entries per source | Sample cap | One finding then break | None |
