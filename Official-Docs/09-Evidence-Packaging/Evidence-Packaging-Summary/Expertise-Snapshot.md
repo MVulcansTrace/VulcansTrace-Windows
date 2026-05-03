@@ -19,7 +19,7 @@ A **cryptographic evidence packaging pipeline** for VulcansTrace that transforms
 | Output-security protections | 4 (CSV injection, XSS, Markdown escaping, bundle timestamp normalization) |
 | ZIP archive entries | 6 (3 reports + raw log + manifest.json + manifest.hmac) |
 | Build determinism | Byte-for-byte identical given the same analysis result, raw log, signing key, and timestamp |
-| Test coverage | 50 test methods (53 expanded tests) across 5 test files |
+| Test coverage | Focused tests across 5 files; use `dotnet test --list-tests` for current expanded counts |
 
 ---
 
@@ -34,13 +34,13 @@ A **cryptographic evidence packaging pipeline** for VulcansTrace that transforms
 
 ## Key Evidence
 
-- [EvidenceBuilder.cs](../../../VulcansTrace.Evidence/EvidenceBuilder.cs): 4-step packaging pipeline, manifest construction, HMAC signing, ZIP creation (205 lines)
-- [CsvFormatter.cs](../../../VulcansTrace.Evidence/Formatters/CsvFormatter.cs): spreadsheet-friendly CSV export with formula injection protection and optional warnings tail section (75 lines)
-- [HtmlFormatter.cs](../../../VulcansTrace.Evidence/Formatters/HtmlFormatter.cs): XSS-safe HTML report (88 lines)
-- [MarkdownFormatter.cs](../../../VulcansTrace.Evidence/Formatters/MarkdownFormatter.cs): escaped GFM output (92 lines)
-- [IntegrityHasher.cs](../../../VulcansTrace.Core/Security/IntegrityHasher.cs): SHA-256 and HMAC-SHA256 primitives (35 lines)
-- [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): 21 tests — ZIP structure, HMAC, determinism, timestamps, cancellation
-- [IntegrityHasherTests.cs](../../../VulcansTrace.Tests/Core/IntegrityHasherTests.cs): 9 tests — SHA-256 and HMAC-SHA256 correctness, determinism, key sensitivity
+- [EvidenceBuilder.cs](../../../VulcansTrace.Evidence/EvidenceBuilder.cs): 4-step packaging pipeline, manifest construction, HMAC signing, ZIP creation
+- [CsvFormatter.cs](../../../VulcansTrace.Evidence/Formatters/CsvFormatter.cs): spreadsheet-friendly CSV export with formula injection protection and optional warnings tail section
+- [HtmlFormatter.cs](../../../VulcansTrace.Evidence/Formatters/HtmlFormatter.cs): XSS-safe HTML report
+- [MarkdownFormatter.cs](../../../VulcansTrace.Evidence/Formatters/MarkdownFormatter.cs): escaped GFM output
+- [IntegrityHasher.cs](../../../VulcansTrace.Core/Security/IntegrityHasher.cs): SHA-256 and HMAC-SHA256 primitives
+- [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): ZIP structure, HMAC, determinism, timestamps, cancellation
+- [IntegrityHasherTests.cs](../../../VulcansTrace.Tests/Core/IntegrityHasherTests.cs): SHA-256 and HMAC-SHA256 correctness, determinism, key sensitivity
 
 ---
 

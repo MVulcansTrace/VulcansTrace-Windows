@@ -356,7 +356,7 @@ public void Build_WithSigningKey_CreatesValidHmac()
 | Metric | Value |
 |--------|-------|
 | Test files | 26 |
-| Test methods | 209 (251 total test cases including parameterized data rows) |
+| Test methods | Counted from `[Fact]`/`[Theory]`; expanded cases can be listed with `dotnet test --list-tests` |
 | Detector unit test files | 6 |
 | Integration test files | 1 (parameterized) |
 | Robustness test files | 1 |
@@ -370,13 +370,13 @@ public void Build_WithSigningKey_CreatesValidHmac()
 
 ## Implementation Evidence
 
-- [PortScanDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above/below threshold, multi-source, truncation (316 lines)
-- [BeaconingDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): regular/irregular intervals, outlier trim, sample cap (552 lines)
-- [LateralMovementDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/LateralMovementDetectorTests.cs): threshold, multi-source, time-spread (362 lines)
-- [SentryAnalyzerTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerTests.cs): severity filtering, risk escalation with test doubles (312 lines)
-- [SentryAnalyzerIntegrationTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): cross-detector correlation, parameterized beacons (206 lines)
-- [SentryAnalyzerRobustnessTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crash tolerance, cancellation, high-volume (109 lines)
-- [EvidenceBuilderTests.cs](../../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC, ZIP structure, timestamp clamping, determinism (776 lines)
+- [PortScanDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above/below threshold, wall-clock boundary crossing, multi-source, truncation
+- [BeaconingDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): regular/irregular intervals, outlier trim, sample cap
+- [LateralMovementDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/LateralMovementDetectorTests.cs): threshold, multi-source, time-spread
+- [SentryAnalyzerTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerTests.cs): severity filtering, risk escalation with test doubles
+- [SentryAnalyzerIntegrationTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): cross-detector correlation, parameterized beacons
+- [SentryAnalyzerRobustnessTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crash tolerance, cancellation, high-volume
+- [EvidenceBuilderTests.cs](../../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC, ZIP structure, timestamp clamping, determinism
 
 ---
 
@@ -394,4 +394,3 @@ public void Build_WithSigningKey_CreatesValidHmac()
 3. **Fault tolerance is testable** — a crashing detector should not prevent other detectors from producing findings
 4. **Evidence integrity is testable** — HMAC signatures can be verified programmatically
 5. **Test doubles isolate concerns** — orchestration is tested independently of detector logic
-

@@ -60,13 +60,13 @@ The DataGrid narrows to findings related to that IP — both as source and targe
 
 The analyst clicks Export Evidence. The export flow:
 
-1. `GenerateNewSigningKey()` creates a 32-byte key from `RandomNumberGenerator` (CSPRNG)
+1. `GenerateSigningKeyBytes()` creates a 32-byte key from `RandomNumberGenerator` (CSPRNG)
 2. `EvidenceBuilder.BuildAsync` packages findings.csv, log.txt, report.html, summary.md
 3. SHA-256 hashes computed for each file, written into `manifest.json`
 4. HMAC-SHA256 signature over the manifest, written into `manifest.hmac`
 5. Save dialog appears — analyst chooses a location
 6. ZIP written to disk
-7. UI shows the masked signing key (asterisks matching key hex length) — analyst clicks Copy Signing Key to clipboard
+7. After the ZIP is saved, `SigningKey` is set and the UI shows the masked signing key (asterisks matching key hex length) — analyst clicks Copy Signing Key to clipboard
 
 The analyst sends the ZIP to the incident response team via a secure channel and shares the signing key via a separate out-of-band channel (e.g., encrypted messaging). The team verifies:
 

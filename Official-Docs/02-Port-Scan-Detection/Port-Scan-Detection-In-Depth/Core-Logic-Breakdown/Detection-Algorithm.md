@@ -31,7 +31,7 @@ Step B: Group by Source IP --- Why: Identify single-source attacks
 Step C: Global Threshold Check -- Why: Mathematical early-exit (skip noise)
     |
     v
-Step D: Time Window Bucketing --- Why: Detect burst activity
+Step D: Sliding Window Scan ----- Why: Detect burst activity
     |
     v
 Step E: Per-Window Detection ---- Why: Create findings for each aggressive window
@@ -85,19 +85,19 @@ After the global threshold check confirms a source qualifies, the detector optio
 
 ---
 
-## Step D: Time Window Bucketing
+## Step D: Sliding Window Scan
 
-**Process:** Each source's activity is divided into fixed, aligned time buckets.
+**Process:** Each source's activity is scanned with a two-pointer sliding window. The detector advances an `end` pointer while entries remain within `PortScanWindowMinutes` of the current `start` entry, keeps distinct `(DstIp, DstPort)` counts for the active window, then expires the `start` entry as the window moves forward.
 
-**Rationale:** Bucketed windows provide simple implementation, O(n) performance after sorting, and predictable output. Real port scans are fast — most fit in one bucket.
+**Rationale:** Sliding windows avoid wall-clock bucket-boundary misses. A burst that starts near the end of one aligned interval and ends near the beginning of the next is still evaluated as one time window when the timestamps fall within the configured duration.
 
 ---
 
 ## Step E: Per-Window Detection
 
-**Process:** For each time bucket, the detector counts distinct targets. If the count is at or above threshold, a Finding is created.
+**Process:** For each active sliding window, the detector counts distinct targets. If the count is at or above threshold, a Finding is created.
 
-Multiple findings are possible — if a source scans aggressively across multiple windows, each window exceeding threshold produces a separate finding.
+Multiple findings are possible. After a finding is emitted, the current implementation clears the active counts and advances to the end of that detected window before continuing, so it does not emit every possible overlapping window.
 
 **Security Angle:** The Finding structure gives analysts everything they need for triage: attribution (SourceHost), timeline (TimeRange), scope (Details), and severity.
 
@@ -116,7 +116,7 @@ Multiple findings are possible — if a source scans aggressively across multipl
 
 ## Implementation Evidence
 
-- [PortScanDetector.cs](../../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): grouping by source, distinct tuple counting, aligned time buckets, truncation, and finding emission
+- [PortScanDetector.cs](../../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): grouping by source, distinct tuple counting, sliding-window scan, truncation, and finding emission
 - [PortScanDetectorTests.cs](../../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, multi-source, and truncation scenarios
 - [AnalysisProfileProvider.cs](../../../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): built-in presets that drive the detector's sensitivity
 - [AnalysisProfileProviderTests.cs](../../../../VulcansTrace.Tests/Engine/AnalysisProfileProviderTests.cs): verifies threshold values including 30, 15, and 8

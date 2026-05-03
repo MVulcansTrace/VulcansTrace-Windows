@@ -66,7 +66,7 @@ The **port scan detection engine** in VulcansTrace:
 
 ## Implementation Evidence
 
-- [PortScanDetector.cs](../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): source grouping, tuple counting, fixed-window bucketing, truncation, and `Severity.Medium` findings
+- [PortScanDetector.cs](../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): source grouping, tuple counting, sliding-window scanning, truncation, and `Severity.Medium` findings
 - [AnalysisProfile.cs](../../../VulcansTrace.Engine/AnalysisProfile.cs): detector settings including `PortScanMinPorts`, `PortScanWindowMinutes`, and `PortScanMaxEntriesPerSource`
 - [AnalysisProfileProvider.cs](../../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): built-in Low, Medium, and High presets
 - [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, multi-source, and truncation coverage
@@ -82,7 +82,7 @@ The **port scan detection engine** in VulcansTrace:
 >
 > *Configurable sensitivity profiles let teams tune detection to their environment. Medium uses 15 targets in 5 minutes, while Low and High adjust the threshold in opposite directions depending on how noisy the environment is.*
 >
-> *Every design decision has a security rationale: bucketed windows for predictable performance, Medium severity to prevent alert fatigue, and optional truncation with warnings when a team needs to bound analysis cost while staying transparent about reduced coverage.*
+> *Every design decision has a security rationale: sliding windows to avoid wall-clock boundary misses, Medium severity to prevent alert fatigue, and optional truncation with warnings when a team needs to bound analysis cost while staying transparent about reduced coverage.*
 >
 > *The algorithm is intentionally simple to audit and explain. The same core idea can evolve toward streaming or distributed analysis if the environment changes."*
 
@@ -95,4 +95,3 @@ The **port scan detection engine** in VulcansTrace:
 3. **Configuration is security** — wrong thresholds mean missed attacks or analyst burnout
 4. **Documented limitations matter** — knowing blind spots is as valuable as detection capability
 5. **Security engineering is deliberate** — every choice has a rationale, not just "it works"
-

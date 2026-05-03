@@ -15,7 +15,7 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 | Metric | Value |
 |--------|-------|
 | Test files | 26 |
-| Test methods | 209 (251 total test cases including parameterized data rows) |
+| Test methods | Counted from `[Fact]`/`[Theory]`; expanded cases can be listed with `dotnet test --list-tests` |
 | Detector test files | 6 (PortScan, Beaconing, Flood, LateralMovement, PolicyViolation, Novelty) |
 | Core test files | 3 (log parsing, domain models, SHA-256/HMAC integrity) |
 | Engine pipeline test files | 8 (analyzer orchestration, profile thresholds, IP classification, risk escalation, intensity comparison, threshold override validation, integration, robustness) |
@@ -42,12 +42,12 @@ A **defense-in-depth test suite** for VulcansTrace that validates six detectors,
 
 ## Key Evidence
 
-- [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): threshold boundary, multi-source, truncation (285 lines)
-- [BeaconingDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): statistical detection, outlier trim, sample cap (552 lines)
-- [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite attack, escalation, parameterized timing (206 lines)
-- [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crash tolerance, cancellation, high-volume (109 lines)
-- [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, determinism (776 lines)
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF workflow, including snapshot export consistency (502 lines)
+- [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): threshold boundary, multi-source, wall-clock boundary crossing, truncation
+- [BeaconingDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): statistical detection, outlier trim, sample cap
+- [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite attack, escalation, parameterized timing
+- [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crash tolerance, cancellation, high-volume
+- [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, determinism
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack WPF workflow, including snapshot export consistency
 
 ---
 

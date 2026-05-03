@@ -20,8 +20,8 @@
 Step A: Toggle Gate — skip if EnablePortScan is false or entries are empty
 Step B: Group by Source IP -> Order each group by Timestamp
 Step C: Count distinct (DstIp, DstPort) tuples -> Skip if below threshold
-Step D: Divide into fixed time buckets
-Step E: Count per bucket -> Create Finding if at or above threshold
+Step D: Slide a time window across each sorted source group
+Step E: Count per window -> Create Finding if at or above threshold
 
 ---
 
@@ -87,7 +87,7 @@ PortScan alone stays Medium. Beaconing + LateralMovement on same host → all fi
 |-----------|--------|---------------|
 | Slow scanning | Missed | Cumulative tracking across windows |
 | Distributed scanning | Missed | Subnet/ASN/timing correlation |
-| Bucket-boundary split | Missed | Sliding or overlapping windows |
+| Window evidence granularity | Non-overlapping findings | Add overlapping evidence views if needed |
 | Port decoys | Often still detected | Weighted scoring for context |
 | SYN stealth | Depends on telemetry | Connection state analysis |
 

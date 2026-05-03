@@ -95,13 +95,13 @@ Step D: Create ZIP — MemoryStream-backed, optimal compression
 
 ## Test Coverage
 
-| Test File | Count | Covers |
-|-----------|-------|--------|
-| EvidenceBuilderTests | 21 | ZIP structure, HMAC, determinism, timestamps, cancellation |
-| CsvFormatterTests | 10 methods (13 expanded) | Quoting/escaping, formula injection, dates, warnings |
-| HtmlFormatterTests | 5 | HTML encoding, warnings, parse errors |
-| MarkdownFormatterTests | 5 | Escaping, structure, warnings |
-| IntegrityHasherTests | 9 | SHA-256 correctness, HMAC correctness, determinism, key sensitivity |
+| Test File | Covers |
+|-----------|--------|
+| EvidenceBuilderTests | ZIP structure, HMAC, determinism, timestamps, cancellation |
+| CsvFormatterTests | Quoting/escaping, formula injection, dates, warnings |
+| HtmlFormatterTests | HTML encoding, warnings, parse errors |
+| MarkdownFormatterTests | Escaping, structure, warnings |
+| IntegrityHasherTests | SHA-256 correctness, HMAC correctness, determinism, key sensitivity |
 
 ---
 
@@ -109,10 +109,10 @@ Step D: Create ZIP — MemoryStream-backed, optimal compression
 
 | File | Purpose |
 |------|---------|
-| EvidenceBuilder.cs | Pipeline orchestrator (205 lines) |
-| CsvFormatter.cs | CSV output (75 lines) |
-| HtmlFormatter.cs | HTML output (88 lines) |
-| MarkdownFormatter.cs | Markdown output (92 lines) |
-| IntegrityHasher.cs | SHA-256 + HMAC primitives (35 lines) |
+| EvidenceBuilder.cs | Pipeline orchestrator |
+| CsvFormatter.cs | CSV output |
+| HtmlFormatter.cs | HTML output |
+| MarkdownFormatter.cs | Markdown output |
+| IntegrityHasher.cs | SHA-256 + HMAC primitives |
 | AnalysisResult.cs | Domain model consumed by pipeline |
 | EvidenceViewModel.cs | WPF export UX (key gen, save, clipboard) |

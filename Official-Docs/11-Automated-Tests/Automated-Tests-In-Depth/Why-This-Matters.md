@@ -29,7 +29,7 @@ The test suite covers:
 **Key metrics:**
 
 - 26 test files across Core, Engine, Evidence, Wpf, and functional layers
-- 209 test methods (251 total test cases including parameterized data rows) covering unit, integration, robustness, and functional categories
+- `[Fact]` and `[Theory]` coverage across unit, integration, robustness, and functional categories; run `dotnet test --list-tests` for the current expanded test-case count
 - 6 detector test files with threshold, statistical, and scenario coverage
 - 1 integration test file with composite attack scenarios across all detectors
 - 1 robustness test file with fault-tolerance and cancellation coverage
@@ -64,13 +64,13 @@ The test suite covers:
 
 ## Implementation Evidence
 
-- [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, multi-source, truncation, and disabled-state coverage (285 lines, 8 tests)
-- [BeaconingDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): regular intervals, irregular intervals, outlier trimming, sample cap, mixed traffic (552 lines, 12 tests)
-- [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite signals across all detectors with RiskEscalator correlation (206 lines, 3 tests)
-- [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crashing detector, cancellation, high-volume (109 lines, 3 tests)
-- [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, timestamp clamping, determinism (776 lines, 21 tests)
-- [WindowsFirewallLogParserTests.cs](../../../VulcansTrace.Tests/Core/WindowsFirewallLogParserTests.cs): native `pfirewall.log` rows, ignored `#Fields:` headers, ICMP placeholder ports, trailing fields, IPv6, malformed lines, timestamp variants, and line-ending edge cases (591 lines, 27 tests)
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack analyze + export with STA thread, including analyzed-log snapshot export consistency (502 lines, 5 tests)
+- [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, wall-clock boundary crossing, multi-source, truncation, and disabled-state coverage
+- [BeaconingDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/BeaconingDetectorTests.cs): regular intervals, irregular intervals, outlier trimming, sample cap, mixed traffic
+- [SentryAnalyzerIntegrationTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerIntegrationTests.cs): composite signals across all detectors with RiskEscalator correlation
+- [SentryAnalyzerRobustnessTests.cs](../../../VulcansTrace.Tests/Engine/SentryAnalyzerRobustnessTests.cs): crashing detector, cancellation, high-volume
+- [EvidenceBuilderTests.cs](../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): HMAC integrity, ZIP structure, timestamp clamping, determinism
+- [WindowsFirewallLogParserTests.cs](../../../VulcansTrace.Tests/Core/WindowsFirewallLogParserTests.cs): native `pfirewall.log` rows, ignored `#Fields:` headers, ICMP placeholder ports, trailing fields, IPv6, malformed lines, timestamp variants, and line-ending edge cases
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): full-stack analyze + export with STA thread, including analyzed-log snapshot export consistency
 
 ---
 
@@ -95,4 +95,3 @@ The test suite covers:
 3. **Test doubles isolate concerns** — analyzer behavior is tested independently of detector logic
 4. **Evidence integrity is testable** — HMAC signatures can be verified programmatically
 5. **Documented limitations matter** — documenting gaps in test coverage is as important as documenting coverage
-

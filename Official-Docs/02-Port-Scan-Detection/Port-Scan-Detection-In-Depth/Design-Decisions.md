@@ -16,15 +16,16 @@
 
 ---
 
-## Decision 2: Bucketed Time Windows (Not Sliding)
+## Decision 2: Sliding Time Windows (Not Fixed Buckets)
 
-| Aspect | Bucketed (Chosen) | Sliding |
-|--------|-------------------|---------|
-| Implementation | Simple GroupBy | Complex circular buffer |
-| Performance | O(n) after sorting | O(n x w) naive |
-| Predictability | Fixed boundaries | Continuous recalculation |
+| Aspect | Sliding (Chosen) | Fixed buckets |
+|--------|------------------|---------------|
+| Boundary behavior | Catches bursts across wall-clock boundaries | Can split a burst across adjacent buckets |
+| Implementation | Two-pointer scan over sorted entries | Aligned bucket grouping |
+| Performance | Linear scan after sorting | Linear grouping after sorting |
+| Output cadence | Event-anchored windows | Fixed clock-aligned intervals |
 
-**Security Rationale:** Simpler code is easier to audit. Fast scans fit in one bucket; slow reconnaissance spanning multiple windows may be split across buckets (reducing the distinct-target count per window). The implementation favors simplicity when a simpler solution covers the threat model.
+**Security Rationale:** Port scans do not respect wall-clock boundaries. A two-pointer sliding window catches burst activity that would be split by fixed buckets while still keeping the implementation auditable: sort each source chronologically, expand the end pointer while entries remain within the configured window, and expire the start entry as the window moves.
 
 ---
 
@@ -63,7 +64,7 @@
 | Decision | Security Principle | Operational Impact |
 |----------|-------------------|-------------------|
 | Tuple counting | Comprehensive detection | Catches both scan types |
-| Bucketed windows | Simplicity + auditability | Fast, predictable, debuggable |
+| Sliding windows | Boundary-safe detection | Catches bursts that cross aligned bucket boundaries |
 | Global pre-check | Efficiency + bounded analysis | Skips sources below threshold early; mathematically exact because eligibility is checked before truncation |
 | Medium severity | Accurate risk communication | Prevents alert fatigue; hidden on Low profile unless escalated |
 | Truncation + warning | Graceful degradation | Bounds per-source cost; trades per-window completeness while preserving global eligibility |

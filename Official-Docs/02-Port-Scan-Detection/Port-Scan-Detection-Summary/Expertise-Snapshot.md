@@ -33,7 +33,7 @@ A **port scan detection engine** for VulcansTrace that identifies likely reconna
 
 ## Key Evidence
 
-- [PortScanDetector.cs](../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): detection pipeline, tuple counting, bucketing, truncation, and finding creation
+- [PortScanDetector.cs](../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): detection pipeline, tuple counting, sliding-window scanning, truncation, and finding creation
 - [AnalysisProfileProvider.cs](../../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): built-in Low, Medium, and High presets
 - [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): above-threshold, below-threshold, multi-source, and truncation coverage
 - [AnalysisProfileProviderTests.cs](../../../VulcansTrace.Tests/Engine/AnalysisProfileProviderTests.cs): verifies profile thresholds like 30, 15, and 8
@@ -47,4 +47,3 @@ A **port scan detection engine** for VulcansTrace that identifies likely reconna
 - **Medium severity by default** because reconnaissance should be investigated, but not treated like confirmed compromise (note: on the Low profile, Medium-severity findings are filtered out by the pipeline's severity gate; only Medium and High profiles surface standalone port scan findings — however, if the same host triggers Beaconing + LateralMovement, RiskEscalator promotes port scan findings to Critical, which passes every profile's severity gate)
 - **Risk escalation awareness** — if the same source IP also triggers Beaconing and LateralMovement findings, the pipeline's RiskEscalator promotes the port scan finding to Critical severity
 - **Truncation with warnings** so custom profiles can bound per-source cost transparently instead of failing silently; the trade-off is reduced per-window completeness, but global eligibility is preserved
-

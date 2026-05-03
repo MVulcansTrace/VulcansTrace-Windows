@@ -42,7 +42,7 @@ Every major choice in the WPF UI has a security rationale, a performance implica
 
 **Implementation:** Analysis shows "cancelled by user" and returns early without updating findings. No partial results corrupt the display.
 
-**Trade-off:** The current XAML exposes the analysis cancel button; export cancellation exists in the ViewModel but is not currently surfaced as a separate button in the UI.
+**Trade-off:** The XAML exposes separate analysis and export cancel buttons. Each command only enables while its corresponding operation owns an active cancellation token.
 
 ---
 

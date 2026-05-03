@@ -10,7 +10,7 @@
 |---------|--------|-------------|
 | Slow scanning | Missed — per-window thresholds (no cross-window accumulation) | Cumulative tracking across windows |
 | Distributed scanning | Missed — per-source only | Subnet/ASN/timing correlation |
-| Bucket-boundary split | Missed when burst activity is divided across aligned buckets | Sliding or overlapping windows |
+| Window evidence granularity | One finding per detected window segment; overlapping qualifying sub-windows are not enumerated | Add overlapping evidence views if analysts need every qualifying sub-window |
 | Port decoys | **Often still detected** — tuples count everything | Weighted scoring for context |
 | SYN stealth | Depends on telemetry | Connection state analysis |
 
@@ -68,4 +68,3 @@ If a team enables `PortScanMaxEntriesPerSource`, the detector bounds per-source 
 2. **Defense in depth** — each layer catches what others miss
 3. **Documented limitations support compensating controls** — knowing blind spots enables compensating controls
 4. **Clear improvement path** — each evasion has a specific enhancement
-

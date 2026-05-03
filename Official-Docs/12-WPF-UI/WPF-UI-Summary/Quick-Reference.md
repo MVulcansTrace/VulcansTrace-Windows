@@ -37,7 +37,7 @@
 | `AnalyzeCommand` | MainViewModel | `!_isBusy && !string.IsNullOrWhiteSpace(_logText) && _selectedIntensity != null` |
 | `CancelCommand` | MainViewModel | `_isBusy && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested` |
 | `ExportEvidenceCommand` | EvidenceViewModel | `_lastResult != null && !IsBusy` |
-| `CancelExportCommand` | EvidenceViewModel | `_isBusy && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested` (defined in the ViewModel, not currently bound in XAML) |
+| `CancelExportCommand` | EvidenceViewModel | `_isBusy && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested` |
 | `CopySigningKeyCommand` | EvidenceViewModel | `!string.IsNullOrEmpty(SigningKey)` |
 | `LoadSampleCommand` | MainViewModel | `!_isBusy` — loads `SampleData.IntensityComparison` into the log text box |
 
@@ -79,9 +79,10 @@ User clicks Analyze
 ```
 User clicks Export Evidence
   → CanExportEvidence() check
-  → GenerateNewSigningKey() — 32 bytes from CSPRNG
+  → GenerateSigningKeyBytes() — 32 bytes from CSPRNG
   → EvidenceBuilder.BuildAsync — SHA-256 hashes + HMAC-SHA256 signature
   → Save dialog → Write ZIP to disk
+  → SigningKey set after successful save
   → Key masked in UI (asterisks), copy to clipboard for sharing
 ```
 
@@ -107,7 +108,7 @@ evidence.zip
 | Title bar | Custom grid with app icon, brand text, minimize/maximize/close buttons |
 | Main grid | Three columns: left panel (~400px), GridSplitter (6px), right panel (remaining space) |
 | GridSplitter | `Width="6"`, `Background="Transparent"` — resizes left/right panels |
-| Action buttons | WrapPanel with 4 buttons: Analyze (90px), Cancel (80px), Export Evidence (120px), Load Sample (115px), all `Padding="8,6"` |
+| Action buttons | WrapPanel with 5 buttons: Analyze (90px), Cancel (80px), Export Evidence (120px), Cancel Export (110px), Load Sample (115px), all `Padding="8,6"` |
 | DataGrid columns | Category, Severity (chip style), Source, Target, Start, End, Description, **Details button** (70px) |
 | Category tooltip | `ToolTip="{Binding GroupDetails}"`, `ShowDuration="15000"` — shows grouped Novelty destinations |
 | ToolTip style | Dark theme (`BackgroundCardBrush`, `BorderStrongBrush`, `CornerRadius="6"`) defined in `DarkTheme.xaml` |

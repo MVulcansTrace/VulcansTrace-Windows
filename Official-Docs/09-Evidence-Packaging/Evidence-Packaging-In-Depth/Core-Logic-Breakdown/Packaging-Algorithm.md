@@ -195,12 +195,12 @@ Tested explicitly: `Build_WithSameInputAndTimestamp_IsDeterministic` asserts byt
 
 ## Implementation Evidence
 
-- [EvidenceBuilder.cs](../../../../VulcansTrace.Evidence/EvidenceBuilder.cs): 4-step pipeline, manifest construction, HMAC signing, ZIP creation (205 lines)
-- [CsvFormatter.cs](../../../../VulcansTrace.Evidence/Formatters/CsvFormatter.cs): spreadsheet-friendly CSV findings export with formula injection protection and optional warnings tail section (75 lines)
-- [HtmlFormatter.cs](../../../../VulcansTrace.Evidence/Formatters/HtmlFormatter.cs): XSS-safe HTML report (88 lines)
-- [MarkdownFormatter.cs](../../../../VulcansTrace.Evidence/Formatters/MarkdownFormatter.cs): escaped GFM output (92 lines)
-- [IntegrityHasher.cs](../../../../VulcansTrace.Core/Security/IntegrityHasher.cs): SHA-256 and HMAC-SHA256 primitives (35 lines)
-- [EvidenceBuilderTests.cs](../../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): 21 tests covering ZIP structure, HMAC validity, determinism, timestamp edge cases, cancellation
+- [EvidenceBuilder.cs](../../../../VulcansTrace.Evidence/EvidenceBuilder.cs): 4-step pipeline, manifest construction, HMAC signing, ZIP creation
+- [CsvFormatter.cs](../../../../VulcansTrace.Evidence/Formatters/CsvFormatter.cs): spreadsheet-friendly CSV findings export with formula injection protection and optional warnings tail section
+- [HtmlFormatter.cs](../../../../VulcansTrace.Evidence/Formatters/HtmlFormatter.cs): XSS-safe HTML report
+- [MarkdownFormatter.cs](../../../../VulcansTrace.Evidence/Formatters/MarkdownFormatter.cs): escaped GFM output
+- [IntegrityHasher.cs](../../../../VulcansTrace.Core/Security/IntegrityHasher.cs): SHA-256 and HMAC-SHA256 primitives
+- [EvidenceBuilderTests.cs](../../../../VulcansTrace.Tests/Evidence/EvidenceBuilderTests.cs): ZIP structure, HMAC validity, determinism, timestamp edge cases, cancellation
 
 ---
 

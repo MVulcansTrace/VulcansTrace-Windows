@@ -135,7 +135,7 @@ new Finding
 
 | Pattern | PortScan | Flood | Beaconing | Lateral | Policy | Novelty |
 |---------|----------|-------|-----------|---------|--------|---------|
-| Window type | Bucketed | Sliding | Statistical | Sliding | N/A | N/A |
+| Window type | Sliding | Sliding | Statistical | Sliding | N/A | N/A |
 | Finding severity | Medium | High | Medium | High | High | Low |
 | Visible on Low | No* | Yes | No* | Yes | Yes | No |
 | Per-source limit | Max entries per source | One finding then break | Sample cap | One finding then break | None | None |

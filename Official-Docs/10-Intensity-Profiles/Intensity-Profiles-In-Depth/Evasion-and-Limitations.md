@@ -80,7 +80,7 @@ An attacker introducing random jitter above the `BeaconStdDevThreshold` defeats 
 | High profile produces more false positives | During incident response, false positives are acceptable | Triage by severity and category |
 | Static thresholds (no ML baselines) | Deterministic rules are interpretable and tunable | Same input = same output; analysts can reason about thresholds |
 | One finding per source (Lateral, Flood) | Duplicate alerts add no investigative value | Time range and details capture the scope |
-| Bucketed windows for PortScan | Simpler implementation than sliding window | 5-minute granularity is sufficient for scan detection |
+| Fixed PortScan window duration | Keeps scan detection deterministic and tunable | Slow scans still require cumulative tracking |
 
 ---
 
@@ -113,4 +113,3 @@ Phase 5: Statistical periodicity detection for high-jitter beacons
 ## Why Limitations Matter
 
 Every detection system has blind spots. The intensity profile system makes explicit trade-offs between sensitivity and noise, and those trade-offs have consequences. A system that claims to catch everything at every sensitivity level is one that cannot be trusted.
-

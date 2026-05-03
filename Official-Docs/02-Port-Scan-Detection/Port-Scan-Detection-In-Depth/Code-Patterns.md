@@ -18,7 +18,7 @@ The detector relies on a small set of repeatable patterns:
 | **Source-first grouping** | `entries.GroupBy(e => e.SrcIp)` | Attributes behavior to one host at a time |
 | **Distinct tuple counting** | `(DstIp, DstPort)` with `Distinct()` | Catches horizontal and vertical scans |
 | **Early-exit gate** | Source-level global pre-check | Skips low-variety traffic cheaply |
-| **Fixed-window bucketing** | Aligned `DateTime` grouping | Makes burst activity measurable and predictable |
+| **Sliding-window scan** | Two-pointer scan over sorted source activity | Measures burst activity without wall-clock boundary misses |
 | **Warning-backed truncation** | Optional max-entries cap | Bounds per-source work transparently |
 | **Structured finding output** | `Finding` object creation | Produces explainable evidence for analysts |
 
@@ -46,7 +46,7 @@ public sealed class PortScanDetector : IDetector, IProducesWarnings
 
 ### Distinct Tuple Counting
 
-The detector counts distinct `(DstIp, DstPort)` tuples both at the source level and again inside each time bucket.
+The detector counts distinct `(DstIp, DstPort)` tuples both at the source level and again inside each active sliding window.
 
 That pattern matters because:
 
@@ -58,20 +58,20 @@ That pattern matters because:
 
 ### Early Exit Gate
 
-Before bucketing by time, the detector does a source-level distinct-target count. If that count is already below threshold, it skips the window pass entirely.
+Before scanning by time, the detector does a source-level distinct-target count. If that count is already below threshold, it skips the window pass entirely.
 
 That keeps the common “obviously not a scan” case cheap without changing detector behavior when the full source set is analyzed.
 
 ---
 
-### Fixed-Window Bucketing
+### Sliding-Window Scan
 
-Each source's timestamps are grouped into aligned time buckets using the configured `PortScanWindowMinutes`.
+Each source's timestamps are sorted, then scanned with `start` and `end` pointers using the configured `PortScanWindowMinutes`.
 
 This gives the detector:
 
-- predictable output
-- simple implementation
+- boundary-safe detection for bursts crossing aligned clock intervals
+- a linear scan after sorting
 - a clear explanation for why one burst triggered and another did not
 
 ---
@@ -118,7 +118,7 @@ new Finding
 
 ## Implementation Evidence
 
-- [PortScanDetector.cs](../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): grouping, tuple counting, bucketing, truncation, and finding creation
+- [PortScanDetector.cs](../../../VulcansTrace.Engine/Detectors/PortScanDetector.cs): grouping, tuple counting, sliding-window scanning, truncation, and finding creation
 - [PortScanDetectorTests.cs](../../../VulcansTrace.Tests/Engine/Detectors/PortScanDetectorTests.cs): threshold, multi-source, and truncation coverage
 - [AnalysisProfileProvider.cs](../../../VulcansTrace.Engine/Configuration/AnalysisProfileProvider.cs): built-in thresholds and defaults
 
@@ -129,4 +129,4 @@ new Finding
 1. **Strategy pattern = modular security** — detectors are interchangeable and independently testable
 2. **Distinct tuple counting = breadth-aware detection** — the detector measures scan scope, not just event volume
 3. **Truncation + warnings = graceful degradation** — systems survive adversarial conditions without hiding the trade-off
-4. **Early exits and fixed buckets = predictable cost and behavior** — the detector stays explainable under load
+4. **Early exits and sliding windows = predictable cost and boundary-safe behavior** — the detector stays explainable under load

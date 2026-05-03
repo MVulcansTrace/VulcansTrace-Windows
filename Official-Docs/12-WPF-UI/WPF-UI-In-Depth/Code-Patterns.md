@@ -130,19 +130,19 @@ result = await Task.Run(() => AnalyzeWithOverrides(intensity, logSnapshot, token
 **File:** `VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs`
 
 ```csharp
-private byte[] GenerateNewSigningKey()
+private static byte[] GenerateSigningKeyBytes()
 {
     var keyBytes = new byte[32];
     using (var rng = RandomNumberGenerator.Create())
     {
         rng.GetBytes(keyBytes);
     }
-    SigningKey = Convert.ToHexString(keyBytes);
+
     return keyBytes;
 }
 ```
 
-**Rationale:** Each export gets a fresh 256-bit key from a CSPRNG. No key reuse between bundles. No key persistence. The key is masked in the UI (asterisks matching key hex length) and available via clipboard copy for out-of-band sharing.
+**Rationale:** Each export gets a fresh 256-bit key from a CSPRNG. No key reuse between bundles. No key persistence. `ExportEvidenceAsync` sets `SigningKey` after a successful save, then the key is masked in the UI (asterisks matching key hex length) and available via clipboard copy for out-of-band sharing.
 
 ---
 
