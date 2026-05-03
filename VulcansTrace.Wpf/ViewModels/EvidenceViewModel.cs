@@ -44,7 +44,13 @@ public sealed class EvidenceViewModel : ViewModelBase
     public bool IsBusy
     {
         get => _isBusy;
-        private set => SetField(ref _isBusy, value);
+        private set
+        {
+            if (SetField(ref _isBusy, value))
+            {
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
     }
 
     public ICommand ExportEvidenceCommand { get; }

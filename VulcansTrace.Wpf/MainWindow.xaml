@@ -392,6 +392,11 @@
                                         Margin="0,0,6,6"
                                         Padding="8,6"
                                         Command="{Binding Evidence.ExportEvidenceCommand}"/>
+                                <Button Content="Cancel Export"
+                                        Width="110"
+                                        Margin="0,0,6,6"
+                                        Padding="8,6"
+                                        Command="{Binding Evidence.CancelExportCommand}"/>
                                 <Button Content="Load Sample"
                                         Width="115"
                                         Margin="0,0,0,6"

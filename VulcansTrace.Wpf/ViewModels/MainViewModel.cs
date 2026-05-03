@@ -97,7 +97,13 @@ public sealed class MainViewModel : ViewModelBase
     public bool IsBusy
     {
         get => _isBusy;
-        set => SetField(ref _isBusy, value);
+        set
+        {
+            if (SetField(ref _isBusy, value))
+            {
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
     }
 
     /// <summary>Gets or sets the selected intensity option.</summary>
@@ -169,7 +175,7 @@ public sealed class MainViewModel : ViewModelBase
     }
 
     private bool CanAnalyze() =>
-        !_isBusy && !string.IsNullOrWhiteSpace(_logText) && _selectedIntensity != null;
+        !_isBusy && !Evidence.IsBusy && !string.IsNullOrWhiteSpace(_logText) && _selectedIntensity != null;
 
     private bool CanCancel() => _isBusy && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested;
 
@@ -183,6 +189,13 @@ public sealed class MainViewModel : ViewModelBase
         if (_selectedIntensity == null || string.IsNullOrWhiteSpace(_logText))
         {
             SummaryText = "Paste a log and select an intensity first.";
+            return;
+        }
+
+        if (Evidence.IsBusy)
+        {
+            SummaryText = "Wait for evidence export to finish or cancel it before analyzing.";
+            AdvisorMessage = "Evidence export in progress.";
             return;
         }
 

@@ -401,6 +401,10 @@ public class MainViewModelIntegrationTests
     public Task ExportEvidence_SaveDialogCancelDoesNotExposeSigningKey() =>
         RunOnStaAsync(RunSaveDialogCancelDoesNotExposeSigningKeyScenarioAsync);
 
+    [Fact]
+    public Task Analyze_WhileExportBusy_DoesNotClearEvidenceContext() =>
+        RunOnStaAsync(RunAnalyzeWhileExportBusyScenarioAsync);
+
     private static async Task RunKeyClearsWhenAnalysisContextChangesScenarioAsync()
     {
         var vm = CreateViewModel(new IDetector[] { new PolicyViolationDetector() }, out var dialog);
@@ -454,6 +458,49 @@ public class MainViewModelIntegrationTests
         Assert.Equal(string.Empty, vm.Evidence.MaskedSigningKey);
         Assert.False(vm.Evidence.CopySigningKeyCommand.CanExecute(null));
         Assert.Contains("cancelled", vm.SummaryText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static async Task RunAnalyzeWhileExportBusyScenarioAsync()
+    {
+        var vm = CreateViewModel(new IDetector[] { new PolicyViolationDetector() }, out var dialog);
+        var tempPath = Path.GetTempFileName();
+
+        try
+        {
+            vm.LogText = "2024-01-01 12:00:00 ALLOW TCP 192.168.1.100 203.0.113.50 50000 21 60 - - - - - - - SEND";
+            vm.SelectedIntensity = vm.Intensities.First(i => i.Level == IntensityLevel.High);
+
+            vm.AnalyzeCommand.Execute(null);
+            await WaitForCompletion(vm, timeoutMs: 2000);
+
+            var previousResult = vm.LastResult;
+            Assert.NotNull(previousResult);
+            Assert.True(vm.Evidence.ExportEvidenceCommand.CanExecute(null));
+
+            dialog.SavePath = tempPath;
+            vm.Evidence.ExportEvidenceCommand.Execute(null);
+
+            Assert.True(vm.Evidence.IsBusy);
+            Assert.True(vm.Evidence.CancelExportCommand.CanExecute(null));
+            Assert.False(vm.AnalyzeCommand.CanExecute(null));
+
+            vm.LogText = "2024-01-01 12:01:00 ALLOW TCP 192.168.1.100 203.0.113.60 50001 23 60 - - - - - - - SEND";
+            vm.AnalyzeCommand.Execute(null);
+
+            Assert.Same(previousResult, vm.LastResult);
+            Assert.NotEmpty(vm.Findings.Items);
+            Assert.Contains("export", vm.SummaryText, StringComparison.OrdinalIgnoreCase);
+
+            await WaitForExport(vm, tempPath, timeoutMs: 2000);
+
+            Assert.False(string.IsNullOrWhiteSpace(vm.Evidence.SigningKey));
+            Assert.True(File.Exists(tempPath));
+        }
+        finally
+        {
+            if (File.Exists(tempPath))
+                File.Delete(tempPath);
+        }
     }
 
     [Fact]
