@@ -161,22 +161,26 @@ public sealed class EvidenceViewModel : ViewModelBase
 
         if (!string.IsNullOrEmpty(fileName))
         {
+            string? tempFileName = null;
             try
             {
-                await File.WriteAllBytesAsync(fileName, zipBytes, token);
-                if (!token.IsCancellationRequested)
-                {
-                    if (_contextVersion == contextVersion)
-                    {
-                        SigningKey = Convert.ToHexString(signingKeyBytes);
-                    }
+                tempFileName = GetTemporaryExportPath(fileName);
+                await File.WriteAllBytesAsync(tempFileName, zipBytes, token);
+                token.ThrowIfCancellationRequested();
+                File.Move(tempFileName, fileName, overwrite: true);
+                tempFileName = null;
 
-                    _dialogService.ShowMessage("Evidence bundle saved.", "VulcansTrace");
-                    StatusChanged?.Invoke(this, "Evidence bundle saved.");
+                if (_contextVersion == contextVersion)
+                {
+                    SigningKey = Convert.ToHexString(signingKeyBytes);
                 }
+
+                _dialogService.ShowMessage("Evidence bundle saved.", "VulcansTrace");
+                StatusChanged?.Invoke(this, "Evidence bundle saved.");
             }
             catch (Exception ex)
             {
+                DeleteTemporaryExportFile(tempFileName);
                 if (ex is OperationCanceledException)
                 {
                     StatusChanged?.Invoke(this, "Export cancelled by user.");
@@ -208,6 +212,32 @@ public sealed class EvidenceViewModel : ViewModelBase
         }
 
         return keyBytes;
+    }
+
+    private static string GetTemporaryExportPath(string fileName)
+    {
+        var destinationPath = Path.GetFullPath(fileName);
+        var directory = Path.GetDirectoryName(destinationPath) ?? Environment.CurrentDirectory;
+        var name = Path.GetFileName(destinationPath);
+        return Path.Combine(directory, $".{name}.{Guid.NewGuid():N}.tmp");
+    }
+
+    private static void DeleteTemporaryExportFile(string? tempFileName)
+    {
+        if (string.IsNullOrEmpty(tempFileName))
+            return;
+
+        try
+        {
+            if (File.Exists(tempFileName))
+            {
+                File.Delete(tempFileName);
+            }
+        }
+        catch
+        {
+            // Best-effort cleanup only; the export result has already failed or was cancelled.
+        }
     }
 
     private void CopySigningKey()

@@ -195,6 +195,33 @@ public class CsvFormatterTests
         Assert.Contains($"'{value}", lines[1]);
     }
 
+    [Theory]
+    [InlineData(" =1+1")]
+    [InlineData("\t+1")]
+    [InlineData(" \t@cmd")]
+    public void ToCsv_WithFormulaAfterLeadingWhitespace_PrefixesApostrophe(string value)
+    {
+        // Arrange
+        var formatter = new CsvFormatter();
+        var result = new AnalysisResult();
+        result.AddFinding(new Finding
+        {
+            Category = value,
+            Severity = Severity.High,
+            SourceHost = "192.168.1.100",
+            Target = "target",
+            TimeRangeStart = new DateTime(2024, 1, 1, 12, 0, 0),
+            TimeRangeEnd = new DateTime(2024, 1, 1, 12, 5, 0),
+            ShortDescription = "Description"
+        });
+
+        // Act
+        var csv = formatter.ToCsv(result);
+
+        // Assert
+        Assert.Contains($"'{value}", csv);
+    }
+
     [Fact]
     public void ToCsv_WithNullField_ReturnsEmpty()
     {

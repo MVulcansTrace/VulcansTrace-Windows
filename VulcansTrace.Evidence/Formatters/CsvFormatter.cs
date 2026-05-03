@@ -57,8 +57,8 @@ public sealed class CsvFormatter
         var sanitized = value;
         if (!string.IsNullOrEmpty(sanitized))
         {
-            var first = sanitized[0];
-            if (first == '=' || first == '+' || first == '-' || first == '@')
+            var firstMeaningful = sanitized.FirstOrDefault(ch => !char.IsWhiteSpace(ch) && !char.IsControl(ch));
+            if (firstMeaningful == '=' || firstMeaningful == '+' || firstMeaningful == '-' || firstMeaningful == '@')
             {
                 sanitized = "'" + sanitized;
             }
