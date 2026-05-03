@@ -226,6 +226,44 @@ public class BeaconingDetectorTests
     }
 
     [Fact]
+    public void Detect_WithInternalDestination_ReturnsNoFindings()
+    {
+        var entries = new List<LogEntry>();
+        var baseTime = new DateTime(2024, 1, 1, 12, 0, 0);
+
+        for (var i = 0; i < 10; i++)
+        {
+            entries.Add(new LogEntry
+            {
+                Timestamp = baseTime.AddSeconds(i * 90),
+                Action = "ALLOW",
+                Protocol = "TCP",
+                SrcIp = "192.168.1.100",
+                SrcPort = 50000 + i,
+                DstIp = "10.0.0.25",
+                DstPort = 443,
+                Direction = "OUTBOUND"
+            });
+        }
+
+        var profile = new AnalysisProfile
+        {
+            EnableBeaconing = true,
+            BeaconMinEvents = 8,
+            BeaconStdDevThreshold = 5.0,
+            BeaconMinIntervalSeconds = 60,
+            BeaconMaxIntervalSeconds = 900,
+            BeaconMaxSamplesPerTuple = 200,
+            BeaconMinDurationSeconds = 120,
+            BeaconTrimPercent = 0.1
+        };
+
+        var findings = _detector.Detect(entries, profile, CancellationToken.None).ToList();
+
+        Assert.Empty(findings);
+    }
+
+    [Fact]
     public void Detect_WithMeanIntervalBelowThreshold_ReturnsNoFindings()
     {
         // Arrange - Mean interval is 20 seconds, but minimum threshold is 60 seconds

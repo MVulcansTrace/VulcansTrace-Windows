@@ -63,29 +63,24 @@ public sealed class PortScanDetector : IDetector, IProducesWarnings
                 _warnings.Add($"Port scan analysis for {srcIp} truncated to {maxEntries} events out of {totalForSource}.");
             }
 
-            var byWindow = ordered.GroupBy(e =>
-                new DateTime(
-                    e.Timestamp.Year,
-                    e.Timestamp.Month,
-                    e.Timestamp.Day,
-                    e.Timestamp.Hour,
-                    (e.Timestamp.Minute / profile.PortScanWindowMinutes) * profile.PortScanWindowMinutes,
-                    0,
-                    e.Timestamp.Kind));
-
-            foreach (var windowGroup in byWindow)
+            var window = TimeSpan.FromMinutes(profile.PortScanWindowMinutes);
+            var targetCounts = new Dictionary<(string DstIp, int? DstPort), int>();
+            var end = 0;
+            for (var start = 0; start < ordered.Count; start++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var distinctTargets = windowGroup
-                    .Select(e => (e.DstIp, e.DstPort))
-                    .Distinct()
-                    .Count();
-
-                if (distinctTargets >= profile.PortScanMinPorts)
+                while (end < ordered.Count && ordered[end].Timestamp - ordered[start].Timestamp <= window)
                 {
-                    var minTime = windowGroup.Min(e => e.Timestamp);
-                    var maxTime = windowGroup.Max(e => e.Timestamp);
+                    var target = (ordered[end].DstIp, ordered[end].DstPort);
+                    targetCounts[target] = targetCounts.TryGetValue(target, out var count) ? count + 1 : 1;
+                    end++;
+                }
+
+                if (targetCounts.Count >= profile.PortScanMinPorts)
+                {
+                    var minTime = ordered[start].Timestamp;
+                    var maxTime = ordered[end - 1].Timestamp;
 
                     findings.Add(new Finding
                     {
@@ -96,9 +91,19 @@ public sealed class PortScanDetector : IDetector, IProducesWarnings
                         TimeRangeStart = minTime,
                         TimeRangeEnd = maxTime,
                         ShortDescription = $"Port scan detected from {srcIp}",
-                        Details = $"Detected {distinctTargets} distinct destinations within {profile.PortScanWindowMinutes} minutes."
+                        Details = $"Detected {targetCounts.Count} distinct destinations within {profile.PortScanWindowMinutes} minutes."
                     });
+
+                    targetCounts.Clear();
+                    start = end - 1;
+                    continue;
                 }
+
+                var expiredTarget = (ordered[start].DstIp, ordered[start].DstPort);
+                if (targetCounts[expiredTarget] == 1)
+                    targetCounts.Remove(expiredTarget);
+                else
+                    targetCounts[expiredTarget]--;
             }
         }
 

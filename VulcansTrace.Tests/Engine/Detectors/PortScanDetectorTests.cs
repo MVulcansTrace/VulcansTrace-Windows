@@ -97,6 +97,43 @@ public class PortScanDetectorTests
     }
 
     [Fact]
+    public void Detect_WithPortScanCrossingWallClockBucket_ReturnsFinding()
+    {
+        var srcIp = "192.168.1.100";
+        var baseTime = new DateTime(2024, 1, 1, 12, 4, 0);
+        var entries = new List<LogEntry>();
+
+        for (var i = 0; i < 8; i++)
+        {
+            entries.Add(new LogEntry
+            {
+                Timestamp = baseTime.AddSeconds(i * 20),
+                Action = "ALLOW",
+                Protocol = "TCP",
+                SrcIp = srcIp,
+                SrcPort = 50000 + i,
+                DstIp = "10.0.0.1",
+                DstPort = 1000 + i,
+                Direction = "OUTBOUND"
+            });
+        }
+
+        var profile = new AnalysisProfile
+        {
+            EnablePortScan = true,
+            PortScanMinPorts = 8,
+            PortScanWindowMinutes = 5
+        };
+
+        var findings = _detector.Detect(entries, profile, CancellationToken.None).ToList();
+
+        var finding = Assert.Single(findings);
+        Assert.Equal("PortScan", finding.Category);
+        Assert.Equal(baseTime, finding.TimeRangeStart);
+        Assert.Equal(baseTime.AddSeconds(140), finding.TimeRangeEnd);
+    }
+
+    [Fact]
     public void Detect_WithPortScanDisabled_ReturnsNoFindings()
     {
         // Arrange

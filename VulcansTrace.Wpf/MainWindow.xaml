@@ -187,53 +187,52 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Warning panel -->
-                <Border Grid.Row="0"
-                        Grid.ColumnSpan="3"
-                        Style="{StaticResource WarningPanel}"
-                        Visibility="{Binding Findings.HasWarnings, Converter={StaticResource BoolToVisibility}}"
-                        Margin="0,40,0,0">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Warnings detected during analysis:"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource MediumBrush}"
-                                   Margin="0,0,0,6"/>
-                        <ItemsControl ItemsSource="{Binding Findings.Warnings}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock TextWrapping="Wrap" Margin="0,2">
-                                        <Run Text="&#x2022; " Foreground="{StaticResource MediumBrush}"/>
-                                        <Run Text="{Binding Mode=OneWay}" Foreground="{StaticResource TextSecondaryBrush}"/>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
+                <StackPanel Grid.Row="0"
+                            Grid.ColumnSpan="3"
+                            Margin="0,40,0,0">
+                    <!-- Warning panel -->
+                    <Border Style="{StaticResource WarningPanel}"
+                            Visibility="{Binding Findings.HasWarnings, Converter={StaticResource BoolToVisibility}}"
+                            Margin="0,0,0,8">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Warnings detected during analysis:"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource MediumBrush}"
+                                       Margin="0,0,0,6"/>
+                            <ItemsControl ItemsSource="{Binding Findings.Warnings}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Margin="0,2">
+                                            <Run Text="&#x2022; " Foreground="{StaticResource MediumBrush}"/>
+                                            <Run Text="{Binding Mode=OneWay}" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
 
-                <!-- Parse error panel -->
-                <Border Grid.Row="0"
-                        Grid.ColumnSpan="3"
-                        Style="{StaticResource ErrorPanel}"
-                        Visibility="{Binding Findings.HasParseErrors, Converter={StaticResource BoolToVisibility}}"
-                        Margin="0,40,0,0">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Parse errors detected in the log:"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource CriticalBrush}"
-                                   Margin="0,0,0,6"/>
-                        <ItemsControl ItemsSource="{Binding Findings.ParseErrors}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock TextWrapping="Wrap" Margin="0,2">
-                                        <Run Text="&#x2022; " Foreground="{StaticResource CriticalBrush}"/>
-                                        <Run Text="{Binding Mode=OneWay}" Foreground="{StaticResource TextSecondaryBrush}"/>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
+                    <!-- Parse error panel -->
+                    <Border Style="{StaticResource ErrorPanel}"
+                            Visibility="{Binding Findings.HasParseErrors, Converter={StaticResource BoolToVisibility}}">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Parse errors detected in the log:"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource CriticalBrush}"
+                                       Margin="0,0,0,6"/>
+                            <ItemsControl ItemsSource="{Binding Findings.ParseErrors}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Margin="0,2">
+                                            <Run Text="&#x2022; " Foreground="{StaticResource CriticalBrush}"/>
+                                            <Run Text="{Binding Mode=OneWay}" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
 
                 <!-- ========================================== -->
                 <!-- LEFT PANEL                                   -->

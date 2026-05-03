@@ -1,4 +1,5 @@
 using VulcansTrace.Core;
+using VulcansTrace.Engine.Net;
 
 namespace VulcansTrace.Engine.Detectors;
 
@@ -20,7 +21,7 @@ public sealed class BeaconingDetector : IDetector
         var findings = new List<Finding>();
 
         var byTuple = entries
-            .Where(e => e.DstPort.HasValue)
+            .Where(e => e.DstPort.HasValue && IpClassification.IsExternal(e.DstIp))
             .GroupBy(e => (SrcIp: e.SrcIp, DstIp: e.DstIp, DstPort: e.DstPort!.Value));
 
         foreach (var group in byTuple)

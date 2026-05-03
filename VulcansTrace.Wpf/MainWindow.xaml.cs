@@ -88,11 +88,16 @@ public partial class MainWindow : Window
 
     private void OnStateChanged(object? sender, EventArgs e)
     {
+        if (WindowState == WindowState.Minimized)
+            return;
+
         // Remove rounded corners when maximized to avoid gap at edges
-        var border = (System.Windows.Controls.Border)((System.Windows.Controls.Grid)Content).Parent;
-        border.CornerRadius = WindowState == WindowState.Maximized
-            ? new CornerRadius(0)
-            : new CornerRadius(8);
+        if (Content is System.Windows.Controls.Border border)
+        {
+            border.CornerRadius = WindowState == WindowState.Maximized
+                ? new CornerRadius(0)
+                : new CornerRadius(8);
+        }
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -115,7 +120,7 @@ public partial class MainWindow : Window
 
     private void MinimizeButton_Click(object sender, RoutedEventArgs e)
     {
-        WindowState = WindowState.Minimized;
+        SystemCommands.MinimizeWindow(this);
     }
 
     private void MaximizeButton_Click(object sender, RoutedEventArgs e)
