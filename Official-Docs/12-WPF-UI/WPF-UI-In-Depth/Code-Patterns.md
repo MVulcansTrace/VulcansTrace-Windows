@@ -171,9 +171,14 @@ public interface IDialogService
 private AnalysisResult AnalyzeWithOverrides(IntensityLevel intensity, string logText, CancellationToken token)
 {
     var baseProfile = _profileProvider.GetProfile(intensity);
-    var profile = PortScanMaxEntriesPerSource > 0
-        ? baseProfile with { PortScanMaxEntriesPerSource = PortScanMaxEntriesPerSource }
-        : baseProfile;
+
+    var profile = baseProfile with
+    {
+        EnableLateralMovement = EnableLateralMovement,
+        PortScanMaxEntriesPerSource = PortScanMaxEntriesPerSource > 0
+            ? PortScanMaxEntriesPerSource
+            : baseProfile.PortScanMaxEntriesPerSource
+    };
 
     return _analyzer.Analyze(logText, intensity, token, profile);
 }
@@ -198,6 +203,7 @@ DataContext (MainViewModel)
 ├── Intensities                → ComboBox.ItemsSource
 ├── SelectedIntensity          → ComboBox.SelectedItem
 ├── PortScanMaxEntriesPerSource → TextBox.Text (with validation rule)
+├── EnableLateralMovement       → CheckBox.IsChecked
 ├── Findings (FindingsViewModel)
 │   ├── ItemsView              → DataGrid.ItemsSource (filtered)
 │   ├── SearchText             → Search TextBox.Text

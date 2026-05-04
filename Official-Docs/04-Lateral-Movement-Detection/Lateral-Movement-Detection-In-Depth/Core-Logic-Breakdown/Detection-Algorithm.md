@@ -37,7 +37,7 @@ IEnumerable<Finding> with Severity.High
 
 **Process:** If `profile.EnableLateralMovement` is false or entries are empty, return immediately.
 
-**Rationale:** Zero-cost disable. Teams that don't need lateral movement detection pay nothing.
+**Rationale:** Zero-cost disable. Teams that don't need lateral movement detection pay nothing. In the WPF UI, analysts can toggle this per-analysis via the **Advanced Options** expander (defaults to checked).
 
 **Security Angle:** Defense in depth — the detector is one layer that can be toggled without affecting the rest of the pipeline.
 

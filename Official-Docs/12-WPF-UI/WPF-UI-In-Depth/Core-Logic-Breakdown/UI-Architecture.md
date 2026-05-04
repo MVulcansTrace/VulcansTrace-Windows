@@ -199,7 +199,7 @@ private async Task AnalyzeAsync()
 
 - `Task.Run` offloads to a thread pool thread — UI stays responsive for the progress indicator and analysis cancel button
 - `logSnapshot` captures `_logText` before dispatching — analyzer and evidence export use the same stable input even if the user edits the text box
-- `AnalyzeWithOverrides` conditionally applies the `PortScanMaxEntriesPerSource` profile override before calling `SentryAnalyzer.Analyze` — the override is applied only when the cap is set to a value greater than zero
+- `AnalyzeWithOverrides` applies two profile overrides before calling `SentryAnalyzer.Analyze`: `EnableLateralMovement` is passed through from the UI checkbox (always applied), and `PortScanMaxEntriesPerSource` is applied only when the cap is set to a value greater than zero
 - Error handling surfaces exceptions clearly — analysts know when analysis failed and why
 - Cancellation produces clean early exit — no partial results corrupt the display
 

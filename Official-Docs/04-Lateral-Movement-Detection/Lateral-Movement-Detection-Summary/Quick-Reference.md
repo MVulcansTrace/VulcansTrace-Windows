@@ -17,6 +17,8 @@ Step D: Check — If distinct hosts >= threshold → Create finding, break
 |-----------|-----|--------|------|
 | EnableLateralMovement | true | true | true |
 | LateralMinHosts | 6 | 4 | 3 |
+
+> **WPF UI override:** The Advanced Options expander exposes an **Enable lateral movement detection** check box that overrides the profile value at analysis time. It defaults to checked (enabled) for all intensities.
 | LateralWindowMinutes | 10 | 10 | 10 |
 | AdminPorts | [445, 3389, 22] | [445, 3389, 22] | [445, 3389, 22] |
 

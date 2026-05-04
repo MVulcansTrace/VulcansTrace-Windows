@@ -14,7 +14,7 @@ The analyst pastes the raw firewall log into the text box. `LogText` updates via
 
 ### Step 2: Analysis
 
-The analyst selects "High - Deep Hunt / Forensics" intensity and clicks Analyze. (The Advanced expander also exposes a **Port scan max events/source** override — setting it to a value greater than 0 caps per-source port scan entries and emits a warning when the cap is reached. For this scenario, it is left at the default of 0, meaning unbounded.) The UI flow:
+The analyst selects "High - Deep Hunt / Forensics" intensity and clicks Analyze. (The Advanced expander exposes two overrides: a **Port scan max events/source** text box — setting it to a value greater than 0 caps per-source port scan entries and emits a warning when the cap is reached — and an **Enable lateral movement detection** check box, which defaults to checked. For this scenario, both are left at their defaults.) The UI flow:
 
 1. `CanAnalyze()` returns `true` — not busy, has log text, has intensity
 2. `IsBusy = true` — progress bar appears, Analyze button disables, Cancel button enables

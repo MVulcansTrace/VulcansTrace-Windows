@@ -24,6 +24,7 @@
 | MainViewModel | `AdvisorMessage` | Advisor message text block |
 | MainViewModel | `SummaryText` | Analysis summary text block |
 | MainViewModel | `PortScanMaxEntriesPerSource` | Override text box (TwoWay) |
+| MainViewModel | `EnableLateralMovement` | Override check box (TwoWay) |
 | FindingsViewModel | `ItemsView` | DataGrid.ItemsSource (filtered) |
 | FindingsViewModel | `SearchText` | Search TextBox.Text |
 | FindingsViewModel | `SelectedSeverityFilter` | Severity ComboBox |
@@ -109,6 +110,7 @@ evidence.zip
 | Main grid | Three columns: left panel (~400px), GridSplitter (6px), right panel (remaining space) |
 | GridSplitter | `Width="6"`, `Background="Transparent"` — resizes left/right panels |
 | Action buttons | WrapPanel with 5 buttons: Analyze (90px), Cancel (80px), Export Evidence (120px), Cancel Export (110px), Load Sample (115px), all `Padding="8,6"` |
+| Advanced Options | Expander with two overrides: Port scan max events/source (`TextBox`), Enable lateral movement detection (`CheckBox`) |
 | DataGrid columns | Category, Severity (chip style), Source, Target, Start, End, Description, **Details button** (70px) |
 | Category tooltip | `ToolTip="{Binding GroupDetails}"`, `ShowDuration="15000"` — shows grouped Novelty destinations |
 | ToolTip style | Dark theme (`BackgroundCardBrush`, `BorderStrongBrush`, `CornerRadius="6"`) defined in `DarkTheme.xaml` |
