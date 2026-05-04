@@ -147,6 +147,10 @@ public class MainViewModelIntegrationTests
     }
 
     [Fact]
+    public Task Analyze_WithLateralMovementDisabled_SuppressesLateralMovementFindings() =>
+        RunOnStaAsync(RunLateralMovementToggleScenarioAsync);
+
+    [Fact]
     public Task Analyze_WhenCancelled_ClearsPreviousFindingsAndEvidenceContext() =>
         RunOnStaAsync(RunCancelledAnalysisClearsStaleStateScenarioAsync);
 
@@ -281,6 +285,46 @@ public class MainViewModelIntegrationTests
         Assert.Contains(vm.Findings.Items, f => f.Category == "PortScan");
         Assert.NotEmpty(vm.Findings.Warnings);
         Assert.Contains("warnings", vm.SummaryText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static async Task RunLateralMovementToggleScenarioAsync()
+    {
+        var parser = new VulcansTrace.Core.Parsing.WindowsFirewallLogParser();
+        var profileProvider = new AnalysisProfileProvider();
+        var detectors = new IDetector[]
+        {
+            new LateralMovementDetector()
+        };
+        var riskEscalator = new RiskEscalator();
+        var analyzer = new SentryAnalyzer(parser, profileProvider, detectors, riskEscalator);
+
+        var hasher = new IntegrityHasher();
+        var csvFormatter = new CsvFormatter();
+        var markdownFormatter = new MarkdownFormatter();
+        var htmlFormatter = new HtmlFormatter();
+        var evidenceBuilder = new EvidenceBuilder(hasher, csvFormatter, markdownFormatter, htmlFormatter);
+
+        var dialog = new FakeDialogService();
+        var vm = new MainViewModel(analyzer, evidenceBuilder, dialog, profileProvider);
+
+        vm.LogText = @"2024-01-01 12:00:00 ALLOW TCP 192.168.1.100 192.168.1.10 50000 445 OUTBOUND
+2024-01-01 12:00:01 ALLOW TCP 192.168.1.100 192.168.1.11 50001 445 OUTBOUND
+2024-01-01 12:00:02 ALLOW TCP 192.168.1.100 192.168.1.12 50002 445 OUTBOUND";
+        vm.SelectedIntensity = vm.Intensities.First(i => i.Level == IntensityLevel.High);
+
+        // Phase 1: toggle ON (default) — should produce a LateralMovement finding
+        vm.AnalyzeCommand.Execute(null);
+        await WaitForCompletion(vm, timeoutMs: 2000);
+
+        Assert.NotEmpty(vm.Findings.Items);
+        Assert.Contains(vm.Findings.Items, f => f.Category == "LateralMovement");
+
+        // Phase 2: toggle OFF — should suppress LateralMovement findings
+        vm.EnableLateralMovement = false;
+        vm.AnalyzeCommand.Execute(null);
+        await WaitForCompletion(vm, timeoutMs: 2000);
+
+        Assert.DoesNotContain(vm.Findings.Items, f => f.Category == "LateralMovement");
     }
 
 

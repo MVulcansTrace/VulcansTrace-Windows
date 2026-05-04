@@ -24,6 +24,7 @@ public sealed class MainViewModel : ViewModelBase
     private string _botIntroText = "";
     private string _advisorMessage = "";
     private int _portScanCap;
+    private bool _enableLateralMovement = true;
     private bool _isBusy;
     private bool _hasAdvisorMessage;
     private IntensityOption? _selectedIntensity;
@@ -118,6 +119,13 @@ public sealed class MainViewModel : ViewModelBase
     {
         get => _portScanCap;
         set => SetField(ref _portScanCap, value);
+    }
+
+    /// <summary>Gets or sets whether lateral movement detection is enabled.</summary>
+    public bool EnableLateralMovement
+    {
+        get => _enableLateralMovement;
+        set => SetField(ref _enableLateralMovement, value);
     }
 
     /// <summary>Gets the analyze command.</summary>
@@ -283,11 +291,15 @@ public sealed class MainViewModel : ViewModelBase
 
     private AnalysisResult AnalyzeWithOverrides(IntensityLevel intensity, string logText, CancellationToken token)
     {
-        // Get base profile and create modified copy using with expression (immutable)
         var baseProfile = _profileProvider.GetProfile(intensity);
-        var profile = PortScanMaxEntriesPerSource > 0
-            ? baseProfile with { PortScanMaxEntriesPerSource = PortScanMaxEntriesPerSource }
-            : baseProfile;
+
+        var profile = baseProfile with
+        {
+            EnableLateralMovement = EnableLateralMovement,
+            PortScanMaxEntriesPerSource = PortScanMaxEntriesPerSource > 0
+                ? PortScanMaxEntriesPerSource
+                : baseProfile.PortScanMaxEntriesPerSource
+        };
 
         return _analyzer.Analyze(logText, intensity, token, profile);
     }
