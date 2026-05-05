@@ -13,6 +13,7 @@ using VulcansTrace.Engine.Configuration;
 using VulcansTrace.Engine.Detectors;
 using VulcansTrace.Evidence;
 using VulcansTrace.Evidence.Formatters;
+using VulcansTrace.Wpf;
 using VulcansTrace.Wpf.ViewModels;
 using Xunit;
 
@@ -627,6 +628,65 @@ public class MainViewModelIntegrationTests
         Assert.Empty(vm.Findings.ParseErrors);
     }
 
+
+    [Fact]
+    public Task LoadFileCommand_WhenDialogReturnsPath_SetsLogText() =>
+        RunOnStaAsync(async () =>
+        {
+            var vm = CreateViewModel(Array.Empty<IDetector>(), out var dialog);
+            var tempPath = Path.GetTempFileName();
+            try
+            {
+                await File.WriteAllTextAsync(tempPath, "synthetic log line 1\nsynthetic log line 2");
+                dialog.OpenPath = tempPath;
+
+                vm.LoadFileCommand.Execute(null);
+
+                var sw = Stopwatch.StartNew();
+                while (sw.ElapsedMilliseconds < 2000)
+                {
+                    if (vm.LogText == "synthetic log line 1\nsynthetic log line 2")
+                        break;
+                    await Task.Delay(10);
+                }
+
+                Assert.Equal("synthetic log line 1\nsynthetic log line 2", vm.LogText);
+                Assert.Contains("Loaded", vm.SummaryText);
+                Assert.Contains(Path.GetFileName(tempPath), vm.SummaryText);
+            }
+            finally
+            {
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+            }
+        });
+
+    [Fact]
+    public Task LoadFileCommand_WhenDialogReturnsNull_DoesNotChangeLogText() =>
+        RunOnStaAsync(async () =>
+        {
+            var vm = CreateViewModel(Array.Empty<IDetector>(), out var dialog);
+            dialog.OpenPath = null;
+            vm.LogText = "existing content";
+
+            vm.LoadFileCommand.Execute(null);
+            await Task.Delay(100);
+
+            Assert.Equal("existing content", vm.LogText);
+        });
+
+    [Fact]
+    public Task LoadDemoDataCommand_SetsSampleLogText() =>
+        RunOnStaAsync(() =>
+        {
+            var vm = CreateViewModel(Array.Empty<IDetector>(), out _);
+            vm.LogText = "";
+
+            vm.LoadDemoDataCommand.Execute(null);
+
+            Assert.Equal(SampleData.IntensityComparison, vm.LogText);
+            return Task.CompletedTask;
+        });
 
     private static async Task WaitForCompletion(MainViewModel vm, int timeoutMs)
     {

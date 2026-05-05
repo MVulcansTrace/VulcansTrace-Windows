@@ -185,6 +185,13 @@
                             <Run Text="{Binding Findings.ParseErrorCount, Mode=OneWay}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource CriticalBrush}"/>
                         </TextBlock>
                     </Border>
+                    <Border Style="{StaticResource BadgeNeutral}"
+                            Visibility="{Binding HasAnalysisDuration, Converter={StaticResource BoolToVisibility}}">
+                        <TextBlock>
+                            <Run Text="Time: " Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                            <Run Text="{Binding AnalysisDurationText, Mode=OneWay}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </TextBlock>
+                    </Border>
                 </StackPanel>
 
                 <StackPanel Grid.Row="0"
@@ -385,6 +392,16 @@
                                 </TextBlock>
                             </Grid>
 
+                            <TextBlock Text="No log file? Load demo data."
+                                       Foreground="{StaticResource TextMutedBrush}"
+                                       FontSize="11"
+                                       Margin="0,-8,0,12"
+                                       Cursor="Hand">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftClick" Command="{Binding LoadDemoDataCommand}" />
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+
                             <!-- Action buttons -->
                             <WrapPanel Margin="0,0,0,12">
                                 <Button Content="Analyze"
@@ -408,12 +425,12 @@
                                         Margin="0,0,6,6"
                                         Padding="8,6"
                                         Command="{Binding Evidence.CancelExportCommand}"/>
-                                <Button Content="Load Sample"
+                                <Button Content="Load File..."
                                         Width="115"
                                         Margin="0,0,0,6"
                                         Padding="8,6"
-                                        Command="{Binding LoadSampleCommand}"
-                                        ToolTip="Load intensity comparison sample data"/>
+                                        Command="{Binding LoadFileCommand}"
+                                        ToolTip="Browse for a Windows Firewall log file"/>
                             </WrapPanel>
 
                             <!-- Progress -->

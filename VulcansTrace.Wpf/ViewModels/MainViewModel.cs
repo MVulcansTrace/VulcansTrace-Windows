@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,10 +18,12 @@ public sealed class MainViewModel : ViewModelBase
 {
     private readonly SentryAnalyzer _analyzer;
     private readonly AnalysisProfileProvider _profileProvider;
+    private readonly IDialogService _dialogService;
     private CancellationTokenSource? _cancellationTokenSource;
 
     private string _logText = "";
     private string _summaryText = "";
+    private string _analysisDurationText = "";
     private string _botIntroText = "";
     private string _advisorMessage = "";
     private int _portScanCap;
@@ -66,6 +69,22 @@ public sealed class MainViewModel : ViewModelBase
         get => _summaryText;
         set => SetField(ref _summaryText, value);
     }
+
+    /// <summary>Gets or sets the analysis duration display text.</summary>
+    public string AnalysisDurationText
+    {
+        get => _analysisDurationText;
+        set
+        {
+            if (SetField(ref _analysisDurationText, value))
+            {
+                RaisePropertyChanged(nameof(HasAnalysisDuration));
+            }
+        }
+    }
+
+    /// <summary>Gets whether an analysis duration is available to display.</summary>
+    public bool HasAnalysisDuration => !string.IsNullOrEmpty(_analysisDurationText);
 
     /// <summary>Gets or sets the bot intro text.</summary>
     public string BotIntroText
@@ -134,8 +153,11 @@ public sealed class MainViewModel : ViewModelBase
     /// <summary>Gets the cancel command.</summary>
     public ICommand CancelCommand { get; }
     
-    /// <summary>Gets the load sample data command.</summary>
-    public ICommand LoadSampleCommand { get; }
+    /// <summary>Gets the load file command.</summary>
+    public ICommand LoadFileCommand { get; }
+    
+    /// <summary>Gets the load demo data command.</summary>
+    public ICommand LoadDemoDataCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -148,6 +170,7 @@ public sealed class MainViewModel : ViewModelBase
     {
         _analyzer = analyzer;
         _profileProvider = profileProvider;
+        _dialogService = dialogService;
 
         // Initialize child ViewModels
         Findings = new FindingsViewModel();
@@ -179,7 +202,47 @@ public sealed class MainViewModel : ViewModelBase
             },
             _ => CanAnalyze());
         CancelCommand = new RelayCommand(_ => CancelAnalysis(), _ => CanCancel());
-        LoadSampleCommand = new RelayCommand(_ => LogText = SampleData.IntensityComparison);
+        LoadFileCommand = new RelayCommand(
+            async _ =>
+            {
+                try
+                {
+                    await LoadFileAsync();
+                }
+                catch (Exception ex)
+                {
+                    SummaryText = $"Failed to load file: {ex.Message}";
+                }
+            },
+            _ => CanLoadFile());
+        LoadDemoDataCommand = new RelayCommand(_ => LogText = SampleData.IntensityComparison);
+    }
+
+    private bool CanLoadFile() => !_isBusy && !Evidence.IsBusy;
+
+    private async Task LoadFileAsync()
+    {
+        var path = _dialogService.ShowOpenFileDialog(
+            "Load Windows Firewall Log",
+            "Log files (*.log)|*.log|All files (*.*)|*.*");
+
+        if (string.IsNullOrEmpty(path))
+            return;
+
+        string content;
+        try
+        {
+            content = await Task.Run(() => File.ReadAllText(path));
+        }
+        catch (Exception ex)
+        {
+            _dialogService.ShowError($"Failed to load file: {ex.Message}", "VulcansTrace");
+            return;
+        }
+
+        LogText = content;
+        var lineCount = content.Split('\n').Length;
+        SummaryText = $"Loaded {lineCount} lines from {Path.GetFileName(path)}.";
     }
 
     private bool CanAnalyze() =>
@@ -210,6 +273,7 @@ public sealed class MainViewModel : ViewModelBase
         ClearAnalysisState();
         IsBusy = true;
         SummaryText = "Analyzing log...";
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         AdvisorMessage = "Analyzing...";
         
         // Prepare cancellation token
@@ -279,6 +343,11 @@ public sealed class MainViewModel : ViewModelBase
             _ => BotIntroText
         };
 
+        sw.Stop();
+        AnalysisDurationText = sw.Elapsed.TotalSeconds >= 1
+            ? $"{sw.Elapsed.TotalSeconds:F2} s"
+            : $"{sw.Elapsed.TotalMilliseconds:F0} ms";
+
         IsBusy = false;
     }
 
@@ -287,6 +356,7 @@ public sealed class MainViewModel : ViewModelBase
         _lastResult = null;
         Findings.Clear();
         Evidence.ClearEvidenceContext();
+        AnalysisDurationText = string.Empty;
     }
 
     private AnalysisResult AnalyzeWithOverrides(IntensityLevel intensity, string logText, CancellationToken token)

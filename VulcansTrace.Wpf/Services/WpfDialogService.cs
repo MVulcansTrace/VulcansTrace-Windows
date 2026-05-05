@@ -31,4 +31,20 @@ public class WpfDialogService : IDialogService
 
         return null;
     }
+
+    public string? ShowOpenFileDialog(string title, string filter)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = title,
+            Filter = filter
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            return dialog.FileName;
+        }
+
+        return null;
+    }
 }

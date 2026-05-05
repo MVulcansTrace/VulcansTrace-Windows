@@ -13,4 +13,8 @@ public sealed class FakeDialogService : IDialogService
     public void ShowError(string message, string title) => LastError = message;
 
     public string? ShowSaveFileDialog(string title, string filter, string defaultFileName) => SavePath;
+
+    public string? OpenPath { get; set; }
+
+    public string? ShowOpenFileDialog(string title, string filter) => OpenPath;
 }

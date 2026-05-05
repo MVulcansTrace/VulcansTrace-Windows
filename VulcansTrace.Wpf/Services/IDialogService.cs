@@ -5,4 +5,5 @@ public interface IDialogService
     void ShowMessage(string message, string title);
     void ShowError(string message, string title);
     string? ShowSaveFileDialog(string title, string filter, string defaultFileName);
+    string? ShowOpenFileDialog(string title, string filter);
 }
