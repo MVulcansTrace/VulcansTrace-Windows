@@ -154,7 +154,7 @@ The severity filter runs after escalation because filtering first would hide the
 - [AnalysisProfileProviderTests.cs](../../../../VulcansTrace.Tests/Engine/AnalysisProfileProviderTests.cs): 11 test methods verifying thresholds, enable flags, monotonic sensitivity, constant policy ports
 - [SentryAnalyzerTests.cs](../../../../VulcansTrace.Tests/Engine/SentryAnalyzerTests.cs): severity filtering across all three intensity levels
 - [IntensityComparisonTests.cs](../../../../VulcansTrace.Tests/Engine/IntensityComparisonTests.cs): end-to-end profile behavior using isolated attacker IPs (9 tests: theory data + individual detector verification)
-- [SampleData.cs](../../../../VulcansTrace.Wpf/SampleData.cs): synthetic firewall log with isolated IPs, used by the WPF "Load Sample" button
+- [SampleData.cs](../../../../VulcansTrace.Wpf/SampleData.cs): synthetic firewall log with isolated IPs, used by the WPF "Load demo data" link
 
 ---
 

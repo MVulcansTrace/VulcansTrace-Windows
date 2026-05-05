@@ -6,11 +6,11 @@ A worked example showing how the WPF UI architecture supports an analyst during 
 
 ## Scenario: Lateral Movement Triage
 
-An analyst receives a tip that suspicious activity was detected on a Windows server. They export the Windows Firewall log from the server and paste it into VulcansTrace.
+An analyst receives a tip that suspicious activity was detected on a Windows server. They export the Windows Firewall log from the server and load it into VulcansTrace using the **Load File...** button (or paste it directly into the text box).
 
 ### Step 1: Log Ingestion
 
-The analyst pastes the raw firewall log into the text box. `LogText` updates via two-way binding with `UpdateSourceTrigger=PropertyChanged`, so every character triggers the binding. The `AnalyzeCommand.CanExecute` predicate re-evaluates automatically via `CommandManager.RequerySuggested` — once `_logText` is non-empty and `_selectedIntensity` is set, the Analyze button enables.
+The analyst loads the raw firewall log. If using **Load File...**, `OpenFileDialog` returns the path, `File.ReadAllText` reads the content asynchronously, and `LogText` is set. If pasting, `LogText` updates via two-way binding with `UpdateSourceTrigger=PropertyChanged`, so every character triggers the binding. The `AnalyzeCommand.CanExecute` predicate re-evaluates automatically via `CommandManager.RequerySuggested` — once `_logText` is non-empty and `_selectedIntensity` is set, the Analyze button enables.
 
 ### Step 2: Analysis
 
@@ -88,7 +88,7 @@ If the analyst realizes they pasted the wrong log during analysis:
 3. `SentryAnalyzer` checks the token before parsing and before each detector
 4. `OperationCanceledException` propagates back to `AnalyzeAsync`
 5. UI shows "Analysis cancelled by user." — no partial findings displayed
-6. The analyst pastes the correct log and clicks Analyze again
+6. The analyst loads the correct log (via Load File or paste) and clicks Analyze again
 
 ---
 

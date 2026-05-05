@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Evidence-Packaging-In-Depth/Attack-Scenario.md): a worked example showing evidence packaging for a multi-finding investigation
 - [Evasion and Limitations](./Evidence-Packaging-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [Evidence Integrity and Standards](./Evidence-Packaging-In-Depth/Evidence-Integrity-and-Standards.md): post-export integrity, evidence handoff, and standards context
+- [Industry Context](./Evidence-Packaging-In-Depth/Industry-Context.md): how this evidence packaging concept relates to enterprise forensic tools and standards
 
 ## System Capabilities
 

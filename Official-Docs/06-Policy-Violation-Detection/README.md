@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Policy-Violation-Detection-In-Depth/Attack-Scenario.md): a worked example showing the detector catching policy-violating egress traffic
 - [Evasion and Limitations](./Policy-Violation-Detection-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Policy-Violation-Detection-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Industry Context](./Policy-Violation-Detection-In-Depth/Industry-Context.md): how this detection concept relates to enterprise security tools and workflows
 
 ## System Capabilities
 

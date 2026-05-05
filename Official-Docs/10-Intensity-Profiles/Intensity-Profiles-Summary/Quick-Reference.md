@@ -87,4 +87,4 @@ Step D: Filter by Severity — findings below MinSeverityToShow are removed
 | AnalysisProfileProviderTests.cs | Threshold and profile tests |
 | SentryAnalyzerTests.cs | Severity filtering tests |
 | IntensityComparisonTests.cs | End-to-end profile behavior with isolated IPs |
-| SampleData.cs | Synthetic log for WPF "Load Sample" demo |
+| SampleData.cs | Synthetic log for WPF "Load demo data" demo |

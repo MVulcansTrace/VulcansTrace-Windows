@@ -18,11 +18,14 @@
 | MainViewModel | `LogText` | `TextBox.Text` (TwoWay, PropertyChanged) |
 | MainViewModel | `IsBusy` | StackPanel visibility (ProgressBar + "Working..." text) |
 | MainViewModel | `AnalyzeCommand` | Button.Command |
-| MainViewModel | `LoadSampleCommand` | Button.Command ("Load Sample") |
+| MainViewModel | `LoadFileCommand` | Button.Command ("Load File...") |
+| MainViewModel | `LoadDemoDataCommand` | TextBlock.InputBindings ("Load demo data" link) |
 | MainViewModel | `BotIntroText` | Intro header text block |
 | MainViewModel | `HasAdvisorMessage` | Advisor message panel visibility |
 | MainViewModel | `AdvisorMessage` | Advisor message text block |
 | MainViewModel | `SummaryText` | Analysis summary text block |
+| MainViewModel | `AnalysisDurationText` | Timing badge in summary row (e.g., "482 ms") |
+| MainViewModel | `HasAnalysisDuration` | Timing badge visibility |
 | MainViewModel | `PortScanMaxEntriesPerSource` | Override text box (TwoWay) |
 | MainViewModel | `EnableLateralMovement` | Override check box (TwoWay) |
 | FindingsViewModel | `ItemsView` | DataGrid.ItemsSource (filtered) |
@@ -40,7 +43,8 @@
 | `ExportEvidenceCommand` | EvidenceViewModel | `_lastResult != null && !IsBusy` |
 | `CancelExportCommand` | EvidenceViewModel | `_isBusy && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested` |
 | `CopySigningKeyCommand` | EvidenceViewModel | `!string.IsNullOrEmpty(SigningKey)` |
-| `LoadSampleCommand` | MainViewModel | `!_isBusy` — loads `SampleData.IntensityComparison` into the log text box |
+| `LoadFileCommand` | MainViewModel | `!_isBusy` — opens `OpenFileDialog`, reads selected file into `LogText` |
+| `LoadDemoDataCommand` | MainViewModel | always enabled — loads `SampleData.IntensityComparison` into the log text box |
 
 ## ViewModelBase Pattern
 
@@ -69,7 +73,7 @@ User clicks Analyze
   → IsBusy = true
   → Capture logSnapshot = _logText
   → Task.Run(AnalyzeWithOverrides)
-  → On success: Evidence.SetEvidenceContext(logSnapshot) → Findings.LoadResults → Build summary
+  → On success: Evidence.SetEvidenceContext(logSnapshot) → Findings.LoadResults → Build summary → Set AnalysisDurationText from Stopwatch
   → On cancel: Show "cancelled by user", no partial results
   → On error: Show exception message
   → IsBusy = false
@@ -109,7 +113,7 @@ evidence.zip
 | Title bar | Custom grid with app icon, brand text, minimize/maximize/close buttons |
 | Main grid | Three columns: left panel (~400px), GridSplitter (6px), right panel (remaining space) |
 | GridSplitter | `Width="6"`, `Background="Transparent"` — resizes left/right panels |
-| Action buttons | WrapPanel with 5 buttons: Analyze (90px), Cancel (80px), Export Evidence (120px), Cancel Export (110px), Load Sample (115px), all `Padding="8,6"` |
+| Action buttons | WrapPanel with 4 buttons: Analyze (90px), Cancel (80px), Export Evidence (120px), Cancel Export (110px), all `Padding="8,6"`. Plus "Load File..." button (opens `OpenFileDialog`) and a muted "Load demo data" text link below the log input. |
 | Advanced Options | Expander with two overrides: Port scan max events/source (`TextBox`), Enable lateral movement detection (`CheckBox`) |
 | DataGrid columns | Category, Severity (chip style), Source, Target, Start, End, Description, **Details button** (70px) |
 | Category tooltip | `ToolTip="{Binding GroupDetails}"`, `ShowDuration="15000"` — shows grouped Novelty destinations |

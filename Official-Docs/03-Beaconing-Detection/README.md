@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Beaconing-Detection-In-Depth/Attack-Scenario.md): a worked example showing the detector catching a synthetic C2-like beaconing pattern
 - [Evasion and Limitations](./Beaconing-Detection-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Beaconing-Detection-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Industry Context](./Beaconing-Detection-In-Depth/Industry-Context.md): how this detection concept relates to enterprise security tools and workflows
 
 ## System Capabilities
 

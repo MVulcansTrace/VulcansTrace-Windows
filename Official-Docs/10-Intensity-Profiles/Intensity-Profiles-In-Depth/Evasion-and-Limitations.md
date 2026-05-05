@@ -12,7 +12,7 @@ When a single source host exhibits **both Beaconing and LateralMovement**, the `
 
 **Consequence:** Profile differences become invisible for that host. On Low profile, a standalone PortScan finding (Medium severity) would normally be filtered out. But if that same host also shows Beaconing + LateralMovement, the PortScan finding is escalated to Critical and survives the Low filter. Every finding on the host is Critical, making it impossible to compare how the raw detectors behave at different sensitivity levels.
 
-**Mitigation in tests:** `IntensityComparisonTests.cs` deliberately isolates each attack behavior to a **unique source IP** so that RiskEscalator never fires. This proves profile-specific threshold behavior without correlation masking the results. The WPF "Load Sample" button uses the same isolated-IP dataset (`SampleData.IntensityComparison`) to demonstrate clean profile differences in the UI.
+**Mitigation in tests:** `IntensityComparisonTests.cs` deliberately isolates each attack behavior to a **unique source IP** so that RiskEscalator never fires. This proves profile-specific threshold behavior without correlation masking the results. The WPF "Load demo data" link uses the same isolated-IP dataset (`SampleData.IntensityComparison`) to demonstrate clean profile differences in the UI.
 
 **Operational implication:** When evaluating profile sensitivity, use isolated attacker data or manually inspect pre-escalation findings. Correlated hosts are compromised-host signals, not profile-sensitivity signals.
 

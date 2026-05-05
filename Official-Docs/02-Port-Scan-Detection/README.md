@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Port-Scan-Detection-In-Depth/Attack-Scenario.md): a worked example showing the detector catching reconnaissance activity
 - [Evasion and Limitations](./Port-Scan-Detection-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Port-Scan-Detection-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Industry Context](./Port-Scan-Detection-In-Depth/Industry-Context.md): how this detection concept relates to enterprise security tools and workflows
 
 ## System Capabilities
 

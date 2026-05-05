@@ -7,6 +7,10 @@ It is designed for two audiences:
 - Recruiters and hiring managers who need a fast understanding of what the project does and why it matters
 - Technical reviewers who want to inspect the real implementation choices, supporting code, and test evidence
 
+## Start Here
+
+**[Executive Summary](./00-Executive-Summary/README.md)** -- a one-page overview of the project, what it proves, and where to go next. Read this first.
+
 ## Recommended Review Path
 
 If you only have a few minutes, read these first:
@@ -30,6 +34,10 @@ If you want the full end-to-end story, read in this order:
 10. [10 - Intensity Profiles](./10-Intensity-Profiles/README.md)
 11. [11 - Automated Tests](./11-Automated-Tests/README.md)
 12. [12 - WPF UI](./12-WPF-UI/README.md)
+
+## Supplemental
+
+- [13 - Performance Benchmark](./13-Performance-Benchmark/README.md): synthetic realistic-volume benchmark with embedded attack patterns
 
 ## What These Docs Cover
 

@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Novelty-Detection-In-Depth/Attack-Scenario.md): a worked example showing the detector catching one-off connection anomalies
 - [Evasion and Limitations](./Novelty-Detection-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Novelty-Detection-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Industry Context](./Novelty-Detection-In-Depth/Industry-Context.md): how this detection concept relates to enterprise security tools and workflows
 
 ## System Capabilities
 

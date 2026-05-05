@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Flood-Detection-In-Depth/Attack-Scenario.md): a worked example showing the detector catching a synthetic volumetric flood pattern
 - [Evasion and Limitations](./Flood-Detection-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Flood-Detection-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Industry Context](./Flood-Detection-In-Depth/Industry-Context.md): how this detection concept relates to enterprise security tools and workflows
 
 ## System Capabilities
 

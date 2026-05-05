@@ -4,7 +4,7 @@
 
 ## The Engineering Problem
 
-Security analysis tools live or die by their workflow. An analyst pastes a firewall log, runs detection, reviews findings, and exports evidence for the incident response team. If the UI freezes during analysis, the analyst loses time. If filtering removes findings from the export, the evidence is incomplete. If the signing key is predictable, the evidence bundle can be forged.
+Security analysis tools live or die by their workflow. An analyst loads a firewall log (from file or paste), runs detection, reviews findings, and exports evidence for the incident response team. If the UI freezes during analysis, the analyst loses time. If filtering removes findings from the export, the evidence is incomplete. If the signing key is predictable, the evidence bundle can be forged.
 
 VulcansTrace's WPF UI solves these problems through three design commitments:
 
@@ -306,6 +306,8 @@ public string MaskedSigningKey =>
 | **Signed evidence export** | Incident response teams can verify the exported ZIP was not modified |
 | **Severity-based triage** | Analysts filter to High/Critical first for faster incident response |
 | **Multi-field search** | Investigators correlate findings by IP, category, or description without specifying which field |
+| **File loading** | `OpenFileDialog` via `IDialogService` loads `.log` files directly; demo data link loads synthetic samples for exploration |
+| **Analysis timing** | `Stopwatch`-measured duration displayed as a badge so analysts know how long detection took |
 | **Dialog abstraction** | `IDialogService` removes modal dialog popups from tests and keeps dialog behavior mockable |
 
 ---
@@ -331,7 +333,7 @@ public string MaskedSigningKey =>
 - [MainViewModel.cs](../../../../VulcansTrace.Wpf/ViewModels/MainViewModel.cs): async analysis orchestration
 - [FindingsViewModel.cs](../../../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): `ICollectionView` filtering
 - [EvidenceViewModel.cs](../../../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation; HMAC signing delegated to `EvidenceBuilder`
-- [MainViewModelIntegrationTests.cs](../../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export + snapshot consistency + key regeneration
+- [MainViewModelIntegrationTests.cs](../../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export + snapshot consistency + key regeneration + file loading + timing badge
 
 ---
 

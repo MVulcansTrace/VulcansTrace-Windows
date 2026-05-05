@@ -1,5 +1,10 @@
 # VulcansTrace
 
+![.NET 9](https://img.shields.io/badge/.NET-9-512BD4)
+![Build](https://github.com/MVulcansTrace/VulcansTrace-Windows/actions/workflows/build.yml/badge.svg)
+![Tests](https://img.shields.io/badge/tests-266%2F266-brightgreen)
+![License](https://img.shields.io/badge/license-Apache%202.0-blue)
+
 VulcansTrace is a Windows desktop security analysis tool that parses Windows Firewall logs, runs multiple behavioral detectors, correlates related findings, and packages investigation results into HMAC-signed evidence exports. **All analysis runs locally, logs never leave the machine.**
 
 ![VulcansTrace Architecture](./VulcansTrace-Infograph.png)
@@ -38,13 +43,15 @@ This repository is structured to be easy for both recruiters and technical revie
 
 ## Start Here
 
+**New to this repo?** Read the [Executive Summary](./Official-Docs/00-Executive-Summary/README.md) first (about 60 seconds).
+
 If you are reviewing this repo quickly, use this path:
 
-1. Read [Official-Docs](./Official-Docs/README.md) for the portfolio index.
-2. Open [Port Scan Detection](./Official-Docs/02-Port-Scan-Detection/README.md) for a representative detector case study.
-3. Open [Risk Escalation](./Official-Docs/08-Risk-Escalation/README.md) to see how findings are correlated into higher-confidence host risk.
-4. Open [Evidence Packaging](./Official-Docs/09-Evidence-Packaging/README.md) to see how results are turned into shareable HMAC-signed artifacts.
-5. Open [WPF UI](./Official-Docs/12-WPF-UI/README.md) to see how the product is surfaced in a desktop workflow.
+1. Read the [Executive Summary](./Official-Docs/00-Executive-Summary/README.md) for a one-page overview.
+2. Read [Official-Docs](./Official-Docs/README.md) for the full portfolio index.
+3. Open [Port Scan Detection](./Official-Docs/02-Port-Scan-Detection/README.md) for a representative detector case study.
+4. Open [Risk Escalation](./Official-Docs/08-Risk-Escalation/README.md) to see how findings are correlated into higher-confidence host risk.
+5. Open [Evidence Packaging](./Official-Docs/09-Evidence-Packaging/README.md) to see how results are turned into shareable HMAC-signed artifacts.
 
 ## Running The Project
 
@@ -66,9 +73,10 @@ dotnet run --project VulcansTrace.Wpf
 
 Recent validation in this workspace:
 
-- `dotnet build VulcansTrace.sln --configuration Release --no-restore` succeeded with `0` warnings and `0` errors on May 4, 2026.
-- `dotnet test VulcansTrace.Tests\VulcansTrace.Tests.csproj --configuration Release --no-restore --verbosity minimal` passed `263/263` tests on May 4, 2026.
-- `dotnet list VulcansTrace.sln package --vulnerable --include-transitive` reported no vulnerable packages on May 4, 2026.
+- `dotnet build VulcansTrace.sln --configuration Release --no-restore` succeeded with `0` warnings and `0` errors on May 5, 2026.
+- `dotnet test VulcansTrace.Tests\\VulcansTrace.Tests.csproj --configuration Release --no-restore --verbosity minimal` passed `266/266` tests on May 5, 2026.
+- `dotnet list VulcansTrace.sln package --vulnerable --include-transitive` reported no vulnerable packages on May 5, 2026.
+- Synthetic realistic-volume benchmark (50K lines, High intensity): 482 ms, 20 findings across all 6 detectors, zero warnings. See [Performance Benchmark](./Official-Docs/13-Performance-Benchmark/README.md).
 
 ## Live Demos
 
@@ -86,6 +94,7 @@ Recent validation in this workspace:
 
 ## Documentation Map
 
+- [Executive Summary](./Official-Docs/00-Executive-Summary/README.md) - one-page overview for new reviewers
 - [1 - Log Parsing](./Official-Docs/01-Log-Parsing/README.md)
 - [2 - Port Scan Detection](./Official-Docs/02-Port-Scan-Detection/README.md)
 - [3 - Beaconing Detection](./Official-Docs/03-Beaconing-Detection/README.md)
@@ -98,6 +107,8 @@ Recent validation in this workspace:
 - [10 - Intensity Profiles](./Official-Docs/10-Intensity-Profiles/README.md)
 - [11 - Automated Tests](./Official-Docs/11-Automated-Tests/README.md)
 - [12 - WPF UI](./Official-Docs/12-WPF-UI/README.md)
+- [13 - Performance Benchmark](./Official-Docs/13-Performance-Benchmark/README.md)
+- [Security Policy](./SECURITY.md)
 
 ## What Reviewers Should Expect
 

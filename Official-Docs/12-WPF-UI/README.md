@@ -22,6 +22,8 @@ Documentation is organized for two audiences:
 
 - MVVM architecture: hand-rolled `ViewModelBase` and `RelayCommand` (~60 lines total) instead of a framework, because fewer dependencies means smaller attack surface for a security tool
 - Async analysis with cancellation: `Task.Run` offloads detection work from the UI thread, and `CancellationToken` support lets analysts abort long-running scans
+- File loading: `OpenFileDialog` via `IDialogService` abstraction loads `.log` files directly into the analysis text box; a muted "Load demo data" link loads synthetic sample data for exploration
+- Analysis timing: `Stopwatch`-measured duration displayed as a badge in the summary row (e.g., "482 ms") so analysts know how long detection took
 - Real-time findings filtering: `ICollectionView` filters without modifying the source collection; evidence export builds from `AnalysisResult` directly, so filtering never excludes findings from the export
 - Cryptographic evidence export: per-export HMAC-SHA256 signing with a CSPRNG-generated key, key masking to prevent shoulder-surfing, and no key persistence
 
@@ -33,8 +35,9 @@ Documentation is organized for two audiences:
 - [RelayCommand.cs](../../VulcansTrace.Wpf/ViewModels/RelayCommand.cs): `ICommand` with `CommandManager.RequerySuggested` integration
 - [FindingsViewModel.cs](../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): `ICollectionView` filtering, multi-field search, severity filter
 - [EvidenceViewModel.cs](../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation, HMAC export, key masking, cancellation
-- [IDialogService.cs](../../VulcansTrace.Wpf/Services/IDialogService.cs): dialog abstraction for testability
-- [MainViewModelIntegrationTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export, analyzed-log snapshot export, per-export key regeneration, parse-error cap, port-scan cap warning, lateral-movement toggle suppression
+- [IDialogService.cs](../../VulcansTrace.Wpf/Services/IDialogService.cs): dialog abstraction for testability (`ShowOpenFileDialog` + `ShowError`)
+- [WpfDialogService.cs](../../VulcansTrace.Wpf/Services/WpfDialogService.cs): WPF `OpenFileDialog` and message-box implementations
+- [MainViewModelIntegrationTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis + export, analyzed-log snapshot export, per-export key regeneration, parse-error cap, port-scan cap warning, lateral-movement toggle suppression, file loading, and timing badge
 - [MainViewModelTextTests.cs](../../VulcansTrace.Tests/Wpf/MainViewModelTextTests.cs): encoding artifact prevention
 - [NonNegativeIntValidationRuleTests.cs](../../VulcansTrace.Tests/Wpf/NonNegativeIntValidationRuleTests.cs): XAML validation rule coverage
 

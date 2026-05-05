@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Lateral-Movement-Detection-In-Depth/Attack-Scenario.md): a worked example showing the detector catching a synthetic post-compromise lateral-movement pattern
 - [Evasion and Limitations](./Lateral-Movement-Detection-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Lateral-Movement-Detection-In-Depth/MITRE-ATTACK-Mapping.md): mapping to the ATT&CK framework
+- [Industry Context](./Lateral-Movement-Detection-In-Depth/Industry-Context.md): how this detection concept relates to enterprise security tools and workflows
 
 ## System Capabilities
 

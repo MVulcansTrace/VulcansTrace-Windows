@@ -17,6 +17,7 @@ Documentation is organized for two audiences:
 - [Attack Scenario](./Risk-Escalation-In-Depth/Attack-Scenario.md): a worked example showing how correlation escalates multi-behavior compromise signals
 - [Evasion and Limitations](./Risk-Escalation-In-Depth/Evasion-and-Limitations.md): blind spots and improvement paths
 - [MITRE ATT&CK Mapping](./Risk-Escalation-In-Depth/MITRE-ATTACK-Mapping.md): cross-tactic correlation against the ATT&CK framework
+- [Industry Context](./Risk-Escalation-In-Depth/Industry-Context.md): how this correlation concept relates to enterprise XDR and SIEM platforms
 
 ## System Capabilities
 

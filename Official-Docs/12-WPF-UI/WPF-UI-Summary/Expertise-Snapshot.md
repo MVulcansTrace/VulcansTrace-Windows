@@ -6,7 +6,7 @@
 
 ## Implementation Overview
 
-A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MVVM framework dependencies. The UI coordinates firewall log analysis, real-time findings filtering, and cryptographic evidence export through a three-ViewModel composition: `MainViewModel` orchestrates the workflow, `FindingsViewModel` manages filtered display, and `EvidenceViewModel` handles HMAC-signed export.
+A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MVVM framework dependencies. The UI coordinates firewall log analysis, real-time findings filtering, and cryptographic evidence export through a three-ViewModel composition: `MainViewModel` orchestrates the workflow (including file loading and analysis timing), `FindingsViewModel` manages filtered display, and `EvidenceViewModel` handles HMAC-signed export.
 
 ---
 
@@ -20,6 +20,8 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 | Detection pipeline integration | 6 detectors wired through `SentryAnalyzer` |
 | Export integrity | HMAC-SHA256 with 256-bit CSPRNG key, per-export regeneration |
 | Filtering | `ICollectionView` with severity filter + text search across 4 fields (category, source host, target, short description) |
+| File loading | `OpenFileDialog` via `IDialogService` abstraction; loads `.log` files into the analysis text box |
+| Timing display | `Stopwatch`-measured analysis duration shown as a badge in the summary row (e.g., "482 ms") |
 | Cancellation | User-facing analysis cancellation plus ViewModel-level export cancellation support |
 
 ---
@@ -36,10 +38,10 @@ A **WPF desktop UI** for VulcansTrace using hand-rolled MVVM with no external MV
 ## Key Evidence
 
 - [MainWindow.xaml.cs](../../../VulcansTrace.Wpf/MainWindow.xaml.cs): composition root wiring 6 detectors, analyzer, risk escalator, and evidence builder with formatters
-- [MainViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/MainViewModel.cs): async analysis with shared analysis/export log snapshot, cancellation, and child ViewModel delegation
+- [MainViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/MainViewModel.cs): async analysis with shared analysis/export log snapshot, cancellation, `OpenFileDialog` file loading, `Stopwatch` timing, and child ViewModel delegation
 - [FindingsViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/FindingsViewModel.cs): `ICollectionView` filtering with severity + text search
 - [EvidenceViewModel.cs](../../../VulcansTrace.Wpf/ViewModels/EvidenceViewModel.cs): CSPRNG key generation, HMAC export, key masking
-- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis, export, snapshot consistency, key regeneration, parse-error cap
+- [MainViewModelIntegrationTests.cs](../../../VulcansTrace.Tests/Wpf/MainViewModelIntegrationTests.cs): end-to-end analysis, export, snapshot consistency, key regeneration, parse-error cap, file loading, and timing badge behavior
 
 ---
 
