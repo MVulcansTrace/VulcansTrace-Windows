@@ -616,7 +616,7 @@
                                                    FontWeight="SemiBold"
                                                    Foreground="{StaticResource TextSecondaryBrush}"
                                                    HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Paste a firewall log and click Analyze to detect threats."
+                                        <TextBlock Text="Load or paste a firewall log and click Analyze to detect threats."
                                                    FontSize="13"
                                                    Foreground="{StaticResource TextMutedBrush}"
                                                    HorizontalAlignment="Center"
