@@ -177,8 +177,8 @@ public sealed class MainViewModel : ViewModelBase
         Evidence = new EvidenceViewModel(evidenceBuilder, dialogService);
         Evidence.StatusChanged += (s, msg) => SummaryText = msg;
 
-        BotIntroText = "Hi, I'm VulcansTrace. Paste a Windows Firewall log, choose scan intensity, and I'll flag port scans, floods, lateral movement, beaconing, policy violations, and novelty destinations.";
-        SummaryText = "Paste a Windows Firewall log and choose an intensity to begin.";
+        BotIntroText = "Hi, I'm VulcansTrace. Load or paste a Windows Firewall log, choose scan intensity, and I'll flag port scans, floods, lateral movement, beaconing, policy violations, and novelty destinations.";
+        SummaryText = "Load or paste a Windows Firewall log and choose an intensity to begin.";
 
         Intensities.Add(new IntensityOption("Low - Critical Threat Triage", IntensityLevel.Low));
         Intensities.Add(new IntensityOption("Medium - Investigation Review", IntensityLevel.Medium));
@@ -259,7 +259,7 @@ public sealed class MainViewModel : ViewModelBase
     {
         if (_selectedIntensity == null || string.IsNullOrWhiteSpace(_logText))
         {
-            SummaryText = "Paste a log and select an intensity first.";
+            SummaryText = "Load or paste a log and select an intensity first.";
             return;
         }
 
