@@ -35,7 +35,7 @@ $externalIPs = @(
     "203.0.113.10","203.0.113.50","203.0.113.100",
     "198.51.100.20","198.51.100.80",
     "192.0.2.15","192.0.2.45","192.0.2.200",
-    "185.220.101.33","45.33.32.156","91.218.114.11"
+    "203.0.113.15","203.0.113.25","203.0.113.35"
 )
 
 # External IPs used for background noise only (exclude attack-pattern IPs to prevent false positives)
@@ -55,11 +55,11 @@ $adminPorts = @(22, 445, 3389)
 $disallowedPorts = @(21, 23)
 
 # C2 beaconing destination (dedicated external IP + port)
-$c2IP = "185.220.101.33"
+$c2IP = "203.0.113.25"
 $c2Port = 8443
 
 # Scanner IP (external)
-$scannerIP = "45.33.32.156"
+$scannerIP = "203.0.113.15"
 
 Write-Host "Generating $TotalLines lines of synthetic firewall log data..."
 
@@ -102,7 +102,7 @@ for ($i = 0; $i -lt 10; $i++) {
 $floodStart = $baseTime.AddMinutes(90)
 for ($i = 0; $i -lt 500; $i++) {
     $ts = $floodStart.AddMilliseconds($i * 10)
-    $lines.Add("$($ts.ToString('yyyy-MM-dd HH:mm:ss')) DROP TCP 91.218.114.11 10.0.0.10 $(30000 + ($i % 1000)) 443 64 S $(100000000 + $i) $(100000000 + $i) 8192 - - - SEND")
+    $lines.Add("$($ts.ToString('yyyy-MM-dd HH:mm:ss')) DROP TCP 203.0.113.35 10.0.0.10 $(30000 + ($i % 1000)) 443 64 S $(100000000 + $i) $(100000000 + $i) 8192 - - - SEND")
 }
 
 # --- Policy Violations: outbound connections on disallowed ports ---

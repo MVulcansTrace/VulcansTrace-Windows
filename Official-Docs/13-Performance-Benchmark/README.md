@@ -77,10 +77,10 @@ dotnet build VulcansTrace.sln --configuration Release --no-restore
 
 | Detector | Findings | Details |
 |---|---|---|
-| Port Scan | 4 | 1 external scanner (45.33.32.156), 1 internal from lateral movement traffic (10.0.1.100), 2 background noise edge cases |
-| Beaconing | 1 | C2 callback to 185.220.101.33:8443 detected (24 events over 2 hours) |
+| Port Scan | 4 | 1 external scanner (203.0.113.15), 1 internal from lateral movement traffic (10.0.1.100), 2 background noise edge cases |
+| Beaconing | 1 | C2 callback to 203.0.113.25:8443 detected (24 events over 2 hours) |
 | Lateral Movement | 1 | 10.0.1.100 scanning admin ports on 6 internal servers |
-| Flood | 1 | 500-event burst from 91.218.114.11 detected |
+| Flood | 1 | 500-event burst from 203.0.113.35 detected |
 | Policy Violation | 8 | All 8 disallowed port connections (FTP/21 and Telnet/23) caught |
 | Novelty | 5 | All 5 one-time unique external connections flagged |
 | Risk Escalation | Implicit | Host 10.0.1.100 flagged by Beaconing (Critical), Lateral Movement (Critical), and Port Scan (Critical) -- correlation visible in findings |
