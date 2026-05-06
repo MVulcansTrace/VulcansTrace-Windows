@@ -374,7 +374,7 @@
                                          HorizontalScrollBarVisibility="Auto"
                                          Height="220"
                                          FontSize="12"/>
-                                <TextBlock Text="Paste or type firewall log lines here..."
+                                <TextBlock Text="Paste, type, or load firewall log lines here..."
                                            Foreground="{StaticResource TextMutedBrush}"
                                            Margin="10,10,0,0"
                                            IsHitTestVisible="False"
