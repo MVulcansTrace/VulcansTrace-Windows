@@ -80,17 +80,21 @@ Recent validation in this workspace:
 
 ## Live Demos
 
-### Core Analysis Workflow
+### Overview
 
-![Core Analysis Workflow](gifs/01_Core_analysis_gif.gif)
+![Overview](gifs/01_overview.gif)
 
-### Intensity Profile Deep Dive
+### Low Intensity Analysis
 
-![Intensity Profile Deep Dive](gifs/02_Intensity_deep_dive_gif.gif)
+![Low Intensity Analysis](gifs/02_low_analysis.gif)
 
-### Evidence Export
+### Medium Intensity Analysis
 
-![Evidence Export](gifs/03_Evidence_export_gif.gif)
+![Medium Intensity Analysis](gifs/03_medium_analysis.gif)
+
+### High Intensity Analysis & Export
+
+![High Intensity Analysis & Export](gifs/04_high_export.gif)
 
 ## Documentation Map
 
