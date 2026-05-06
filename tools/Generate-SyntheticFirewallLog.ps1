@@ -30,14 +30,6 @@ $internalServers = @("10.0.0.1","10.0.0.2","10.0.0.10","10.0.0.20","10.0.0.50","
 $internalWorkstations = @("10.0.1.100","10.0.1.101","10.0.1.102","10.0.1.110","10.0.1.150")
 $allInternal = $internalServers + $internalWorkstations
 
-# External IPs used for attack patterns (should not appear in background noise)
-$externalIPs = @(
-    "203.0.113.10","203.0.113.50","203.0.113.100",
-    "198.51.100.20","198.51.100.80",
-    "192.0.2.15","192.0.2.45","192.0.2.200",
-    "203.0.113.15","203.0.113.25","203.0.113.35"
-)
-
 # External IPs used for background noise only (exclude attack-pattern IPs to prevent false positives)
 $backgroundExternalIPs = @(
     "203.0.113.10","203.0.113.50","203.0.113.100",
